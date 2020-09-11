@@ -1,7 +1,7 @@
 extends Node
 
 var text = "toast text"
-var plugin_name = "TestGodotPlugin"
+var plugin_name = "AndroidGoodies"
 
 func showToast():
 	if Engine.has_singleton(plugin_name):
