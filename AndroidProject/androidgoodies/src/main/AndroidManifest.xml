@@ -3,6 +3,6 @@
     <application>
         <meta-data
             android:name="org.godotengine.plugin.v1.AndroidGoodies"
-            android:value="com.example.pluginlibrary.AndroidGoodies" />
+            android:value="com.ninevastudios.androidgoodies.AndroidGoodies" />
     </application>
 </manifest>
