@@ -1,0 +1,5 @@
+[config]
+
+name="AndroidGoodies"
+binary_type="local"
+binary="androidgoodies-release.aar"
