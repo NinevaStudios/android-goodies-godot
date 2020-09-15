@@ -1,0 +1,3 @@
+-dontwarn com.ninevastudios.**
+-keep class com.ninevastudios.** { *; }
+-keep interface com.ninevastudios.** { *; }
