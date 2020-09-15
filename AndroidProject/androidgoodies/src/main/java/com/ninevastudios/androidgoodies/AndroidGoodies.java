@@ -48,7 +48,7 @@ public class AndroidGoodies extends GodotPlugin {
 	@NonNull
 	public Set<SignalInfo> getPluginSignals() {
 		Set<SignalInfo> signals = new ArraySet<>();
-		signals.add(new SignalInfo("showToast", String.class));
+		signals.add(new SignalInfo("showToast", String.class, Integer.class));
 		return signals;
 	}
 }
