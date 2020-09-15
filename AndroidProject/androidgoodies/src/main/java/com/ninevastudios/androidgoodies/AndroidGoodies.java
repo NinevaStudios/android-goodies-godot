@@ -18,6 +18,9 @@ import java.util.List;
 import java.util.Set;
 
 public class AndroidGoodies extends GodotPlugin {
+
+	public static final String SIGNAL_ON_CONFIRM_BUTTON_CLICKED = "onConfirmButtonClicked";
+
 	public AndroidGoodies(Godot godot) {
 		super(godot);
 	}
@@ -68,7 +71,7 @@ public class AndroidGoodies extends GodotPlugin {
 	}
 
 	public void onConfirmButtonClicked() {
-		this.emitSignal("onConfirmButtonClicked");
+		this.emitSignal(SIGNAL_ON_CONFIRM_BUTTON_CLICKED);
 	}
 
 	@NonNull
@@ -84,7 +87,7 @@ public class AndroidGoodies extends GodotPlugin {
 	@NonNull
 	public Set<SignalInfo> getPluginSignals() {
 		Set<SignalInfo> signals = new ArraySet<>();
-		signals.add(new SignalInfo("onConfirmButtonClicked"));
+		signals.add(new SignalInfo(SIGNAL_ON_CONFIRM_BUTTON_CLICKED));
 		return signals;
 	}
 }
