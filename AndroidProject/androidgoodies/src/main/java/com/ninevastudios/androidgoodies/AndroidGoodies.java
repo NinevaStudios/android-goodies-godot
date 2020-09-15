@@ -1,9 +1,9 @@
 package com.ninevastudios.androidgoodies;
 
-import android.os.Handler;
-import android.os.Looper;
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.v4.util.ArraySet;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.godotengine.godot.Godot;
@@ -19,16 +19,20 @@ public class AndroidGoodies extends GodotPlugin {
 		super(godot);
 	}
 
-	public void showToast(final String toast) {
-		Handler mainHandler = new Handler(Looper.getMainLooper());
+	public void showToast(final String toast, final int length) {
+		final Activity activity = getActivity();
 
-		Runnable myRunnable = new Runnable() {
+		if (activity == null) {
+			Log.d(getPluginName(), "Could not get Activity");
+			return;
+		}
+
+		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Toast.makeText(getActivity(), toast, Toast.LENGTH_SHORT).show();
+				Toast.makeText(activity, toast, length).show();
 			}
-		};
-		mainHandler.post(myRunnable);
+		});
 	}
 
 	@NonNull

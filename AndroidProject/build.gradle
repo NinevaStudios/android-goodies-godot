@@ -20,7 +20,7 @@ allprojects {
 }
 
 project.ext {
-    GodotPluginDir = file("../Plugin").absolutePath
+    GodotPluginDir = file("../Plugin/AndroidGoodies").absolutePath
 }
 
 task clean(type: Delete) {
