@@ -1,10 +1,13 @@
 package com.ninevastudios.androidgoodies;
 
 import android.app.Activity;
-import android.support.annotation.NonNull;
-import android.support.v4.util.ArraySet;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.collection.ArraySet;
 
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
@@ -35,6 +38,39 @@ public class AndroidGoodies extends GodotPlugin {
 		});
 	}
 
+	public void showConfirmationDialog(final String title, final String body, final String buttonText) {
+		final Activity activity = getActivity();
+
+		if (activity == null) {
+			Log.d(getPluginName(), "Could not get Activity");
+			return;
+		}
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+
+				builder.setTitle(title);
+				builder.setMessage(body);
+
+				builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						onConfirmButtonClicked();
+					}
+				});
+
+				final AlertDialog dialog = builder.create();
+				dialog.show();
+			}
+		});
+	}
+
+	public void onConfirmButtonClicked() {
+		this.emitSignal("onConfirmButtonClicked");
+	}
+
 	@NonNull
 	public String getPluginName() {
 		return "AndroidGoodies";
@@ -42,13 +78,13 @@ public class AndroidGoodies extends GodotPlugin {
 
 	@NonNull
 	public List<String> getPluginMethods() {
-		return Arrays.asList("showToast");
+		return Arrays.asList("showToast", "showConfirmationDialog");
 	}
 
 	@NonNull
 	public Set<SignalInfo> getPluginSignals() {
 		Set<SignalInfo> signals = new ArraySet<>();
-		signals.add(new SignalInfo("showToast", String.class, Integer.class));
+		signals.add(new SignalInfo("onConfirmButtonClicked"));
 		return signals;
 	}
 }
