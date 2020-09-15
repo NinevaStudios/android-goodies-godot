@@ -2,4 +2,4 @@
 
 name="AndroidGoodies"
 binary_type="local"
-binary="androidgoodies-release.aar"
+binary="AndroidGoodies/androidgoodies-release.aar"
