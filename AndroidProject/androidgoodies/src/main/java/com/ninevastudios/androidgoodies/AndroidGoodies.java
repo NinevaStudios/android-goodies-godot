@@ -19,7 +19,7 @@ import java.util.Set;
 
 public class AndroidGoodies extends GodotPlugin {
 
-	public static final String SIGNAL_ON_CONFIRM_BUTTON_CLICKED = "onConfirmButtonClicked";
+	public static final String SIGNAL_ON_CONFIRM_BUTTON_CLICKED = "onPositiveButtonClicked";
 
 	public AndroidGoodies(Godot godot) {
 		super(godot);
@@ -57,12 +57,7 @@ public class AndroidGoodies extends GodotPlugin {
 				builder.setTitle(title);
 				builder.setMessage(body);
 
-				builder.setPositiveButton(buttonText, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						onConfirmButtonClicked();
-					}
-				});
+				builder.setPositiveButton(buttonText, onPositiveButtonClickListener);
 
 				final AlertDialog dialog = builder.create();
 				dialog.show();
@@ -70,7 +65,56 @@ public class AndroidGoodies extends GodotPlugin {
 		});
 	}
 
-	public void onConfirmButtonClicked() {
+	private DialogInterface.OnClickListener onPositiveButtonClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+			onPositiveButtonClicked();
+		}
+	};
+
+	private DialogInterface.OnClickListener onNegativeButtonClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+		}
+	};
+
+	private DialogInterface.OnClickListener onNeutralButtonClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+		}
+	};
+
+	private DialogInterface.OnClickListener onItemClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+		}
+	};
+
+	private DialogInterface.OnClickListener onSingleChoiceItemClickListener = new DialogInterface.OnClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which) {
+		}
+	};
+
+	private DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener = new DialogInterface.OnMultiChoiceClickListener() {
+		@Override
+		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+		}
+	};
+
+	private DialogInterface.OnCancelListener onCancelListener = new DialogInterface.OnCancelListener() {
+		@Override
+		public void onCancel(DialogInterface dialog) {
+		}
+	};
+
+	private DialogInterface.OnDismissListener onDismissListener = new DialogInterface.OnDismissListener() {
+		@Override
+		public void onDismiss(DialogInterface dialog) {
+		}
+	};
+
+	public void onPositiveButtonClicked() {
 		this.emitSignal(SIGNAL_ON_CONFIRM_BUTTON_CLICKED);
 	}
 

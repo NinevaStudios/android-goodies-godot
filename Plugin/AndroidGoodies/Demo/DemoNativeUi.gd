@@ -3,13 +3,13 @@ extends Node
 const NativeUiClass = preload("../Scripts/AGNativeUi.gd")
 
 func _onShowToastButtonClick():
-	NativeUiClass.showToast("Toast", NativeUiClass.ToastLength.SHORT)
+	NativeUiClass.show_toast("Toast", NativeUiClass.ToastLength.SHORT)
 
 
 func _onShowConfirmationDialogButtonClick():
-	NativeUiClass.showConfirmationDialog("Confirmation Dialog", 
+	NativeUiClass.show_confirmation_dialog("Confirmation Dialog", 
 	"Do you accept your swift death?", NativeUiClass.DialogTheme.DEFAULT, 
 	"Okay...", "_onPositiveButtonClicked", self)
 	
 func _onPositiveButtonClicked():
-	NativeUiClass.showToast("Positive Button Clicked", 0)
+	NativeUiClass.show_toast("Positive Button Clicked", 0)
