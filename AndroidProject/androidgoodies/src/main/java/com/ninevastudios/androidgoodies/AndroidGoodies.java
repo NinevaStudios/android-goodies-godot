@@ -30,7 +30,7 @@ public class AndroidGoodies extends GodotPlugin {
 	public List<String> getPluginMethods() {
 		return Arrays.asList(
 				"showToast",
-				"showConfirmationDialog");
+				"showButtonDialog");
 	}
 
 	@NonNull
@@ -80,8 +80,10 @@ public class AndroidGoodies extends GodotPlugin {
 		AGNativeUi.showToast(toast, length);
 	}
 
-	public void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme, boolean isCancellable) {
-		AGNativeUi.showConfirmationDialog(title, body, buttonText, theme, isCancellable);
+	public void showButtonDialog(final String title, final String body, final String positiveButtonText,
+	                             final String negativeButtonText, final String neutralButtonText,
+	                             final int theme, boolean isCancellable) {
+		AGNativeUi.showButtonDialog(title, body, positiveButtonText, negativeButtonText, neutralButtonText, theme, isCancellable);
 	}
 
 	//endregion

@@ -24,8 +24,9 @@ public class AGNativeUi {
 		});
 	}
 
-	public static void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme,
-	                                          final boolean isCancellable) {
+	public static void showButtonDialog(final String title, final String body, final String positiveButtonText,
+	                                    final String negativeButtonText, final String neutralButtonText,
+	                                    final int theme, final boolean isCancellable) {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
@@ -38,7 +39,15 @@ public class AGNativeUi {
 			public void run() {
 				AlertDialog.Builder builder = getDialogBuilder(activity, title, body, theme, isCancellable);
 
-				builder.setPositiveButton(buttonText, onPositiveButtonClickListener);
+				if (positiveButtonText != null) {
+					builder.setPositiveButton(positiveButtonText, onPositiveButtonClickListener);
+				}
+				if (negativeButtonText != null) {
+					builder.setNegativeButton(negativeButtonText, onNegativeButtonClickListener);
+				}
+				if (neutralButtonText != null) {
+					builder.setNeutralButton(neutralButtonText, onNeutralButtonClickListener);
+				}
 
 				showDialog(builder);
 			}
