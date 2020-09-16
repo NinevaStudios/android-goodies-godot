@@ -41,7 +41,7 @@ public class AndroidGoodies extends GodotPlugin {
 		});
 	}
 
-	public void showConfirmationDialog(final String title, final String body, final String buttonText) {
+	public void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme) {
 		final Activity activity = getActivity();
 
 		if (activity == null) {
@@ -52,7 +52,7 @@ public class AndroidGoodies extends GodotPlugin {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+				AlertDialog.Builder builder = new AlertDialog.Builder(activity, theme);
 
 				builder.setTitle(title);
 				builder.setMessage(body);
@@ -81,7 +81,9 @@ public class AndroidGoodies extends GodotPlugin {
 
 	@NonNull
 	public List<String> getPluginMethods() {
-		return Arrays.asList("showToast", "showConfirmationDialog");
+		return Arrays.asList(
+				"showToast",
+				"showConfirmationDialog");
 	}
 
 	@NonNull
