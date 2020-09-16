@@ -13,46 +13,85 @@ class ButtonDialogData:
 	var positive_button_text = ""
 	var positive_button_callback_name = ""
 	var positive_button_callback_object = null
+	
 	var negative_button_text = ""
 	var negative_button_callback_name = ""
 	var negative_button_callback_object = null
+	
 	var neutral_button_text = ""
 	var neutral_button_callback_name = ""
 	var neutral_button_callback_object = null
 	
-static func show_toast(text, length):
+	var is_cancelable = false
+	var cancel_callback_name = ""
+	var cancel_callback_object = null
+	
+var cached_button_dialog_data
+	
+func show_toast(text, length):
 	if Engine.has_singleton(plugin_name):
 		var singleton = Engine.get_singleton(plugin_name)
 		singleton.showToast(text, length as int)
 	else:
 		print("No plugin singleton")
 		
-static func show_button_dialog(title, body, theme, button_dialog_data, 
-is_cancelable = false, cancel_callback_name = null, cancel_callback_object = null):
+func show_button_dialog(title, body, theme, button_dialog_data):
 	if !(button_dialog_data is ButtonDialogData):
 		print("ButtonDialogData is not valid")
 		pass
+		
+	cached_button_dialog_data = button_dialog_data
+	
 	if Engine.has_singleton(plugin_name):
 		var singleton = Engine.get_singleton(plugin_name)
 		
-		if (button_dialog_data.positive_button_text != ""):
-			singleton.connect(positive_button_signal_name, button_dialog_data.positive_button_callback_object, button_dialog_data.positive_button_callback_name, [], Object.CONNECT_ONESHOT)
-		
-		if (button_dialog_data.negative_button_text != ""):
-			singleton.connect(negative_button_signal_name, button_dialog_data.negative_button_callback_object, button_dialog_data.negative_button_callback_name, [], Object.CONNECT_ONESHOT)
-		
-		if (button_dialog_data.neutral_button_text != ""):
-			singleton.connect(neutral_button_signal_name, button_dialog_data.neutral_button_callback_object, button_dialog_data.neutral_button_callback_name, [], Object.CONNECT_ONESHOT)
-		
-		set_cancel_listener(singleton, is_cancelable, cancel_callback_name, cancel_callback_object)
+		connect_positive_button_callback(singleton)
+		connect_negative_button_callback(singleton)
+		connect_neutral_button_callback(singleton)
+		connect_cancel_callback(singleton)
 		
 		singleton.showButtonDialog(title, body, button_dialog_data.positive_button_text, 
-		button_dialog_data.negative_button_text, button_dialog_data.neutral_button_text, theme as int, is_cancelable)
+		button_dialog_data.negative_button_text, button_dialog_data.neutral_button_text, theme as int,
+		button_dialog_data.is_cancelable)
 	else:
 		print("No plugin singleton")
 		
-static func set_cancel_listener(singleton, is_cancelable = false, cancel_callback_name = null, cancel_callback_object = null):
+func connect_cancel_callback(singleton, is_cancelable = false, cancel_callback_name = null, cancel_callback_object = null):
 	if is_cancelable && cancel_callback_name != null && cancel_callback_object != null:
-		singleton.connect(dialog_cancelled_signal_name, cancel_callback_object, cancel_callback_name, [], Object.CONNECT_ONESHOT)
-	else: 
-		print("Cancel callback is either disabled or not configured properly")
+		singleton.connect(dialog_cancelled_signal_name, self, "on_dialog_cancel_callback")
+
+func on_dialog_cancel_callback():
+	cached_button_dialog_data.cancel_callback_object.call(cached_button_dialog_data.cancel_callback_name)		
+	
+	disconnect_button_dialog_callbacks()
+		
+func connect_positive_button_callback(singleton):
+	if (cached_button_dialog_data.positive_button_text != ""):
+		singleton.connect(positive_button_signal_name, self, "on_positive_button_selected")
+		
+func on_positive_button_selected():
+	cached_button_dialog_data.positive_button_callback_object.call(cached_button_dialog_data.positive_button_callback_name)
+	
+	disconnect_button_dialog_callbacks()
+	
+func connect_negative_button_callback(singleton):
+	if (cached_button_dialog_data.positive_button_text != ""):
+		singleton.connect(negative_button_signal_name, self, "on_negative_button_selected")
+		
+func on_negative_button_selected():
+	cached_button_dialog_data.negative_button_callback_object.call(cached_button_dialog_data.negative_button_callback_name)
+	
+	disconnect_button_dialog_callbacks()
+	
+func connect_neutral_button_callback(singleton):
+	if (cached_button_dialog_data.neutral_button_text != ""):
+		singleton.connect(neutral_button_signal_name, self, "on_neutral_button_selected")
+		
+func on_neutral_button_selected():
+	cached_button_dialog_data.neutral_button_callback_object.call(cached_button_dialog_data.neutral_button_callback_name)
+	
+	disconnect_button_dialog_callbacks()
+		
+func disconnect_button_dialog_callbacks():
+	var singleton = Engine.get_singleton(plugin_name)
+	

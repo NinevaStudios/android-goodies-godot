@@ -2,8 +2,10 @@ extends Node
 
 const NativeUiClass = preload("../Scripts/AGNativeUi.gd")
 
+var native_ui = NativeUiClass.new()
+
 func _onShowToastButtonClick():
-	NativeUiClass.show_toast("Toast", NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Toast", NativeUiClass.ToastLength.SHORT)
 
 
 func _onShowConfirmationDialogButtonClick():
@@ -21,18 +23,18 @@ func _onShowConfirmationDialogButtonClick():
 	dialog_data.negative_button_callback_name = "_onNegativeButtonClicked"
 	dialog_data.negative_button_callback_object = self
 	
-	NativeUiClass.show_button_dialog("Dialog", 
+	native_ui.show_button_dialog("Dialog", 
 	"Do you accept your swift death?", NativeUiClass.DialogTheme.DEFAULT, 
 	dialog_data, true, "_onDialogCancelled", self)
 	
 func _onPositiveButtonClicked():
-	NativeUiClass.show_toast("Positive Button Clicked", 0)
+	native_ui.show_toast("Positive Button Clicked", 0)
 	
 func _onNegativeButtonClicked():
-	NativeUiClass.show_toast("Negative Button Clicked", 0)
+	native_ui.show_toast("Negative Button Clicked", 0)
 	
 func _onNeutralButtonClicked():
-	NativeUiClass.show_toast("Neutral Button Clicked", 0)
+	native_ui.show_toast("Neutral Button Clicked", 0)
 	
 func _onDialogCancelled():
-	NativeUiClass.show_toast("Dialog was cancelled", 0)
+	native_ui.show_toast("Dialog was cancelled", 0)
