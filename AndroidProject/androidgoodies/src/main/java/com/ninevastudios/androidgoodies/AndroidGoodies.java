@@ -1,10 +1,6 @@
 package com.ninevastudios.androidgoodies;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
@@ -18,109 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 public class AndroidGoodies extends GodotPlugin {
+	//region GODOT_IMPLEMENTATION
 
-	public static final String SIGNAL_ON_CONFIRM_BUTTON_CLICKED = "onPositiveButtonClicked";
-
-	public AndroidGoodies(Godot godot) {
-		super(godot);
-	}
-
-	public void showToast(final String toast, final int length) {
-		final Activity activity = getActivity();
-
-		if (activity == null) {
-			Log.d(getPluginName(), "Could not get Activity");
-			return;
-		}
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				Toast.makeText(activity, toast, length).show();
-			}
-		});
-	}
-
-	public void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme) {
-		final Activity activity = getActivity();
-
-		if (activity == null) {
-			Log.d(getPluginName(), "Could not get Activity");
-			return;
-		}
-
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				AlertDialog.Builder builder = new AlertDialog.Builder(activity, theme);
-
-				builder.setTitle(title);
-				builder.setMessage(body);
-
-				builder.setPositiveButton(buttonText, onPositiveButtonClickListener);
-
-				final AlertDialog dialog = builder.create();
-				dialog.show();
-			}
-		});
-	}
-
-	private DialogInterface.OnClickListener onPositiveButtonClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-			onPositiveButtonClicked();
-		}
-	};
-
-	private DialogInterface.OnClickListener onNegativeButtonClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-		}
-	};
-
-	private DialogInterface.OnClickListener onNeutralButtonClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-		}
-	};
-
-	private DialogInterface.OnClickListener onItemClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-		}
-	};
-
-	private DialogInterface.OnClickListener onSingleChoiceItemClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-		}
-	};
-
-	private DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener = new DialogInterface.OnMultiChoiceClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-		}
-	};
-
-	private DialogInterface.OnCancelListener onCancelListener = new DialogInterface.OnCancelListener() {
-		@Override
-		public void onCancel(DialogInterface dialog) {
-		}
-	};
-
-	private DialogInterface.OnDismissListener onDismissListener = new DialogInterface.OnDismissListener() {
-		@Override
-		public void onDismiss(DialogInterface dialog) {
-		}
-	};
-
-	public void onPositiveButtonClicked() {
-		this.emitSignal(SIGNAL_ON_CONFIRM_BUTTON_CLICKED);
-	}
+	static final String SIGNAL_ON_POSITIVE_BUTTON_CLICKED = "onPositiveButtonClicked";
+	static final String SIGNAL_ON_NEGATIVE_BUTTON_CLICKED = "onNegativeButtonClicked";
+	static final String SIGNAL_ON_NEUTRAL_BUTTON_CLICKED = "onNeutralButtonClicked";
 
 	@NonNull
 	public String getPluginName() {
-		return "AndroidGoodies";
+		return TAG;
 	}
 
 	@NonNull
@@ -133,8 +35,53 @@ public class AndroidGoodies extends GodotPlugin {
 	@NonNull
 	public Set<SignalInfo> getPluginSignals() {
 		Set<SignalInfo> signals = new ArraySet<>();
-		signals.add(new SignalInfo(SIGNAL_ON_CONFIRM_BUTTON_CLICKED));
+		signals.add(new SignalInfo(SIGNAL_ON_POSITIVE_BUTTON_CLICKED));
+		signals.add(new SignalInfo(SIGNAL_ON_NEGATIVE_BUTTON_CLICKED));
+		signals.add(new SignalInfo(SIGNAL_ON_NEUTRAL_BUTTON_CLICKED));
 		return signals;
 	}
+
+	//endregion
+
+	//region HELPERS
+
+	public static String TAG = "AndroidGoodies";
+
+	public AndroidGoodies(Godot godot) {
+		super(godot);
+		instance = this;
+	}
+
+	private static AndroidGoodies instance;
+
+	static AndroidGoodies getInstance() {
+		return instance;
+	}
+
+	void emitSignalCallback(String signal, final Object... signalArgs) {
+		this.emitSignal(signal, signalArgs);
+	}
+
+	public static Activity getGameActivity() {
+		if (instance == null) {
+			return null;
+		}
+
+		return instance.getActivity();
+	}
+
+	//endregion
+
+	//region NATIVE_UI
+
+	public void showToast(final String toast, final int length) {
+		AGNativeUi.showToast(toast, length);
+	}
+
+	public void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme) {
+		AGNativeUi.showConfirmationDialog(title, body, buttonText, theme);
+	}
+
+	//endregion
 }
 
