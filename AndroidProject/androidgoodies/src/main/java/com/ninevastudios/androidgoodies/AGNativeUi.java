@@ -24,7 +24,8 @@ public class AGNativeUi {
 		});
 	}
 
-	public static void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme) {
+	public static void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme,
+	                                          final boolean isCancellable) {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
@@ -35,7 +36,7 @@ public class AGNativeUi {
 		activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				AlertDialog.Builder builder = getDialogBuilder(activity, title, body, theme);
+				AlertDialog.Builder builder = getDialogBuilder(activity, title, body, theme, isCancellable);
 
 				builder.setPositiveButton(buttonText, onPositiveButtonClickListener);
 
@@ -44,11 +45,14 @@ public class AGNativeUi {
 		});
 	}
 
-	private static AlertDialog.Builder getDialogBuilder(Activity activity, String title, String body, int theme) {
+	private static AlertDialog.Builder getDialogBuilder(Activity activity, String title, String body, int theme, boolean isCancellable) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity, theme);
 
 		builder.setTitle(title);
 		builder.setMessage(body);
+
+		builder.setCancelable(isCancellable);
+		builder.setOnCancelListener(onCancelListener);
 
 		return builder;
 	}
@@ -100,6 +104,7 @@ public class AGNativeUi {
 	static DialogInterface.OnCancelListener onCancelListener = new DialogInterface.OnCancelListener() {
 		@Override
 		public void onCancel(DialogInterface dialog) {
+			AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_DIALOG_CANCELLED);
 		}
 	};
 }

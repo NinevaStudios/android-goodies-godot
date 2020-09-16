@@ -19,6 +19,7 @@ public class AndroidGoodies extends GodotPlugin {
 	static final String SIGNAL_ON_POSITIVE_BUTTON_CLICKED = "onPositiveButtonClicked";
 	static final String SIGNAL_ON_NEGATIVE_BUTTON_CLICKED = "onNegativeButtonClicked";
 	static final String SIGNAL_ON_NEUTRAL_BUTTON_CLICKED = "onNeutralButtonClicked";
+	static final String SIGNAL_ON_DIALOG_CANCELLED = "onDialogCancelled";
 
 	@NonNull
 	public String getPluginName() {
@@ -38,6 +39,7 @@ public class AndroidGoodies extends GodotPlugin {
 		signals.add(new SignalInfo(SIGNAL_ON_POSITIVE_BUTTON_CLICKED));
 		signals.add(new SignalInfo(SIGNAL_ON_NEGATIVE_BUTTON_CLICKED));
 		signals.add(new SignalInfo(SIGNAL_ON_NEUTRAL_BUTTON_CLICKED));
+		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_CANCELLED));
 		return signals;
 	}
 
@@ -78,8 +80,8 @@ public class AndroidGoodies extends GodotPlugin {
 		AGNativeUi.showToast(toast, length);
 	}
 
-	public void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme) {
-		AGNativeUi.showConfirmationDialog(title, body, buttonText, theme);
+	public void showConfirmationDialog(final String title, final String body, final String buttonText, final int theme, boolean isCancellable) {
+		AGNativeUi.showConfirmationDialog(title, body, buttonText, theme, isCancellable);
 	}
 
 	//endregion
