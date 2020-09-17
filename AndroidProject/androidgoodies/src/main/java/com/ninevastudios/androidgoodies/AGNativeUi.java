@@ -6,13 +6,15 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
+import static com.ninevastudios.androidgoodies.AndroidGoodies.TAG;
+
 public class AGNativeUi {
 
 	public static void showToast(final String toast, final int length) {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(AndroidGoodies.TAG, "Activity was not found. Aborting.");
+			Log.e(TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
@@ -30,7 +32,7 @@ public class AGNativeUi {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(AndroidGoodies.TAG, "Activity was not found. Aborting.");
+			Log.e(TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
@@ -54,11 +56,39 @@ public class AGNativeUi {
 		});
 	}
 
+	public static void showItemsDialog(final String title, final String[] items, final int theme, final boolean isCancellable) {
+		final Activity activity = AndroidGoodies.getGameActivity();
+
+		if (activity == null) {
+			Log.e(TAG, "Activity was not found. Aborting.");
+			return;
+		}
+
+		if (items == null || items.length < 1) {
+			Log.e(TAG, "Items array is empty");
+			return;
+		}
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				AlertDialog.Builder builder = getDialogBuilder(activity, title, null, theme, isCancellable);
+
+				builder.setItems(items, onItemClickListener);
+
+				showDialog(builder);
+			}
+		});
+	}
+
 	private static AlertDialog.Builder getDialogBuilder(Activity activity, String title, String body, int theme, boolean isCancellable) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity, theme);
 
 		builder.setTitle(title);
-		builder.setMessage(body);
+
+		if (body != null) {
+			builder.setMessage(body);
+		}
 
 		builder.setCancelable(isCancellable);
 		builder.setOnCancelListener(onCancelListener);
@@ -95,12 +125,14 @@ public class AGNativeUi {
 	static DialogInterface.OnClickListener onItemClickListener = new DialogInterface.OnClickListener() {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
+			AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_DIALOG_ITEM_CLICKED, which);
 		}
 	};
 
 	static DialogInterface.OnClickListener onSingleChoiceItemClickListener = new DialogInterface.OnClickListener() {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
+
 		}
 	};
 
