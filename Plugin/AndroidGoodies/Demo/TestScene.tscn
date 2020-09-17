@@ -42,7 +42,7 @@ margin_left = -184.0
 margin_top = 138.0
 margin_right = 184.0
 margin_bottom = 222.0
-text = "Confirmation Dialog"
+text = "Button Dialog"
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false

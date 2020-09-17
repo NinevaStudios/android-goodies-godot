@@ -22,11 +22,10 @@ class ButtonDialogData:
 	var neutral_button_callback_name = ""
 	var neutral_button_callback_object = null
 	
-	var is_cancelable = false
-	var cancel_callback_name = ""
-	var cancel_callback_object = null
-	
-var cached_button_dialog_data
+var _cached_button_dialog_data
+var _is_cancelable = false
+var _cancel_callback_name = ""
+var _cancel_callback_object = null
 	
 func show_toast(text, length):
 	if Engine.has_singleton(plugin_name):
@@ -35,71 +34,75 @@ func show_toast(text, length):
 	else:
 		print("No plugin singleton")
 		
-func show_button_dialog(title, body, theme, button_dialog_data):
-	if !(button_dialog_data is ButtonDialogData):
+func show_button_dialog(title, body, theme, button_dialog_data, is_cancelable = false, 
+		cancel_callback_name = "", cancel_callback_object = null):
+	if not button_dialog_data is ButtonDialogData:
 		print("ButtonDialogData is not valid")
 		pass
 		
-	cached_button_dialog_data = button_dialog_data
+	_cached_button_dialog_data = button_dialog_data
+	_is_cancelable = is_cancelable
+	_cancel_callback_name = cancel_callback_name
+	_cancel_callback_object = cancel_callback_object
 	
 	if Engine.has_singleton(plugin_name):
 		var singleton = Engine.get_singleton(plugin_name)
 		
-		connect_positive_button_callback(singleton)
-		connect_negative_button_callback(singleton)
-		connect_neutral_button_callback(singleton)
-		connect_cancel_callback(singleton)
+		_connect_positive_button_callback(singleton)
+		_connect_negative_button_callback(singleton)
+		_connect_neutral_button_callback(singleton)
+		_connect_cancel_callback(singleton)
 		
 		singleton.showButtonDialog(title, body, button_dialog_data.positive_button_text, 
 		button_dialog_data.negative_button_text, button_dialog_data.neutral_button_text, theme as int,
-		button_dialog_data.is_cancelable)
+		is_cancelable)
 	else:
 		print("No plugin singleton")
 		
-func connect_cancel_callback(singleton):
-	if cached_button_dialog_data.is_cancelable:
-		singleton.connect(dialog_cancelled_signal_name, self, "on_dialog_cancel_callback")
+func _connect_cancel_callback(singleton):
+	if _is_cancelable:
+		singleton.connect(dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
 
-func on_dialog_cancel_callback():
-	cached_button_dialog_data.cancel_callback_object.call(cached_button_dialog_data.cancel_callback_name)
+func _on_dialog_cancel_callback():
+	_cancel_callback_object.call(_cancel_callback_name)
 	
-	disconnect_button_dialog_callbacks()
+	_disconnect_button_dialog_callbacks()
 		
-func connect_positive_button_callback(singleton):
-	if (cached_button_dialog_data.positive_button_text != ""):
-		singleton.connect(positive_button_signal_name, self, "on_positive_button_selected")
+func _connect_positive_button_callback(singleton):
+	if _cached_button_dialog_data.positive_button_text != "":
+		singleton.connect(positive_button_signal_name, self, "_on_positive_button_selected")
 		
-func on_positive_button_selected():
-	cached_button_dialog_data.positive_button_callback_object.call(cached_button_dialog_data.positive_button_callback_name)
+func _on_positive_button_selected():
+	_cached_button_dialog_data.positive_button_callback_object.call(_cached_button_dialog_data.positive_button_callback_name)
 	
-	disconnect_button_dialog_callbacks()
+	_disconnect_button_dialog_callbacks()
 	
-func connect_negative_button_callback(singleton):
-	if (cached_button_dialog_data.positive_button_text != ""):
-		singleton.connect(negative_button_signal_name, self, "on_negative_button_selected")
+func _connect_negative_button_callback(singleton):
+	if _cached_button_dialog_data.positive_button_text != "":
+		singleton.connect(negative_button_signal_name, self, "_on_negative_button_selected")
 		
-func on_negative_button_selected():
-	cached_button_dialog_data.negative_button_callback_object.call(cached_button_dialog_data.negative_button_callback_name)
+func _on_negative_button_selected():
+	_cached_button_dialog_data.negative_button_callback_object.call(_cached_button_dialog_data.negative_button_callback_name)
 	
-	disconnect_button_dialog_callbacks()
+	_disconnect_button_dialog_callbacks()
 	
-func connect_neutral_button_callback(singleton):
-	if (cached_button_dialog_data.neutral_button_text != ""):
-		singleton.connect(neutral_button_signal_name, self, "on_neutral_button_selected")
+func _connect_neutral_button_callback(singleton):
+	if _cached_button_dialog_data.neutral_button_text != "":
+		singleton.connect(neutral_button_signal_name, self, "_on_neutral_button_selected")
 		
-func on_neutral_button_selected():
-	cached_button_dialog_data.neutral_button_callback_object.call(cached_button_dialog_data.neutral_button_callback_name)
+func _on_neutral_button_selected():
+	_cached_button_dialog_data.neutral_button_callback_object.call(_cached_button_dialog_data.neutral_button_callback_name)
 	
-	disconnect_button_dialog_callbacks()
+	_disconnect_button_dialog_callbacks()
 		
-func disconnect_button_dialog_callbacks():
+func _disconnect_button_dialog_callbacks():
 	var singleton = Engine.get_singleton(plugin_name)
 	
-	disconnect_callback_if_connected(singleton, positive_button_signal_name, self, "on_positive_button_selected")
-	disconnect_callback_if_connected(singleton, negative_button_signal_name, self, "on_negative_button_selected")
-	disconnect_callback_if_connected(singleton, neutral_button_signal_name, self, "on_neutral_button_selected")
-	disconnect_callback_if_connected(singleton, dialog_cancelled_signal_name, self, "on_dialog_cancel_callback")
+	_disconnect_callback_if_connected(singleton, positive_button_signal_name, self, "_on_positive_button_selected")
+	_disconnect_callback_if_connected(singleton, negative_button_signal_name, self, "_on_negative_button_selected")
+	_disconnect_callback_if_connected(singleton, neutral_button_signal_name, self, "_on_neutral_button_selected")
+	_disconnect_callback_if_connected(singleton, dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
 	
-func disconnect_callback_if_connected(singleton, signal_name, callback_object, callback_name):
+func _disconnect_callback_if_connected(singleton, signal_name, callback_object, callback_name):
 	if callback_object != null && singleton.is_connected(signal_name, callback_object, callback_name):
 		singleton.disconnect(signal_name, callback_object, callback_name)
