@@ -56,12 +56,12 @@ func show_button_dialog(title, body, theme, button_dialog_data):
 	else:
 		print("No plugin singleton")
 		
-func connect_cancel_callback(singleton, is_cancelable = false, cancel_callback_name = null, cancel_callback_object = null):
-	if is_cancelable && cancel_callback_name != null && cancel_callback_object != null:
+func connect_cancel_callback(singleton):
+	if cached_button_dialog_data.is_cancelable:
 		singleton.connect(dialog_cancelled_signal_name, self, "on_dialog_cancel_callback")
 
 func on_dialog_cancel_callback():
-	cached_button_dialog_data.cancel_callback_object.call(cached_button_dialog_data.cancel_callback_name)		
+	cached_button_dialog_data.cancel_callback_object.call(cached_button_dialog_data.cancel_callback_name)
 	
 	disconnect_button_dialog_callbacks()
 		
@@ -95,3 +95,11 @@ func on_neutral_button_selected():
 func disconnect_button_dialog_callbacks():
 	var singleton = Engine.get_singleton(plugin_name)
 	
+	disconnect_callback_if_connected(singleton, positive_button_signal_name, self, "on_positive_button_selected")
+	disconnect_callback_if_connected(singleton, negative_button_signal_name, self, "on_negative_button_selected")
+	disconnect_callback_if_connected(singleton, neutral_button_signal_name, self, "on_neutral_button_selected")
+	disconnect_callback_if_connected(singleton, dialog_cancelled_signal_name, self, "on_dialog_cancel_callback")
+	
+func disconnect_callback_if_connected(singleton, signal_name, callback_object, callback_name):
+	if callback_object != null && singleton.is_connected(signal_name, callback_object, callback_name):
+		singleton.disconnect(signal_name, callback_object, callback_name)

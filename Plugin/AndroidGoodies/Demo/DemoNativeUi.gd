@@ -18,14 +18,16 @@ func _onShowConfirmationDialogButtonClick():
 	dialog_data.neutral_button_text = "Maybe?"
 	dialog_data.neutral_button_callback_name = "_onNeutralButtonClicked"
 	dialog_data.neutral_button_callback_object = self
-	
+
 	dialog_data.negative_button_text = "NO!"
 	dialog_data.negative_button_callback_name = "_onNegativeButtonClicked"
 	dialog_data.negative_button_callback_object = self
+
+	dialog_data.is_cancelable = true
+	dialog_data.cancel_callback_name = "_onDialogCancelled"
+	dialog_data.cancel_callback_object = self
 	
-	native_ui.show_button_dialog("Dialog", 
-	"Do you accept your swift death?", NativeUiClass.DialogTheme.DEFAULT, 
-	dialog_data, true, "_onDialogCancelled", self)
+	native_ui.show_button_dialog("Dialog", "Do you accept your swift death?", NativeUiClass.DialogTheme.DEFAULT, dialog_data)
 	
 func _onPositiveButtonClicked():
 	native_ui.show_toast("Positive Button Clicked", 0)
