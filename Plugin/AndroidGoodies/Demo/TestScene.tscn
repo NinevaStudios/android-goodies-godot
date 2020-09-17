@@ -73,7 +73,21 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ShowMultiChoiceDialog2" type="Button" parent="Panel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -185.0
+margin_top = 430.0
+margin_right = 183.0
+margin_bottom = 514.0
+text = "Multi Choice Dialog"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="Panel/ShowToastButton" to="Panel/ShowToastButton" method="_onShowToastButtonClick"]
 [connection signal="button_up" from="Panel/ShowConfirmationDialogButton" to="Panel/ShowConfirmationDialogButton" method="_onShowConfirmationDialogButtonClick"]
 [connection signal="button_up" from="Panel/ShowItemsDialogButton" to="Panel/ShowToastButton" method="_onShowItemsDialogClicked"]
 [connection signal="button_up" from="Panel/ShowSingleChoiceDialog" to="Panel/ShowToastButton" method="_onShowSingleChoiceDialogClicked"]
+[connection signal="button_up" from="Panel/ShowMultiChoiceDialog2" to="Panel/ShowToastButton" method="_onShowMultiChoiceDialogClicked"]

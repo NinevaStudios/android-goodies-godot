@@ -21,6 +21,7 @@ public class AndroidGoodies extends GodotPlugin {
 	static final String SIGNAL_ON_NEUTRAL_BUTTON_CLICKED = "onNeutralButtonClicked";
 	static final String SIGNAL_ON_DIALOG_CANCELLED = "onDialogCancelled";
 	static final String SIGNAL_ON_DIALOG_ITEM_CLICKED = "onDialogItemClicked";
+	static final String SIGNAL_ON_DIALOG_ITEM_SELECTED = "onDialogItemSelected";
 
 	@NonNull
 	public String getPluginName() {
@@ -33,7 +34,8 @@ public class AndroidGoodies extends GodotPlugin {
 				"showToast",
 				"showButtonDialog",
 				"showItemsDialog",
-				"showSingleChoiceDialog");
+				"showSingleChoiceDialog",
+				"showMultipleChoiceDialog");
 	}
 
 	@NonNull
@@ -44,6 +46,7 @@ public class AndroidGoodies extends GodotPlugin {
 		signals.add(new SignalInfo(SIGNAL_ON_NEUTRAL_BUTTON_CLICKED));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_CANCELLED));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_ITEM_CLICKED, Integer.class));
+		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_ITEM_SELECTED, Integer.class, Boolean.class));
 		return signals;
 	}
 
@@ -98,6 +101,13 @@ public class AndroidGoodies extends GodotPlugin {
 	                             String negativeButtonText, String neutralButtonText,
 	                             int theme, boolean isCancellable) {
 		AGNativeUi.showSingleChoiceDialog(title, items, selectedIndex, positiveButtonText,
+				negativeButtonText, neutralButtonText, theme, isCancellable);
+	}
+
+	public void showMultipleChoiceDialog(String title, String[] items, int[] selected, String positiveButtonText,
+	                                   String negativeButtonText, String neutralButtonText,
+	                                   int theme, boolean isCancellable) {
+		AGNativeUi.showMultipleChoiceDialog(title, items, selected, positiveButtonText,
 				negativeButtonText, neutralButtonText, theme, isCancellable);
 	}
 

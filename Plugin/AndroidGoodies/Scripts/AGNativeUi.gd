@@ -6,6 +6,7 @@ const negative_button_signal_name = "onNegativeButtonClicked"
 const neutral_button_signal_name = "onNeutralButtonClicked"
 const dialog_cancelled_signal_name = "onDialogCancelled";
 const item_selected_signal_name = "onDialogItemClicked";
+const multi_item_selected_signal_name = "onDialogItemSelected";
 
 enum ToastLength { SHORT = 0, LONG = 1 }
 enum DialogTheme { LIGHT = 0, DARK = 1, DEFAULT = 2 }
@@ -31,6 +32,9 @@ var _cancel_callback_object = null
 
 var _item_chosen_callback_name = ""
 var _item_chosen_callback_object = null
+
+var _item_selected_callback_name = ""
+var _item_selected_callback_object = null
 
 # API functions
 
@@ -117,6 +121,39 @@ func show_single_choice_dialog(title, items, selected_index, item_chosen_callbac
 				theme as int, is_cancelable)
 	else:
 		print("No plugin singleton")
+		
+func show_multi_choice_dialog(title, items, selected_indices, item_selected_callback_name, item_selected_callback_object, 
+		button_dialog_data, theme = DialogTheme.DEFAULT, is_cancelable = false, cancel_callback_name = "", cancel_callback_object = null):
+	if items == null || items.size() == 0:
+		print("Items are not valid")
+		pass
+	
+	_cached_button_dialog_data = button_dialog_data
+	_is_cancelable = is_cancelable
+	_cancel_callback_name = cancel_callback_name
+	_cancel_callback_object = cancel_callback_object
+	
+	_item_selected_callback_name = item_selected_callback_name
+	_item_selected_callback_object = item_selected_callback_object
+	
+	if Engine.has_singleton(plugin_name):
+		var singleton = Engine.get_singleton(plugin_name)
+		
+		_connect_positive_button_callback(singleton)
+		_connect_negative_button_callback(singleton)
+		_connect_neutral_button_callback(singleton)
+		_connect_multi_item_selected_callback(singleton)
+		_connect_cancel_callback(singleton)
+		
+		var byte_array = Array();
+		for i in selected_indices.size():
+			byte_array.append(1 if selected_indices[i] else 0)
+		
+		singleton.showMultipleChoiceDialog(title, items, byte_array, button_dialog_data.positive_button_text, 
+				button_dialog_data.negative_button_text, button_dialog_data.neutral_button_text, 
+				theme as int, is_cancelable)
+	else:
+		print("No plugin singleton")
 
 # Helper functions. Do not call them directly.
 
@@ -170,6 +207,12 @@ func _connect_single_item_selected_callback(singleton):
 func _on_single_item_selected(index):
 	_item_chosen_callback_object.call(_item_chosen_callback_name, index)
 	
+func _connect_multi_item_selected_callback(singleton):
+	singleton.connect(multi_item_selected_signal_name, self, "_on_multi_item_selected")
+	
+func _on_multi_item_selected(index, selected):
+	_item_selected_callback_object.call(_item_selected_callback_name, index, selected)
+	
 func _disconnect_dialog_callbacks():
 	var singleton = Engine.get_singleton(plugin_name)
 	
@@ -180,6 +223,7 @@ func _disconnect_dialog_callbacks():
 	_disconnect_callback_if_connected(singleton, dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
 	_disconnect_callback_if_connected(singleton, item_selected_signal_name, self, "_on_item_selected")
 	_disconnect_callback_if_connected(singleton, item_selected_signal_name, self, "_on_single_item_selected")
+	_disconnect_callback_if_connected(singleton, multi_item_selected_signal_name, self, "_on_multi_item_selected")
 	
 	_cached_button_dialog_data = null
 	

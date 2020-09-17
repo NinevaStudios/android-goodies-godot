@@ -95,6 +95,37 @@ public class AGNativeUi {
 		});
 	}
 
+	public static void showMultipleChoiceDialog(final String title, final String[] items, final int[] selected, final String positiveButtonText,
+	                                            final String negativeButtonText, final String neutralButtonText,
+	                                            final int theme, final boolean isCancellable) {
+		final Activity activity = AndroidGoodies.getGameActivity();
+
+		if (activity == null) {
+			Log.e(TAG, "Activity was not found. Aborting.");
+			return;
+		}
+
+		if (items == null || items.length < 1) {
+			Log.e(TAG, "Items array is empty");
+			return;
+		}
+
+		final boolean[] selectedIndices = new boolean[selected.length];
+		for (int i = 0; i < selected.length; i++) {
+			selectedIndices[i] = selected[i] == 1;
+		}
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				AlertDialog.Builder builder = getDialogBuilder(activity, title, null, theme, isCancellable);
+				setButtons(builder, positiveButtonText, negativeButtonText, neutralButtonText);
+				builder.setMultiChoiceItems(items, selectedIndices, onMultiChoiceClickListener);
+				showDialog(builder);
+			}
+		});
+	}
+
 	private static AlertDialog.Builder getDialogBuilder(Activity activity, String title, String body, int theme, boolean isCancellable) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(activity, theme);
 
@@ -159,6 +190,7 @@ public class AGNativeUi {
 	static DialogInterface.OnMultiChoiceClickListener onMultiChoiceClickListener = new DialogInterface.OnMultiChoiceClickListener() {
 		@Override
 		public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+			AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_DIALOG_ITEM_SELECTED, which, isChecked);
 		}
 	};
 
