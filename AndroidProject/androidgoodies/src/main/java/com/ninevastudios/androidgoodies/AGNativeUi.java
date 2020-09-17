@@ -40,17 +40,7 @@ public class AGNativeUi {
 			@Override
 			public void run() {
 				AlertDialog.Builder builder = getDialogBuilder(activity, title, body, theme, isCancellable);
-
-				if (positiveButtonText != null) {
-					builder.setPositiveButton(positiveButtonText, onPositiveButtonClickListener);
-				}
-				if (negativeButtonText != null) {
-					builder.setNegativeButton(negativeButtonText, onNegativeButtonClickListener);
-				}
-				if (neutralButtonText != null) {
-					builder.setNeutralButton(neutralButtonText, onNeutralButtonClickListener);
-				}
-
+				setButtons(builder, positiveButtonText, negativeButtonText, neutralButtonText);
 				showDialog(builder);
 			}
 		});
@@ -73,9 +63,33 @@ public class AGNativeUi {
 			@Override
 			public void run() {
 				AlertDialog.Builder builder = getDialogBuilder(activity, title, null, theme, isCancellable);
-
 				builder.setItems(items, onItemClickListener);
+				showDialog(builder);
+			}
+		});
+	}
 
+	public static void showSingleChoiceDialog(final String title, final String[] items, final int selectedIndex, final String positiveButtonText,
+	                                          final String negativeButtonText, final String neutralButtonText,
+	                                          final int theme, final boolean isCancellable) {
+		final Activity activity = AndroidGoodies.getGameActivity();
+
+		if (activity == null) {
+			Log.e(TAG, "Activity was not found. Aborting.");
+			return;
+		}
+
+		if (items == null || items.length < 1) {
+			Log.e(TAG, "Items array is empty");
+			return;
+		}
+
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				AlertDialog.Builder builder = getDialogBuilder(activity, title, null, theme, isCancellable);
+				setButtons(builder, positiveButtonText, negativeButtonText, neutralButtonText);
+				builder.setSingleChoiceItems(items, selectedIndex, onItemClickListener);
 				showDialog(builder);
 			}
 		});
@@ -94,6 +108,19 @@ public class AGNativeUi {
 		builder.setOnCancelListener(onCancelListener);
 
 		return builder;
+	}
+
+	private static void setButtons(AlertDialog.Builder builder, String positiveButtonText,
+	                               String negativeButtonText, String neutralButtonText) {
+		if (positiveButtonText != null) {
+			builder.setPositiveButton(positiveButtonText, onPositiveButtonClickListener);
+		}
+		if (negativeButtonText != null) {
+			builder.setNegativeButton(negativeButtonText, onNegativeButtonClickListener);
+		}
+		if (neutralButtonText != null) {
+			builder.setNeutralButton(neutralButtonText, onNeutralButtonClickListener);
+		}
 	}
 
 	private static void showDialog(AlertDialog.Builder builder) {
@@ -126,13 +153,6 @@ public class AGNativeUi {
 		@Override
 		public void onClick(DialogInterface dialog, int which) {
 			AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_DIALOG_ITEM_CLICKED, which);
-		}
-	};
-
-	static DialogInterface.OnClickListener onSingleChoiceItemClickListener = new DialogInterface.OnClickListener() {
-		@Override
-		public void onClick(DialogInterface dialog, int which) {
-
 		}
 	};
 

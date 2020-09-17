@@ -32,7 +32,8 @@ public class AndroidGoodies extends GodotPlugin {
 		return Arrays.asList(
 				"showToast",
 				"showButtonDialog",
-				"showItemsDialog");
+				"showItemsDialog",
+				"showSingleChoiceDialog");
 	}
 
 	@NonNull
@@ -91,6 +92,13 @@ public class AndroidGoodies extends GodotPlugin {
 
 	public void showItemsDialog(String title, String[] items, int theme, boolean isCancellable) {
 		AGNativeUi.showItemsDialog(title, items, theme, isCancellable);
+	}
+
+	public void showSingleChoiceDialog(String title, String[] items, int selectedIndex, String positiveButtonText,
+	                             String negativeButtonText, String neutralButtonText,
+	                             int theme, boolean isCancellable) {
+		AGNativeUi.showSingleChoiceDialog(title, items, selectedIndex, positiveButtonText,
+				negativeButtonText, neutralButtonText, theme, isCancellable);
 	}
 
 	//endregion

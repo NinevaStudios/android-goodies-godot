@@ -39,9 +39,9 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -184.0
-margin_top = 138.0
+margin_top = 130.0
 margin_right = 184.0
-margin_bottom = 222.0
+margin_bottom = 214.0
 text = "Button Dialog"
 script = ExtResource( 1 )
 __meta__ = {
@@ -52,10 +52,23 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -185.0
-margin_top = 244.0
+margin_top = 230.0
 margin_right = 183.0
-margin_bottom = 328.0
+margin_bottom = 314.0
 text = "Items Dialog"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShowSingleChoiceDialog" type="Button" parent="Panel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -185.0
+margin_top = 330.0
+margin_right = 183.0
+margin_bottom = 414.0
+text = "Single Choice Dialog"
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -63,3 +76,4 @@ __meta__ = {
 [connection signal="button_up" from="Panel/ShowToastButton" to="Panel/ShowToastButton" method="_onShowToastButtonClick"]
 [connection signal="button_up" from="Panel/ShowConfirmationDialogButton" to="Panel/ShowConfirmationDialogButton" method="_onShowConfirmationDialogButtonClick"]
 [connection signal="button_up" from="Panel/ShowItemsDialogButton" to="Panel/ShowToastButton" method="_onShowItemsDialogClicked"]
+[connection signal="button_up" from="Panel/ShowSingleChoiceDialog" to="Panel/ShowToastButton" method="_onShowSingleChoiceDialogClicked"]
