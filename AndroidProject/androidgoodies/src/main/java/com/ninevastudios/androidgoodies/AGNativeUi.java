@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
-import static com.ninevastudios.androidgoodies.AndroidGoodies.TAG;
+import static com.google.android.vending.expansion.downloader.Constants.TAG;
 
 public class AGNativeUi {
 
