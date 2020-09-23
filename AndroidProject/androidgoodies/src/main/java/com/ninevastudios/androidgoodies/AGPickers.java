@@ -10,6 +10,7 @@ import com.ninevastudios.androidgoodies.multipicker.api.CameraVideoPicker;
 import com.ninevastudios.androidgoodies.multipicker.api.ContactPicker;
 import com.ninevastudios.androidgoodies.multipicker.api.FilePicker;
 import com.ninevastudios.androidgoodies.multipicker.api.ImagePicker;
+import com.ninevastudios.androidgoodies.multipicker.api.Picker;
 import com.ninevastudios.androidgoodies.multipicker.api.VideoPicker;
 import com.ninevastudios.androidgoodies.multipicker.api.callbacks.AudioPickerCallback;
 import com.ninevastudios.androidgoodies.multipicker.api.callbacks.ContactPickerCallback;
@@ -25,6 +26,8 @@ import com.ninevastudios.androidgoodies.utils.Constants;
 import com.ninevastudios.androidgoodies.utils.SharedPrefsHelper;
 
 import java.util.List;
+
+import static com.google.android.vending.expansion.downloader.Constants.TAG;
 
 public class AGPickers {
 	public static final int PICK_CAMERA = 0;
@@ -106,6 +109,31 @@ public class AGPickers {
 			audioPicker.pickAudio();
 		} catch (Exception e) {
 			//TODO
+		}
+	}
+
+	public static void handleMainActivityResult(Activity activity, int requestCode, int resultCode, Intent intent) {
+		switch (requestCode) {
+			case Picker.PICK_CONTACT:
+				handleContactReceived(resultCode, intent, activity);
+				break;
+			case Picker.PICK_IMAGE_DEVICE:
+			case Picker.PICK_IMAGE_CAMERA:
+				handlePhotoReceived(resultCode, intent, activity);
+				break;
+			case Picker.PICK_AUDIO:
+				handleAudioReceived(resultCode, intent, activity);
+				break;
+			case Picker.PICK_VIDEO_DEVICE:
+			case Picker.PICK_VIDEO_CAMERA:
+				handleVideoReceived(resultCode, intent, activity);
+				break;
+			case Picker.PICK_FILE:
+				handleFileReceived(resultCode, intent, activity);
+				break;
+			default:
+				Log.w(TAG, "Request code " + requestCode + " is not from Android Goodies plugin, ignoring results.");
+				break;
 		}
 	}
 

@@ -101,28 +101,7 @@ public class AndroidGoodies extends GodotPlugin {
 		Log.d(Constants.LOG_TAG, ">>> onActivityResult: " + requestCode + " " + resultCode + " " + intent);
 		m_IsAvailableForPick = true;
 
-		switch (requestCode) {
-			case Picker.PICK_CONTACT:
-				AGPickers.handleContactReceived(resultCode, intent, getGameActivity());
-				break;
-			case Picker.PICK_IMAGE_DEVICE:
-			case Picker.PICK_IMAGE_CAMERA:
-				AGPickers.handlePhotoReceived(resultCode, intent, getGameActivity());
-				break;
-			case Picker.PICK_AUDIO:
-				AGPickers.handleAudioReceived(resultCode, intent, getGameActivity());
-				break;
-			case Picker.PICK_VIDEO_DEVICE:
-			case Picker.PICK_VIDEO_CAMERA:
-				AGPickers.handleVideoReceived(resultCode, intent, getGameActivity());
-				break;
-			case Picker.PICK_FILE:
-				AGPickers.handleFileReceived(resultCode, intent, getGameActivity());
-				break;
-			default:
-				Log.w(TAG, "Request code " + requestCode + " is not from Android Goodies plugin, ignoring results.");
-				break;
-		}
+		AGPickers.handleMainActivityResult(getGameActivity(), requestCode, resultCode, intent);
 	}
 
 	//endregion
