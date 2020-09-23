@@ -101,14 +101,14 @@ public class AGPickers {
 		filePicker.pickFile();
 	}
 
-	public static void pickContact(Activity activity) {
-		ContactPicker picker = new ContactPicker(activity);
+	public static void pickContact() {
+		ContactPicker picker = new ContactPicker(AndroidGoodies.getGameActivity());
 		picker.pickContact();
 	}
 
-	public static void pickAudio(Activity context, boolean allowMultiple) {
+	public static void pickAudio(boolean allowMultiple) {
 		try {
-			AudioPicker audioPicker = new AudioPicker(context);
+			AudioPicker audioPicker = new AudioPicker(AndroidGoodies.getGameActivity());
 			if (allowMultiple) {
 				audioPicker.allowMultiple();
 			}

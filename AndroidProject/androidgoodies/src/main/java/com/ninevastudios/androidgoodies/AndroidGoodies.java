@@ -152,6 +152,36 @@ public class AndroidGoodies extends GodotPlugin {
 		AGPickers.pickImages(pickerType, maxSize, generateThumbnails, allowMultiple);
 	}
 
+	public void pickVideos(int pickerType, boolean generatePreviewImages, boolean allowMultiple) {
+		if (!m_IsAvailableForPick) {
+			Log.w(TAG, "Activity is busy. Will not start picking.");
+			return;
+		}
+
+		m_IsAvailableForPick = false;
+		AGPickers.pickVideos(pickerType, generatePreviewImages, allowMultiple);
+	}
+
+	public void pickFiles(String mimeType, boolean allowMultiple) {
+		if (!m_IsAvailableForPick) {
+			Log.w(TAG, "Activity is busy. Will not start picking.");
+			return;
+		}
+
+		m_IsAvailableForPick = false;
+		AGPickers.pickFiles(mimeType, allowMultiple);
+	}
+
+	public void pickAudio(boolean allowMultiple) {
+		if (!m_IsAvailableForPick) {
+			Log.w(TAG, "Activity is busy. Will not start picking.");
+			return;
+		}
+
+		m_IsAvailableForPick = false;
+		AGPickers.pickAudio(allowMultiple);
+	}
+
 	//endregion
 }
 
