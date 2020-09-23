@@ -7,7 +7,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
 
-import com.ninevastudios.androidgoodies.multipicker.api.Picker;
 import com.ninevastudios.androidgoodies.utils.Constants;
 
 import org.godotengine.godot.Dictionary;
@@ -103,7 +102,7 @@ public class AndroidGoodies extends GodotPlugin {
 		return instance.getActivity();
 	}
 
-	boolean m_IsAvailableForPick;
+	boolean m_IsAvailableForPick = true;
 
 	public void onMainActivityResult(int requestCode, int resultCode, Intent intent) {
 		Log.d(Constants.LOG_TAG, ">>> onActivityResult: " + requestCode + " " + resultCode + " " + intent);

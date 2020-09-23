@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.util.Log;
 
 import com.ninevastudios.androidgoodies.multipicker.api.AudioPicker;
+import com.ninevastudios.androidgoodies.multipicker.api.CacheLocation;
 import com.ninevastudios.androidgoodies.multipicker.api.CameraImagePicker;
 import com.ninevastudios.androidgoodies.multipicker.api.CameraVideoPicker;
 import com.ninevastudios.androidgoodies.multipicker.api.ContactPicker;
@@ -25,6 +26,8 @@ import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenContact;
 import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenFile;
 import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenImage;
 import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenVideo;
+import com.ninevastudios.androidgoodies.multipicker.core.ImagePickerImpl;
+import com.ninevastudios.androidgoodies.multipicker.core.VideoPickerImpl;
 import com.ninevastudios.androidgoodies.utils.Constants;
 import com.ninevastudios.androidgoodies.utils.ImageUtils;
 import com.ninevastudios.androidgoodies.utils.SharedPrefsHelper;
@@ -130,15 +133,19 @@ public class AGPickers {
 				handleContactReceived(intent, activity);
 				break;
 			case Picker.PICK_IMAGE_DEVICE:
+				handlePhotoReceived(PICK_GALLERY, intent, activity);
+				break;
 			case Picker.PICK_IMAGE_CAMERA:
-				handlePhotoReceived(intent, activity);
+				handlePhotoReceived(PICK_CAMERA, intent, activity);
 				break;
 			case Picker.PICK_AUDIO:
 				handleAudioReceived(intent, activity);
 				break;
 			case Picker.PICK_VIDEO_DEVICE:
+				handleVideoReceived(PICK_GALLERY, intent, activity);
+				break;
 			case Picker.PICK_VIDEO_CAMERA:
-				handleVideoReceived(intent, activity);
+				handleVideoReceived(PICK_CAMERA, intent, activity);
 				break;
 			case Picker.PICK_FILE:
 				handleFileReceived(intent, activity);
@@ -149,24 +156,37 @@ public class AGPickers {
 		}
 	}
 
-	public static void handlePhotoReceived(Intent data, Activity context) {
-		CameraImagePicker picker = new CameraImagePicker(context);
+	public static void handlePhotoReceived(int pickType, Intent data, Activity context) {
+		ImagePickerImpl picker;
+		if (pickType == PICK_CAMERA) {
+			picker = new CameraImagePicker(context);
+		} else {
+			picker = new ImagePicker(context);
+		}
+
 		SharedPrefsHelper.configureImagePicker(picker);
+		picker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
 		picker.setImagePickerCallback(getImagePickerCallback());
 		picker.submit(data);
 	}
 
-	public static void handleVideoReceived(Intent intent, Activity context) {
-		int videoPickerType = SharedPrefsHelper.getVideoPickerType();
+	public static void handleVideoReceived(int pickType, Intent intent, Activity context) {
+		VideoPickerImpl picker;
+		if (pickType == PICK_CAMERA) {
+			picker = new CameraVideoPicker(context);
+		} else {
+			picker = new VideoPicker(context);
+		}
 
-		VideoPicker videoPicker = new VideoPicker(context);
-		SharedPrefsHelper.configureVideoPicker(videoPicker);
-		videoPicker.setVideoPickerCallback(getVideoPickerCallback());
-		videoPicker.submit(intent);
+		SharedPrefsHelper.configureVideoPicker(picker);
+		picker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
+		picker.setVideoPickerCallback(getVideoPickerCallback());
+		picker.submit(intent);
 	}
 
 	public static void handleFileReceived(Intent intent, Activity context) {
 		FilePicker filePicker = new FilePicker(context);
+		filePicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
 		filePicker.setFilePickerCallback(getFilePickerCallback());
 		filePicker.submit(intent);
 	}
@@ -180,6 +200,7 @@ public class AGPickers {
 	public static void handleAudioReceived(Intent intent, Activity context) {
 		AudioPicker audioPicker = new AudioPicker(context);
 		audioPicker.setAudioPickerCallback(getAudioPickerCallback());
+		audioPicker.setCacheLocation(CacheLocation.INTERNAL_APP_DIR);
 		audioPicker.submit(intent);
 	}
 

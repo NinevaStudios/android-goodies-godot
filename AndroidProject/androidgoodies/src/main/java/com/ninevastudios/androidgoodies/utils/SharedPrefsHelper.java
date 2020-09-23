@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import com.ninevastudios.androidgoodies.AndroidGoodies;
 import com.ninevastudios.androidgoodies.multipicker.api.VideoPicker;
 import com.ninevastudios.androidgoodies.multipicker.core.ImagePickerImpl;
+import com.ninevastudios.androidgoodies.multipicker.core.VideoPickerImpl;
 
 public class SharedPrefsHelper {
 	public static final String EXTRAS_PHOTO_OUTPUT_PATH = "EXTRAS_PHOTO_OUTPUT_PATH";
@@ -71,15 +72,15 @@ public class SharedPrefsHelper {
 	}
 
 	public static void configureImagePicker(ImagePickerImpl picker) {
-		Activity activity = AndroidGoodies.getGameActivity();
 		int maxSize = getMaxImageSize();
 		picker.ensureMaxSize(maxSize, maxSize);
 		picker.shouldGenerateThumbnails(shouldGenerateThumbnails());
-		picker.reinitialize(getPhotoOutputPath());
+		if (getPhotoOutputPath() != null) {
+			picker.reinitialize(getPhotoOutputPath());
+		}
 	}
 
-	public static void configureVideoPicker(VideoPicker picker) {
-		Activity activity = AndroidGoodies.getGameActivity();
+	public static void configureVideoPicker(VideoPickerImpl picker) {
 		picker.shouldGeneratePreviewImages(shouldGeneratePreviewImages());
 		picker.reinitialize(getVideoOutputPath());
 	}
