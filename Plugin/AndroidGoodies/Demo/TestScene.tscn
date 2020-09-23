@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNativeUi.gd" type="Script" id=1]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNavigation.gd" type="Script" id=2]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/Graphics/ArrowBold.png" type="Texture" id=3]
+[ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoPickers.gd" type="Script" id=4]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -223,7 +224,7 @@ margin_top = 30.0
 margin_bottom = 70.0
 rect_scale = Vector2( 2, 2 )
 text = "Pick Images"
-script = ExtResource( 1 )
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -281,8 +282,20 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PickedImage" type="TextureRect" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -125.0
+margin_top = 430.0
+margin_right = 125.0
+margin_bottom = 680.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowToastButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowToastButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" to="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" method="_onShowConfirmationDialogButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowItemsDialogButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowItemsDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowSingleChoiceDialog" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowSingleChoiceDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowMultiChoiceDialog2" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowMultiChoiceDialogClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel/PickImagesButto" method="_on_PickImagesButtonClicked"]
