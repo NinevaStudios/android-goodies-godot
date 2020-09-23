@@ -1,16 +1,18 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNativeUi.gd" type="Script" id=1]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNavigation.gd" type="Script" id=2]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/Graphics/ArrowBold.png" type="Texture" id=3]
 
+[sub_resource type="StyleBoxFlat" id=1]
+
 [sub_resource type="StyleBoxFlat" id=2]
 
 [sub_resource type="StyleBoxFlat" id=3]
-
-[sub_resource type="StyleBoxFlat" id=1]
 resource_local_to_scene = true
 bg_color = Color( 0.494118, 0.494118, 0.494118, 1 )
+
+[sub_resource type="StyleBoxFlat" id=4]
 
 [node name="Control" type="Control"]
 light_mask = 0
@@ -23,7 +25,7 @@ __meta__ = {
 [node name="NavigationPanel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -32,7 +34,7 @@ __meta__ = {
 [node name="BasePanel" type="Panel" parent="NavigationPanel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 3 )
+custom_styles/panel = SubResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -49,7 +51,22 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Native UI"
-script = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="OpenPickersButton" type="Button" parent="NavigationPanel/BasePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 130.0
+margin_bottom = 170.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Pickers"
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -58,7 +75,7 @@ __meta__ = {
 light_mask = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_styles/panel = SubResource( 1 )
+custom_styles/panel = SubResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -68,7 +85,6 @@ margin_left = 30.0
 margin_top = 30.0
 margin_right = 110.0
 margin_bottom = 110.0
-script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -114,7 +130,7 @@ custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Button Dialog"
 script = ExtResource( 1 )
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
 [node name="ShowItemsDialogButton" type="Button" parent="NavigationPanel/NativeUiPanel"]
@@ -167,8 +183,104 @@ script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
-[connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
-[connection signal="button_up" from="NavigationPanel/NativeUiPanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
+
+[node name="PickersPanel" type="Panel" parent="NavigationPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BackButton" type="Button" parent="NavigationPanel/PickersPanel"]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 110.0
+margin_bottom = 110.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="NavigationPanel/PickersPanel/BackButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -51.1498
+margin_top = -48.0
+margin_right = 44.8502
+margin_bottom = 48.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PickImagesButto" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 30.0
+margin_bottom = 70.0
+rect_scale = Vector2( 2, 2 )
+text = "Pick Images"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PickVIdeosButton" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -301.0
+margin_top = 130.0
+margin_right = -1.0
+margin_bottom = 170.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Pick Videos"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PickFilesButton" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_top = 0.00166667
+anchor_right = 0.5
+anchor_bottom = 0.00166667
+margin_left = -300.0
+margin_top = 230.0
+margin_bottom = 270.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Pick PDF Files"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="PickAudioButton" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 330.0
+margin_bottom = 370.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Pick Audio"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowToastButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowToastButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" to="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" method="_onShowConfirmationDialogButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowItemsDialogButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowItemsDialogClicked"]
