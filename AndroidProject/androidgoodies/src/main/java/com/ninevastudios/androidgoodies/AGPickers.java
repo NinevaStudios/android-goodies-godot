@@ -2,6 +2,9 @@ package com.ninevastudios.androidgoodies;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.util.Log;
 
 import com.ninevastudios.androidgoodies.multipicker.api.AudioPicker;
@@ -23,8 +26,13 @@ import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenFile;
 import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenImage;
 import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenVideo;
 import com.ninevastudios.androidgoodies.utils.Constants;
+import com.ninevastudios.androidgoodies.utils.ImageUtils;
 import com.ninevastudios.androidgoodies.utils.SharedPrefsHelper;
 
+import org.godotengine.godot.Dictionary;
+
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.android.vending.expansion.downloader.Constants.TAG;
@@ -39,9 +47,9 @@ public class AGPickers {
 				CameraImagePicker cameraImagePicker = new CameraImagePicker(AndroidGoodies.getGameActivity());
 				cameraImagePicker.setImagePickerCallback(getImagePickerCallback());
 
-				String outputPath = ((CameraImagePicker) cameraImagePicker).pickImage();
+				String outputPath = cameraImagePicker.pickImage();
 				if (outputPath == null) {
-					//TODO
+					reportPickerError("Image path is not valid.");
 					return;
 				}
 
@@ -62,12 +70,11 @@ public class AGPickers {
 		switch (pickType) {
 			case PICK_CAMERA:
 				CameraVideoPicker cameraVideoPicker = new CameraVideoPicker(AndroidGoodies.getGameActivity());
-				cameraVideoPicker.setVideoPickerCallback(getVideoPickerCallback(pickType));
+				cameraVideoPicker.setVideoPickerCallback(getVideoPickerCallback());
 				final String outputPath = cameraVideoPicker.pickVideo();
 
 				if (outputPath == null) {
-					//TODO
-					Log.e(Constants.LOG_TAG, "Failed to take video");
+					reportPickerError("Video path is not valid.");
 					return;
 				}
 
@@ -76,7 +83,7 @@ public class AGPickers {
 				SharedPrefsHelper.persistVideoPickerSettings(pickType, generatePreviewImages, null);
 
 				VideoPicker videoPicker = new VideoPicker(AndroidGoodies.getGameActivity());
-				videoPicker.setVideoPickerCallback(getVideoPickerCallback(pickType));
+				videoPicker.setVideoPickerCallback(getVideoPickerCallback());
 				if (allowMultiple) {
 					videoPicker.allowMultiple();
 				}
@@ -108,28 +115,33 @@ public class AGPickers {
 			audioPicker.setAudioPickerCallback(getAudioPickerCallback());
 			audioPicker.pickAudio();
 		} catch (Exception e) {
-			//TODO
+			reportPickerError(e.getMessage());
 		}
 	}
 
 	public static void handleMainActivityResult(Activity activity, int requestCode, int resultCode, Intent intent) {
+		if (resultCode != Activity.RESULT_OK) {
+			reportPickerError("Picker Activity result is not OK.");
+			return;
+		}
+
 		switch (requestCode) {
 			case Picker.PICK_CONTACT:
-				handleContactReceived(resultCode, intent, activity);
+				handleContactReceived(intent, activity);
 				break;
 			case Picker.PICK_IMAGE_DEVICE:
 			case Picker.PICK_IMAGE_CAMERA:
-				handlePhotoReceived(resultCode, intent, activity);
+				handlePhotoReceived(intent, activity);
 				break;
 			case Picker.PICK_AUDIO:
-				handleAudioReceived(resultCode, intent, activity);
+				handleAudioReceived(intent, activity);
 				break;
 			case Picker.PICK_VIDEO_DEVICE:
 			case Picker.PICK_VIDEO_CAMERA:
-				handleVideoReceived(resultCode, intent, activity);
+				handleVideoReceived(intent, activity);
 				break;
 			case Picker.PICK_FILE:
-				handleFileReceived(resultCode, intent, activity);
+				handleFileReceived(intent, activity);
 				break;
 			default:
 				Log.w(TAG, "Request code " + requestCode + " is not from Android Goodies plugin, ignoring results.");
@@ -137,60 +149,35 @@ public class AGPickers {
 		}
 	}
 
-	public static void handlePhotoReceived(int resultCode, Intent data, Activity context) {
-		if (resultCode != Activity.RESULT_OK) {
-			//TODO
-			return;
-		}
-
+	public static void handlePhotoReceived(Intent data, Activity context) {
 		CameraImagePicker picker = new CameraImagePicker(context);
 		SharedPrefsHelper.configureImagePicker(picker);
 		picker.setImagePickerCallback(getImagePickerCallback());
 		picker.submit(data);
 	}
 
-	public static void handleVideoReceived(int resultCode, Intent intent, Activity context) {
+	public static void handleVideoReceived(Intent intent, Activity context) {
 		int videoPickerType = SharedPrefsHelper.getVideoPickerType();
-
-		if (resultCode != Activity.RESULT_OK) {
-			//TODO
-			return;
-		}
 
 		VideoPicker videoPicker = new VideoPicker(context);
 		SharedPrefsHelper.configureVideoPicker(videoPicker);
-		videoPicker.setVideoPickerCallback(getVideoPickerCallback(videoPickerType));
+		videoPicker.setVideoPickerCallback(getVideoPickerCallback());
 		videoPicker.submit(intent);
 	}
 
-	public static void handleFileReceived(int resultCode, Intent intent, Activity context) {
-		if (resultCode != Activity.RESULT_OK) {
-			//TODO
-			return;
-		}
-
+	public static void handleFileReceived(Intent intent, Activity context) {
 		FilePicker filePicker = new FilePicker(context);
 		filePicker.setFilePickerCallback(getFilePickerCallback());
 		filePicker.submit(intent);
 	}
 
-	public static void handleContactReceived(int resultCode, Intent intent, final Activity activity) {
-		if (resultCode != Activity.RESULT_OK) {
-			//TODO
-			return;
-		}
-
+	public static void handleContactReceived(Intent intent, final Activity activity) {
 		ContactPicker picker = new ContactPicker(activity);
 		picker.setContactPickerCallback(getContactPickerCallback());
 		picker.submit(intent);
 	}
 
-	public static void handleAudioReceived(int resultCode, Intent intent, Activity context) {
-		if (resultCode != Activity.RESULT_OK) {
-			//TODO
-			return;
-		}
-
+	public static void handleAudioReceived(Intent intent, Activity context) {
 		AudioPicker audioPicker = new AudioPicker(context);
 		audioPicker.setAudioPickerCallback(getAudioPickerCallback());
 		audioPicker.submit(intent);
@@ -200,33 +187,68 @@ public class AGPickers {
 		return new ImagePickerCallback() {
 			@Override
 			public void onImagesChosen(List<ChosenImage> images) {
-				ChosenImage img = images.get(0);
 
-				if (img.getWidth() == 0 || img.getHeight() == 0) {
-					//TODO
+				if (images.isEmpty()) {
+					reportPickerError("No images were picked.");
 					return;
 				}
 
-				//TODO
+				ArrayList<Dictionary> result = new ArrayList<>();
+				for (ChosenImage image: images) {
+					Dictionary entry = parseChosenFile(image);
+					Bitmap bitmap = ImageUtils.getBitmapFromFile(image.getOriginalPath());
+
+					if (bitmap != null) {
+						ByteArrayOutputStream stream = new ByteArrayOutputStream();
+						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+						byte[] byteArray = stream.toByteArray();
+						entry.put("image_bytes", byteArray);
+						entry.put("image_width", image.getWidth());
+						entry.put("image_height", image.getHeight());
+						bitmap.recycle();
+					}
+
+					result.add(entry);
+				}
+
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_IMAGES_PICKED, result.toArray());
 			}
 
 			@Override
 			public void onError(String message) {
-				//TODO
+				reportPickerError(message);
 			}
 		};
 	}
 
-	private static VideoPickerCallback getVideoPickerCallback(final int pickerType) {
+	private static VideoPickerCallback getVideoPickerCallback() {
 		return new VideoPickerCallback() {
 			@Override
 			public void onVideosChosen(List<ChosenVideo> videos) {
-				//TODO
+				if (videos.isEmpty()) {
+					reportPickerError("No videos were picked.");
+					return;
+				}
+
+				ArrayList<Dictionary> result = new ArrayList<>();
+				for (ChosenVideo video: videos) {
+					Dictionary entry = parseChosenFile(video);
+
+					entry.put("video_duration", video.getDuration());
+					entry.put("video_height", video.getHeight());
+					entry.put("video_width", video.getWidth());
+					entry.put("video_orientation", video.getOrientation());
+					entry.put("video_preview_image_path", video.getPreviewImage());
+
+					result.add(entry);
+				}
+
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_VIDEOS_PICKED, result.toArray());
 			}
 
 			@Override
 			public void onError(String message) {
-				//TODO
+				reportPickerError(message);
 			}
 		};
 	}
@@ -235,12 +257,23 @@ public class AGPickers {
 		return new FilePickerCallback() {
 			@Override
 			public void onFilesChosen(List<ChosenFile> files) {
-				//TODO
+				if (files.isEmpty()) {
+					reportPickerError("No files were picked.");
+					return;
+				}
+
+				ArrayList<Dictionary> result = new ArrayList<>();
+				for (ChosenFile file: files) {
+					Dictionary entry = parseChosenFile(file);
+					result.add(entry);
+				}
+
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_FILES_PICKED, result.toArray());
 			}
 
 			@Override
 			public void onError(String message) {
-				//TODO
+				reportPickerError(message);
 			}
 		};
 	}
@@ -254,7 +287,7 @@ public class AGPickers {
 
 			@Override
 			public void onError(String message) {
-				//TODO
+				reportPickerError(message);
 			}
 		};
 	}
@@ -266,17 +299,43 @@ public class AGPickers {
 			@Override
 			public void onAudiosChosen(List<ChosenAudio> audios) {
 				if (audios.isEmpty()) {
-					//TODO
+					reportPickerError("No audios were picked.");
 					return;
 				}
 
-				//TODO
+				ArrayList<Dictionary> result = new ArrayList<>();
+				for (ChosenAudio audio: audios) {
+					Dictionary entry = parseChosenFile(audio);
+
+					entry.put("audio_duration", audio.getDuration());
+
+					result.add(entry);
+				}
+
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_AUDIO_PICKED, result.toArray());
 			}
 
 			@Override
 			public void onError(String message) {
-				//TODO
+				reportPickerError(message);
 			}
 		};
+	}
+
+	private static void reportPickerError(String error) {
+		AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_PICK_ERROR, error);
+	}
+
+	private static Dictionary parseChosenFile(ChosenFile chosenFile) {
+		Dictionary entry = new Dictionary();
+
+		entry.put("original_path", chosenFile.getOriginalPath());
+		entry.put("created_at", chosenFile.getCreatedAt().getTime());
+		entry.put("display_name", chosenFile.getDisplayName());
+		entry.put("extension", chosenFile.getExtension());
+		entry.put("mime_type", chosenFile.getMimeType());
+		entry.put("size", chosenFile.getSize());
+
+		return entry;
 	}
 }

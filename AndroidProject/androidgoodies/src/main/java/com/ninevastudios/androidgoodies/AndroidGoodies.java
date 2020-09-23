@@ -35,6 +35,7 @@ public class AndroidGoodies extends GodotPlugin {
 	static final String SIGNAL_ON_FILES_PICKED = "onFilesPicked";
 	static final String SIGNAL_ON_CONTACT_PICKED = "onContactPicked";
 	static final String SIGNAL_ON_AUDIO_PICKED = "onAudioPicked";
+	static final String SIGNAL_ON_PICK_ERROR = "onPickError";
 
 	@NonNull
 	public String getPluginName() {
@@ -65,6 +66,7 @@ public class AndroidGoodies extends GodotPlugin {
 		signals.add(new SignalInfo(SIGNAL_ON_FILES_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_CONTACT_PICKED, Dictionary.class));
 		signals.add(new SignalInfo(SIGNAL_ON_AUDIO_PICKED, Object[].class));
+		signals.add(new SignalInfo(SIGNAL_ON_PICK_ERROR, String.class));
 		return signals;
 	}
 
