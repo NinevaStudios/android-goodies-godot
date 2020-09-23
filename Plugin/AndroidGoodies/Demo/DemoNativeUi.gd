@@ -1,29 +1,27 @@
 extends Node
 
-const NativeUiClass = preload("../Scripts/AGNativeUi.gd")
-
-var native_ui = NativeUiClass.new()
+var native_ui = AGNativeUi.new()
 
 func _onShowToastButtonClick():
-	native_ui.show_toast("Toast", NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Toast", AGNativeUi.ToastLength.SHORT)
 
 
 func _onShowConfirmationDialogButtonClick():
 	var dialog_data = _create_dialog_data()
 	
 	native_ui.show_button_dialog("Dialog", "Do you accept your swift death?", 
-			dialog_data, NativeUiClass.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
+			dialog_data, AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
 			
 func _onShowItemsDialogClicked():
 	native_ui.show_items_dialog("How would you like to die?", 
 			["Slowly", "Quickly", "Don't care, just now"], "_onItemSelected", self,
-			NativeUiClass.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
+			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
 
 func _onShowSingleChoiceDialogClicked():
 	var dialog_data = _create_dialog_data()
 	
 	native_ui.show_single_choice_dialog("Choose only one:", ["Intelligence", "Beauty", "Wealth"], 0, 
-			"_onItemSelected", self, dialog_data, NativeUiClass.DialogTheme.DEFAULT, 
+			"_onItemSelected", self, dialog_data, AGNativeUi.DialogTheme.DEFAULT, 
 			true, "_onDialogCancelled", self)
 			
 func _onShowMultiChoiceDialogClicked():
@@ -31,10 +29,10 @@ func _onShowMultiChoiceDialogClicked():
 	
 	native_ui.show_multi_choice_dialog("Choose only one:", ["Intelligence", "Beauty", "Wealth"], 
 			[true, false, false], "_onMultiItemSelected", self, dialog_data, 
-			NativeUiClass.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
+			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
 			
-func _create_dialog_data() -> NativeUiClass.ButtonDialogData:
-	var dialog_data = NativeUiClass.ButtonDialogData.new()
+func _create_dialog_data() -> AGNativeUi.ButtonDialogData:
+	var dialog_data = AGNativeUi.ButtonDialogData.new()
 	
 	dialog_data.positive_button_text = "Okay..."
 	dialog_data.positive_button_callback_name = "_onPositiveButtonClicked"
@@ -51,23 +49,23 @@ func _create_dialog_data() -> NativeUiClass.ButtonDialogData:
 	return dialog_data
 	
 func _onPositiveButtonClicked():
-	native_ui.show_toast("Positive Button Clicked", NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Positive Button Clicked", AGNativeUi.ToastLength.SHORT)
 	
 func _onNegativeButtonClicked():
-	native_ui.show_toast("Negative Button Clicked", NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Negative Button Clicked", AGNativeUi.ToastLength.SHORT)
 	
 func _onNeutralButtonClicked():
-	native_ui.show_toast("Neutral Button Clicked", NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Neutral Button Clicked", AGNativeUi.ToastLength.SHORT)
 	
 func _onDialogCancelled():
-	native_ui.show_toast("Dialog was cancelled", NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Dialog was cancelled", AGNativeUi.ToastLength.SHORT)
 	
 func _onItemSelected(index):
-	native_ui.show_toast("Item selected: " + String(index), NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast("Item selected: " + String(index), AGNativeUi.ToastLength.SHORT)
 	
 func _onMultiItemSelected(index, selected):
 	var message = "Item " + String(index) + " is " + ("selected." if selected else "deselected.")
-	native_ui.show_toast(message, NativeUiClass.ToastLength.SHORT)
+	native_ui.show_toast(message, AGNativeUi.ToastLength.SHORT)
 
 
 
