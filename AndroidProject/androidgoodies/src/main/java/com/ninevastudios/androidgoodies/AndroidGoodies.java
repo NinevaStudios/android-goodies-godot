@@ -45,11 +45,17 @@ public class AndroidGoodies extends GodotPlugin {
 	@NonNull
 	public List<String> getPluginMethods() {
 		return Arrays.asList(
+				// Native UI
 				"showToast",
 				"showButtonDialog",
 				"showItemsDialog",
 				"showSingleChoiceDialog",
-				"showMultipleChoiceDialog");
+				"showMultipleChoiceDialog",
+				// Pickers
+				"pickImages",
+				"pickVideos",
+				"pickFiles",
+				"pickAudio");
 	}
 
 	@NonNull
