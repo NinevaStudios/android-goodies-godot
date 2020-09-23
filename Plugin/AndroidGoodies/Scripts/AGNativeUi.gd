@@ -13,17 +13,17 @@ enum ToastLength { SHORT = 0, LONG = 1 }
 enum DialogTheme { LIGHT = 0, DARK = 1, DEFAULT = 2 }
 
 class ButtonDialogData:
-	var positive_button_text = ""
-	var positive_button_callback_name = ""
-	var positive_button_callback_object = null
+	var positive_button_text : String = ""
+	var positive_button_callback_name : String = ""
+	var positive_button_callback_object : Object = null
 	
-	var negative_button_text = ""
-	var negative_button_callback_name = ""
-	var negative_button_callback_object = null
+	var negative_button_text : String = ""
+	var negative_button_callback_name : String = ""
+	var negative_button_callback_object : Object = null
 	
-	var neutral_button_text = ""
-	var neutral_button_callback_name = ""
-	var neutral_button_callback_object = null
+	var neutral_button_text : String = ""
+	var neutral_button_callback_name : String = ""
+	var neutral_button_callback_object : Object = null
 	
 var _cached_button_dialog_data
 
@@ -41,15 +41,15 @@ var utils = AGUtils.new()
 
 # API functions
 
-func show_toast(text, length):
+func show_toast(text : String, length = ToastLength.SHORT):
 	if Engine.has_singleton(plugin_name):
 		var singleton = Engine.get_singleton(plugin_name)
 		singleton.showToast(text, length as int)
 	else:
 		print("No plugin singleton")
 
-func show_button_dialog(title, body, button_dialog_data, theme = DialogTheme.DEFAULT, 
-		is_cancelable = false, cancel_callback_name = "", cancel_callback_object = null):
+func show_button_dialog(title : String, body : String, button_dialog_data : ButtonDialogData, theme = DialogTheme.DEFAULT, 
+		is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object : Object = null):
 	if not button_dialog_data is ButtonDialogData:
 		print("ButtonDialogData is not valid")
 		pass
@@ -73,8 +73,8 @@ func show_button_dialog(title, body, button_dialog_data, theme = DialogTheme.DEF
 	else:
 		print("No plugin singleton")
 		
-func show_items_dialog(title, items, item_chosen_callback_name, item_chosen_callback_object,
-		theme = DialogTheme.DEFAULT, is_cancelable = false, cancel_callback_name = "", cancel_callback_object = null):
+func show_items_dialog(title : String, items : PoolStringArray, item_chosen_callback_name : String, item_chosen_callback_object : Object,
+		theme = DialogTheme.DEFAULT, is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object : Object = null):
 	if items == null || items.size() == 0:
 		print("Items are not valid")
 		pass
@@ -96,8 +96,8 @@ func show_items_dialog(title, items, item_chosen_callback_name, item_chosen_call
 	else:
 		print("No plugin singleton")
 
-func show_single_choice_dialog(title, items, selected_index, item_chosen_callback_name, item_chosen_callback_object, 
-		button_dialog_data, theme = DialogTheme.DEFAULT, is_cancelable = false, cancel_callback_name = "", cancel_callback_object = null):
+func show_single_choice_dialog(title : String, items : PoolStringArray, selected_index : int, item_chosen_callback_name : String, item_chosen_callback_object : Object, 
+		button_dialog_data : ButtonDialogData, theme = DialogTheme.DEFAULT, is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object : Object = null):
 	if items == null || items.size() == 0:
 		print("Items are not valid")
 		pass
@@ -125,8 +125,8 @@ func show_single_choice_dialog(title, items, selected_index, item_chosen_callbac
 	else:
 		print("No plugin singleton")
 		
-func show_multi_choice_dialog(title, items, selected_indices, item_selected_callback_name, item_selected_callback_object, 
-		button_dialog_data, theme = DialogTheme.DEFAULT, is_cancelable = false, cancel_callback_name = "", cancel_callback_object = null):
+func show_multi_choice_dialog(title : String, items : PoolStringArray, selected_indices : Array, item_selected_callback_name : String, item_selected_callback_object, 
+		button_dialog_data : ButtonDialogData, theme = DialogTheme.DEFAULT, is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object = null):
 	if items == null || items.size() == 0:
 		print("Items are not valid")
 		pass
