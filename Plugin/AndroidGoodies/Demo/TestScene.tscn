@@ -230,7 +230,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PickVIdeosButton" type="Button" parent="NavigationPanel/PickersPanel"]
+[node name="TakePhotoButton" type="Button" parent="NavigationPanel/PickersPanel"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -301.0
@@ -242,8 +242,8 @@ custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
-text = "Pick Videos"
-script = ExtResource( 1 )
+text = "Take Photo"
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -262,7 +262,7 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Pick PDF Files"
-script = ExtResource( 1 )
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -279,7 +279,7 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Pick Audio"
-script = ExtResource( 1 )
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -304,3 +304,4 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowSingleChoiceDialog" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowSingleChoiceDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowMultiChoiceDialog2" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowMultiChoiceDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel/PickImagesButto" method="_on_PickImagesButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel/TakePhotoButton" method="_onTakePhotoButtonClicked"]

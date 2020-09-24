@@ -1,13 +1,11 @@
 class_name AGNativeUi
 
-const plugin_name = "AndroidGoodies"
-
-const positive_button_signal_name = "onPositiveButtonClicked"
-const negative_button_signal_name = "onNegativeButtonClicked"
-const neutral_button_signal_name = "onNeutralButtonClicked"
-const dialog_cancelled_signal_name = "onDialogCancelled";
-const item_selected_signal_name = "onDialogItemClicked";
-const multi_item_selected_signal_name = "onDialogItemSelected";
+const _positive_button_signal_name = "onPositiveButtonClicked"
+const _negative_button_signal_name = "onNegativeButtonClicked"
+const _neutral_button_signal_name = "onNeutralButtonClicked"
+const _dialog_cancelled_signal_name = "onDialogCancelled";
+const _item_selected_signal_name = "onDialogItemClicked";
+const _multi_item_selected_signal_name = "onDialogItemSelected";
 
 enum ToastLength { SHORT = 0, LONG = 1 }
 enum DialogTheme { LIGHT = 0, DARK = 1, DEFAULT = 2 }
@@ -42,8 +40,8 @@ var utils = AGUtils.new()
 # API functions
 
 func show_toast(text : String, length = ToastLength.SHORT):
-	if Engine.has_singleton(plugin_name):
-		var singleton = Engine.get_singleton(plugin_name)
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		singleton.showToast(text, length as int)
 	else:
 		print("No plugin singleton")
@@ -59,8 +57,8 @@ func show_button_dialog(title : String, body : String, button_dialog_data : Butt
 	_cancel_callback_name = cancel_callback_name
 	_cancel_callback_object = cancel_callback_object
 	
-	if Engine.has_singleton(plugin_name):
-		var singleton = Engine.get_singleton(plugin_name)
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		
 		_connect_positive_button_callback(singleton)
 		_connect_negative_button_callback(singleton)
@@ -86,8 +84,8 @@ func show_items_dialog(title : String, items : PoolStringArray, item_chosen_call
 	_item_chosen_callback_name = item_chosen_callback_name
 	_item_chosen_callback_object = item_chosen_callback_object
 		
-	if Engine.has_singleton(plugin_name):
-		var singleton = Engine.get_singleton(plugin_name)
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		
 		_connect_item_selected_callback(singleton)
 		_connect_cancel_callback(singleton)
@@ -110,8 +108,8 @@ func show_single_choice_dialog(title : String, items : PoolStringArray, selected
 	_item_chosen_callback_name = item_chosen_callback_name
 	_item_chosen_callback_object = item_chosen_callback_object
 	
-	if Engine.has_singleton(plugin_name):
-		var singleton = Engine.get_singleton(plugin_name)
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		
 		_connect_positive_button_callback(singleton)
 		_connect_negative_button_callback(singleton)
@@ -139,8 +137,8 @@ func show_multi_choice_dialog(title : String, items : PoolStringArray, selected_
 	_item_selected_callback_name = item_selected_callback_name
 	_item_selected_callback_object = item_selected_callback_object
 	
-	if Engine.has_singleton(plugin_name):
-		var singleton = Engine.get_singleton(plugin_name)
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		
 		_connect_positive_button_callback(singleton)
 		_connect_negative_button_callback(singleton)
@@ -162,7 +160,7 @@ func show_multi_choice_dialog(title : String, items : PoolStringArray, selected_
 
 func _connect_cancel_callback(singleton):
 	if _is_cancelable:
-		singleton.connect(dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
+		singleton.connect(_dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
 
 func _on_dialog_cancel_callback():
 	_cancel_callback_object.call(_cancel_callback_name)
@@ -171,7 +169,7 @@ func _on_dialog_cancel_callback():
 		
 func _connect_positive_button_callback(singleton):
 	if _cached_button_dialog_data.positive_button_text != "":
-		singleton.connect(positive_button_signal_name, self, "_on_positive_button_selected")
+		singleton.connect(_positive_button_signal_name, self, "_on_positive_button_selected")
 		
 func _on_positive_button_selected():
 	_cached_button_dialog_data.positive_button_callback_object.call(_cached_button_dialog_data.positive_button_callback_name)
@@ -180,7 +178,7 @@ func _on_positive_button_selected():
 	
 func _connect_negative_button_callback(singleton):
 	if _cached_button_dialog_data.positive_button_text != "":
-		singleton.connect(negative_button_signal_name, self, "_on_negative_button_selected")
+		singleton.connect(_negative_button_signal_name, self, "_on_negative_button_selected")
 		
 func _on_negative_button_selected():
 	_cached_button_dialog_data.negative_button_callback_object.call(_cached_button_dialog_data.negative_button_callback_name)
@@ -189,7 +187,7 @@ func _on_negative_button_selected():
 	
 func _connect_neutral_button_callback(singleton):
 	if _cached_button_dialog_data.neutral_button_text != "":
-		singleton.connect(neutral_button_signal_name, self, "_on_neutral_button_selected")
+		singleton.connect(_neutral_button_signal_name, self, "_on_neutral_button_selected")
 		
 func _on_neutral_button_selected():
 	_cached_button_dialog_data.neutral_button_callback_object.call(_cached_button_dialog_data.neutral_button_callback_name)
@@ -197,7 +195,7 @@ func _on_neutral_button_selected():
 	_disconnect_dialog_callbacks()
 	
 func _connect_item_selected_callback(singleton):
-	singleton.connect(item_selected_signal_name, self, "_on_item_selected")
+	singleton.connect(_item_selected_signal_name, self, "_on_item_selected")
 	
 func _on_item_selected(index):
 	_item_chosen_callback_object.call(_item_chosen_callback_name, index)
@@ -205,27 +203,27 @@ func _on_item_selected(index):
 	_disconnect_dialog_callbacks()
 	
 func _connect_single_item_selected_callback(singleton):
-	singleton.connect(item_selected_signal_name, self, "_on_single_item_selected")
+	singleton.connect(_item_selected_signal_name, self, "_on_single_item_selected")
 	
 func _on_single_item_selected(index):
 	_item_chosen_callback_object.call(_item_chosen_callback_name, index)
 	
 func _connect_multi_item_selected_callback(singleton):
-	singleton.connect(multi_item_selected_signal_name, self, "_on_multi_item_selected")
+	singleton.connect(_multi_item_selected_signal_name, self, "_on_multi_item_selected")
 	
 func _on_multi_item_selected(index, selected):
 	_item_selected_callback_object.call(_item_selected_callback_name, index, selected)
 	
 func _disconnect_dialog_callbacks():
-	var singleton = Engine.get_singleton(plugin_name)
+	var singleton = Engine.get_singleton(AGUtils.plugin_name)
 	
-	utils.disconnect_callback_if_connected(singleton, positive_button_signal_name, self, "_on_positive_button_selected")
-	utils.disconnect_callback_if_connected(singleton, negative_button_signal_name, self, "_on_negative_button_selected")
-	utils.disconnect_callback_if_connected(singleton, neutral_button_signal_name, self, "_on_neutral_button_selected")
-	utils.disconnect_callback_if_connected(singleton, dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
-	utils.disconnect_callback_if_connected(singleton, dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
-	utils.disconnect_callback_if_connected(singleton, item_selected_signal_name, self, "_on_item_selected")
-	utils.disconnect_callback_if_connected(singleton, item_selected_signal_name, self, "_on_single_item_selected")
-	utils.disconnect_callback_if_connected(singleton, multi_item_selected_signal_name, self, "_on_multi_item_selected")
+	utils.disconnect_callback_if_connected(singleton, _positive_button_signal_name, self, "_on_positive_button_selected")
+	utils.disconnect_callback_if_connected(singleton, _negative_button_signal_name, self, "_on_negative_button_selected")
+	utils.disconnect_callback_if_connected(singleton, _neutral_button_signal_name, self, "_on_neutral_button_selected")
+	utils.disconnect_callback_if_connected(singleton, _dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
+	utils.disconnect_callback_if_connected(singleton, _dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
+	utils.disconnect_callback_if_connected(singleton, _item_selected_signal_name, self, "_on_item_selected")
+	utils.disconnect_callback_if_connected(singleton, _item_selected_signal_name, self, "_on_single_item_selected")
+	utils.disconnect_callback_if_connected(singleton, _multi_item_selected_signal_name, self, "_on_multi_item_selected")
 	
 	_cached_button_dialog_data = null	
