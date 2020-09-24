@@ -1,11 +1,15 @@
 package com.ninevastudios.androidgoodies;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.collection.ArraySet;
+import androidx.core.content.ContextCompat;
 
 import com.ninevastudios.androidgoodies.utils.Constants;
 
@@ -29,12 +33,17 @@ public class AndroidGoodies extends GodotPlugin {
 	static final String SIGNAL_ON_DIALOG_CANCELLED = "onDialogCancelled";
 	static final String SIGNAL_ON_DIALOG_ITEM_CLICKED = "onDialogItemClicked";
 	static final String SIGNAL_ON_DIALOG_ITEM_SELECTED = "onDialogItemSelected";
+
 	static final String SIGNAL_ON_IMAGES_PICKED = "onImagesPicked";
 	static final String SIGNAL_ON_VIDEOS_PICKED = "onVideosPicked";
 	static final String SIGNAL_ON_FILES_PICKED = "onFilesPicked";
 	static final String SIGNAL_ON_CONTACT_PICKED = "onContactPicked";
 	static final String SIGNAL_ON_AUDIO_PICKED = "onAudioPicked";
 	static final String SIGNAL_ON_PICK_ERROR = "onPickError";
+
+	static final String SIGNAL_ON_PERMISSION_GRANTED = "onPermissionGranted";
+
+	static final int REQUEST_PERMISSIONS = 100500;
 
 	@NonNull
 	public String getPluginName() {
@@ -54,24 +63,30 @@ public class AndroidGoodies extends GodotPlugin {
 				"pickImages",
 				"pickVideos",
 				"pickFiles",
-				"pickAudio");
+				"pickAudio",
+				// Other
+				"requestPermission");
 	}
 
 	@NonNull
 	public Set<SignalInfo> getPluginSignals() {
 		Set<SignalInfo> signals = new ArraySet<>();
+		// Native UI
 		signals.add(new SignalInfo(SIGNAL_ON_POSITIVE_BUTTON_CLICKED));
 		signals.add(new SignalInfo(SIGNAL_ON_NEGATIVE_BUTTON_CLICKED));
 		signals.add(new SignalInfo(SIGNAL_ON_NEUTRAL_BUTTON_CLICKED));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_CANCELLED));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_ITEM_CLICKED, Integer.class));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_ITEM_SELECTED, Integer.class, Boolean.class));
+		// Pickers
 		signals.add(new SignalInfo(SIGNAL_ON_IMAGES_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_VIDEOS_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_FILES_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_CONTACT_PICKED, Dictionary.class));
 		signals.add(new SignalInfo(SIGNAL_ON_AUDIO_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_PICK_ERROR, String.class));
+		// Other
+		signals.add(new SignalInfo(SIGNAL_ON_PERMISSION_GRANTED, String.class, Boolean.class));
 		return signals;
 	}
 
@@ -109,6 +124,29 @@ public class AndroidGoodies extends GodotPlugin {
 		m_IsAvailableForPick = true;
 
 		AGPickers.handleMainActivityResult(getGameActivity(), requestCode, resultCode, intent);
+	}
+
+	public void requestPermission(String permission) {
+		if (ContextCompat.checkSelfPermission(getActivity(), permission) == PackageManager.PERMISSION_GRANTED) {
+			emitSignal(SIGNAL_ON_PERMISSION_GRANTED, permission, true);
+		} else {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				getActivity().requestPermissions(new String[] {permission}, REQUEST_PERMISSIONS);
+			} else {
+				emitSignal(SIGNAL_ON_PERMISSION_GRANTED, permission, false);
+			}
+		}
+	}
+
+	public void onMainRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		if (requestCode != REQUEST_PERMISSIONS) {
+			Log.d(Constants.LOG_TAG, "Permission was not requested by Android Goodies, ignoring.");
+			return;
+		}
+
+		for (int i = 0; i < permissions.length; i++) {
+			emitSignal(SIGNAL_ON_PERMISSION_GRANTED, permissions[i], grantResults[i] == PackageManager.PERMISSION_GRANTED);
+		}
 	}
 
 	//endregion
