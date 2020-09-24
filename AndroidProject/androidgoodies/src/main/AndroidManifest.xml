@@ -4,5 +4,15 @@
         <meta-data
             android:name="org.godotengine.plugin.v1.AndroidGoodies"
             android:value="com.ninevastudios.androidgoodies.AndroidGoodies" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.multipicker.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths" />
+        </provider>
     </application>
 </manifest>
