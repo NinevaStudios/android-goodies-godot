@@ -57,6 +57,7 @@ public class AGPickers {
 				}
 
 				SharedPrefsHelper.persistImagePickerSettings(maxSize, generateThumbnails, outputPath);
+				break;
 			case PICK_GALLERY:
 				SharedPrefsHelper.persistImagePickerSettings(maxSize, generateThumbnails, null);
 
@@ -66,6 +67,7 @@ public class AGPickers {
 					picker.allowMultiple();
 				}
 				picker.pickImage();
+				break;
 		}
 	}
 
@@ -82,6 +84,7 @@ public class AGPickers {
 				}
 
 				SharedPrefsHelper.persistVideoPickerSettings(pickType, generatePreviewImages, outputPath);
+				break;
 			case PICK_GALLERY:
 				SharedPrefsHelper.persistVideoPickerSettings(pickType, generatePreviewImages, null);
 
@@ -91,6 +94,7 @@ public class AGPickers {
 					videoPicker.allowMultiple();
 				}
 				videoPicker.pickVideo();
+				break;
 		}
 	}
 
