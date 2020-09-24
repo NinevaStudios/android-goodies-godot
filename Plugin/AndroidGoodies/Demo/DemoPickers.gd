@@ -13,6 +13,9 @@ func _onTakePhotoButtonClicked():
 func _onPickVideoButtonClicked():
 	pickers.pick_videos(true, true, "_onVideosPicked", self, "_onPickError", self)
 
+func _onTakeVideoButtonClicked():
+	pickers.record_video(true, "_onVideosPicked", self, "_onPickError", self)
+
 func _onImagesPicked(images : Array):
 	_set_texture(images[0].original_path)
 	_rotate_rect(images[0].image_orientation)
@@ -21,7 +24,7 @@ func _onVideosPicked(videos : Array):
 	_set_texture(videos[0].video_preview_image_path)
 	_rotate_rect(videos[0].video_orientation)
 	print(videos[0].original_path)
-	var error = OS.native_video_play(videos[0].original_path, 100, "", "")
+	var error = OS.native_video_play(videos[0].original_path, 100, "default", "default")
 	print(error)
 	
 func _onPickError(error : String):
@@ -47,4 +50,3 @@ func _rotate_rect(orientation : int):
 			rotation_degree = 3 * PI / 2
 			
 	result_image.set_rotation(rotation_degree)
-

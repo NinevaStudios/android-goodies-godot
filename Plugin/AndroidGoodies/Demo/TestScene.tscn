@@ -260,12 +260,12 @@ custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
-text = "Pick PDF Files"
+text = "Pick Videos"
 __meta__ = {
 "_edit_use_anchors_": true
 }
 
-[node name="PickAudioButton" type="Button" parent="NavigationPanel/PickersPanel"]
+[node name="TakeVideoButton" type="Button" parent="NavigationPanel/PickersPanel"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -300.0
@@ -276,7 +276,7 @@ custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
-text = "Pick Audio"
+text = "Record Video"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -303,3 +303,4 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel" method="_onPickImagesButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel" method="_onTakePhotoButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickVideoButton" to="NavigationPanel/PickersPanel" method="_onPickVideoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/TakeVideoButton" to="NavigationPanel/PickersPanel" method="_onTakeVideoButtonClicked"]

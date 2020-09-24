@@ -19,6 +19,7 @@ var _pick_error_callback_object = null
 
 var _max_size : int
 var _generate_thumbnails : bool
+var _generate_preview_images : bool
 
 var utils = AGUtils.new()
 var permissions = AGPermissions.new()
@@ -107,6 +108,27 @@ func pick_videos(generate_preview_images : bool, allow_multiple : bool,
 	else:
 		print("No plugin singleton")
 
+func record_video(generate_preview_images : bool,
+		videos_picked_callback_name : String, videos_picked_callback_object : Object,
+		pick_error_callback_name : String, pick_error_callback_object : Object):
+			
+	_videos_picked_callback_name = videos_picked_callback_name
+	_videos_picked_callback_object = videos_picked_callback_object
+	_pick_error_callback_name = pick_error_callback_name
+	_pick_error_callback_object = pick_error_callback_object
+	
+	_generate_preview_images = generate_preview_images
+	
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_connect_videos_picked_callback(singleton)
+		_connect_pick_error_callback(singleton)
+		
+		permissions.request_permission(AGPermissions.camera_permission, "_on_camera_permission_video_granted", self)
+	else:
+		print("No plugin singleton")
+		
 # Helper functions. Do not call them directly.
 
 func _connect_images_picked_callback(singleton):
@@ -169,5 +191,12 @@ func _on_camera_permission_granted(permission : String, granted : bool):
 	if (permission == AGPermissions.camera_permission && granted):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		singleton.pickImages(pick_from_camera, _max_size, _generate_thumbnails, false)
+	else:
+		_on_pick_error("Permission was not granted")
+		
+func _on_camera_permission_video_granted(permission : String, granted : bool):
+	if (permission == AGPermissions.camera_permission && granted):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		singleton.pickVideos(pick_from_camera, _generate_preview_images, false)
 	else:
 		_on_pick_error("Permission was not granted")
