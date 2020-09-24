@@ -3,16 +3,12 @@ extends Node
 onready var result_image = get_node("../PickedImage") as TextureRect
 
 var pickers = AGPickers.new()
-var permissions = AGPermissions.new()
 
 func _on_PickImagesButtonClicked():
 	pickers.pick_image_from_gallery(-1, false, true, "_onImagesPicked", self, "_onPickError", self)
 		
 func _onTakePhotoButtonClicked():
-	_request_camera_permission()
-	
-func _request_camera_permission():
-	permissions.request_permission(AGPermissions.camera_permission, "_on_permission_granted", self)
+	pickers.take_photo(128, true, "_onImagesPicked", self, "_onPickError", self)
 
 func _onImagesPicked(images : Array):
 	_set_texture(images[0])
@@ -20,12 +16,7 @@ func _onImagesPicked(images : Array):
 	
 func _onPickError(error : String):
 	print(error)
-	
-func _on_permission_granted(permission : String, granted : bool):
-	print("Permission " + permission + " grant result: " + String(granted))
-	if (granted):
-		pickers.take_photo(128, true, "_onImagesPicked", self, "_onPickError", self)
-	
+		
 func _set_texture(picked_image : AGPickers.PickedImage):
 	var image = Image.new()
 	image.load(picked_image.original_path)

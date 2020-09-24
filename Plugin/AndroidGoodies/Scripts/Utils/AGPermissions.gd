@@ -16,7 +16,7 @@ func request_permission(permission : String, callback_name : String, callback_ob
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		
-		utils.disconnect_callback_if_connected(singleton, _permission_granted_signal_name, self, "_on_permission_granted")		
+		utils.disconnect_callback_if_connected(singleton, _permission_granted_signal_name, self, "_on_permission_granted")
 		_connect_on_permission_granted(singleton)
 		
 		singleton.requestPermission(permission)
@@ -27,4 +27,5 @@ func _connect_on_permission_granted(singleton):
 	singleton.connect(_permission_granted_signal_name, self, "_on_permission_granted")
 	
 func _on_permission_granted(permission : String, granted : bool):
+	print("Permission " + permission + " grant result: " + String(granted))
 	_permission_granted_callback_object.call(_permission_granted_callback_name, permission, granted)

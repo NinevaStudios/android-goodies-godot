@@ -309,8 +309,6 @@ public class AGPickers {
 		};
 	}
 
-
-
 	private static AudioPickerCallback getAudioPickerCallback() {
 		return new AudioPickerCallback() {
 			@Override

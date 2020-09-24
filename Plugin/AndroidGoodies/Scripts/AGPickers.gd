@@ -15,7 +15,11 @@ var _images_picked_callback_object = null
 var _pick_error_callback_name = ""
 var _pick_error_callback_object = null
 
+var _max_size : int
+var _generate_thumbnails : bool
+
 var utils = AGUtils.new()
+var permissions = AGPermissions.new()
 
 class PickedFile:
 	var original_path = ""
@@ -52,6 +56,9 @@ func pick_image_from_gallery(max_size : int, generate_thumbnails : bool, allow_m
 	_pick_error_callback_name = pick_error_callback_name
 	_pick_error_callback_object = pick_error_callback_object
 	
+	_max_size = max_size
+	_generate_thumbnails = generate_thumbnails
+	
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		
@@ -75,7 +82,7 @@ func take_photo(max_size : int, generate_thumbnails : bool, images_picked_callba
 		_connect_images_picked_callback(singleton)
 		_connect_pick_error_callback(singleton)
 		
-		singleton.pickImages(pick_from_camera, max_size, generate_thumbnails, false)
+		permissions.request_permission(AGPermissions.camera_permission, "_on_camera_permission_granted", self)
 	else:
 		print("No plugin singleton")
 
@@ -121,3 +128,10 @@ func _set_chosen_file_fields(file, file_dictionary) -> PickedFile:
 	file.size = file_dictionary.get("size")
 	
 	return file
+
+func _on_camera_permission_granted(permission : String, granted : bool):
+	if (permission == AGPermissions.camera_permission && granted):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		singleton.pickImages(pick_from_camera, _max_size, _generate_thumbnails, false)
+	else:
+		_on_pick_error("Permission was not granted")
