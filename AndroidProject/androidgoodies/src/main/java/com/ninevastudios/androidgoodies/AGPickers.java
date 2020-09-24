@@ -248,7 +248,8 @@ public class AGPickers {
 				}
 
 				Object[] result = new Object[videos.size()];
-				for (ChosenVideo video: videos) {
+				for (int i = 0; i < videos.size(); i++) {
+					ChosenVideo video = videos.get(i);
 					Dictionary entry = parseChosenFile(video);
 
 					entry.put("video_duration", video.getDuration());
@@ -257,10 +258,10 @@ public class AGPickers {
 					entry.put("video_orientation", video.getOrientation());
 					entry.put("video_preview_image_path", video.getPreviewImage());
 
-					//result[] = entry;
+					result[i] = entry;
 				}
 
-				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_VIDEOS_PICKED, result);
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_VIDEOS_PICKED, (Object) result);
 			}
 
 			@Override

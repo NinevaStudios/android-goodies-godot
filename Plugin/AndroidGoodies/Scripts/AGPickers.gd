@@ -11,6 +11,8 @@ const pick_from_camera = 0
 
 var _images_picked_callback_name = ""
 var _images_picked_callback_object = null
+var _videos_picked_callback_name = ""
+var _videos_picked_callback_object = null
 
 var _pick_error_callback_name = ""
 var _pick_error_callback_object = null
@@ -86,6 +88,24 @@ func take_photo(max_size : int, generate_thumbnails : bool, images_picked_callba
 	else:
 		print("No plugin singleton")
 
+func pick_videos(generate_preview_images : bool, allow_multiple : bool, 
+		videos_picked_callback_name : String, videos_picked_callback_object : Object,
+		pick_error_callback_name : String, pick_error_callback_object : Object):
+			
+	_videos_picked_callback_name = videos_picked_callback_name
+	_videos_picked_callback_object = videos_picked_callback_object
+	_pick_error_callback_name = pick_error_callback_name
+	_pick_error_callback_object = pick_error_callback_object
+	
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_connect_videos_picked_callback(singleton)
+		_connect_pick_error_callback(singleton)
+		
+		singleton.pickVideos(pick_from_gallery, generate_preview_images, allow_multiple)
+	else:
+		print("No plugin singleton")
 
 # Helper functions. Do not call them directly.
 
@@ -96,14 +116,29 @@ func _on_images_picked(images):
 	var picked_images = Array()
 	for i in images.size():
 		var picked_image = PickedImage.new()
-		
 		_set_chosen_file_fields(picked_image, images[i])
 		picked_image.image_orientation = images[i].get("image_orientation")
-		print("Image orientation: " + String(picked_image.image_orientation))
-		
 		picked_images.append(picked_image)
 	
 	_images_picked_callback_object.call(_images_picked_callback_name, picked_images)
+	_disconnect_callbacks()
+	
+func _connect_videos_picked_callback(singleton):
+	singleton.connect(_picked_videos_signal_name, self, "_on_videos_picked")
+	
+func _on_videos_picked(videos):
+	var picked_videos = Array()
+	for i in videos.size():
+		var picked_video = PickedVideo.new()
+		_set_chosen_file_fields(picked_video, videos[i])
+		picked_video.video_orientation = videos[i].get("video_orientation")
+		picked_video.video_duration = videos[i].get("video_duration")
+		picked_video.video_height = videos[i].get("video_height")
+		picked_video.video_width = videos[i].get("video_width")
+		picked_video.video_preview_image_path = videos[i].get("video_preview_image_path")
+		picked_videos.append(picked_video)
+	
+	_videos_picked_callback_object.call(_videos_picked_callback_name, picked_videos)
 	_disconnect_callbacks()
 	
 func _connect_pick_error_callback(singleton):
@@ -117,6 +152,7 @@ func _disconnect_callbacks():
 	var singleton = Engine.get_singleton(AGUtils.plugin_name)
 	
 	utils.disconnect_callback_if_connected(singleton, _picked_images_signal_name, self, "_on_images_picked")
+	utils.disconnect_callback_if_connected(singleton, _picked_videos_signal_name, self, "_on_videos_picked")
 	utils.disconnect_callback_if_connected(singleton, _pick_error_signal_name, self, "_on_pick_error")
 
 func _set_chosen_file_fields(file, file_dictionary) -> PickedFile:

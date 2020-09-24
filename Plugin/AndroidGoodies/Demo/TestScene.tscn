@@ -190,6 +190,7 @@ __meta__ = {
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 4 )
+script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -225,7 +226,6 @@ margin_top = 30.0
 margin_bottom = 70.0
 rect_scale = Vector2( 2, 2 )
 text = "Pick Images"
-script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -243,12 +243,11 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Take Photo"
-script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PickFilesButton" type="Button" parent="NavigationPanel/PickersPanel"]
+[node name="PickVideoButton" type="Button" parent="NavigationPanel/PickersPanel"]
 anchor_left = 0.5
 anchor_top = 0.00166667
 anchor_right = 0.5
@@ -262,7 +261,6 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Pick PDF Files"
-script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -279,7 +277,6 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Pick Audio"
-script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -303,5 +300,6 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowItemsDialogButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowItemsDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowSingleChoiceDialog" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowSingleChoiceDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowMultiChoiceDialog2" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowMultiChoiceDialogClicked"]
-[connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel/PickImagesButto" method="_on_PickImagesButtonClicked"]
-[connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel/TakePhotoButton" method="_onTakePhotoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel" method="_onPickImagesButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel" method="_onTakePhotoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/PickVideoButton" to="NavigationPanel/PickersPanel" method="_onPickVideoButtonClicked"]
