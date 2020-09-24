@@ -214,25 +214,17 @@ public class AGPickers {
 					return;
 				}
 
-				ArrayList<Dictionary> result = new ArrayList<>();
-				for (ChosenImage image: images) {
+				Object[] result = new Object[images.size()];
+				for (int i = 0; i < images.size(); i++) {
+					ChosenImage image = images.get(i);
 					Dictionary entry = parseChosenFile(image);
-					Bitmap bitmap = ImageUtils.getBitmapFromFile(image.getOriginalPath());
 
-					if (bitmap != null) {
-						ByteArrayOutputStream stream = new ByteArrayOutputStream();
-						bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-						byte[] byteArray = stream.toByteArray();
-						entry.put("image_bytes", byteArray);
-						entry.put("image_width", image.getWidth());
-						entry.put("image_height", image.getHeight());
-						bitmap.recycle();
-					}
+					entry.put("image_orientation", image.getOrientation());
 
-					result.add(entry);
+					result[i] = entry;
 				}
 
-				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_IMAGES_PICKED, result.toArray());
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_IMAGES_PICKED, (Object) result);
 			}
 
 			@Override
@@ -251,7 +243,7 @@ public class AGPickers {
 					return;
 				}
 
-				ArrayList<Dictionary> result = new ArrayList<>();
+				Object[] result = new Object[videos.size()];
 				for (ChosenVideo video: videos) {
 					Dictionary entry = parseChosenFile(video);
 
@@ -261,10 +253,10 @@ public class AGPickers {
 					entry.put("video_orientation", video.getOrientation());
 					entry.put("video_preview_image_path", video.getPreviewImage());
 
-					result.add(entry);
+					//result[] = entry;
 				}
 
-				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_VIDEOS_PICKED, result.toArray());
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_VIDEOS_PICKED, result);
 			}
 
 			@Override

@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNativeUi.gd" type="Script" id=1]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNavigation.gd" type="Script" id=2]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/Graphics/ArrowBold.png" type="Texture" id=3]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoPickers.gd" type="Script" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -290,6 +291,10 @@ margin_left = -125.0
 margin_top = 430.0
 margin_right = 125.0
 margin_bottom = 680.0
+rect_pivot_offset = Vector2( 125, 125 )
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }

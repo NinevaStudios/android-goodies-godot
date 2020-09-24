@@ -28,7 +28,7 @@ class PickedFile:
 	var size = 0
 	
 class PickedImage extends PickedFile:
-	var image : Image = null
+	var image_orientation : int
 	
 class PickedVideo extends PickedFile:
 	var video_duration = 0
@@ -39,6 +39,11 @@ class PickedVideo extends PickedFile:
 	
 class PickedAudio extends PickedFile:
 	var audio_duration = 0
+	
+const orientation_normal = 1
+const orientation_rotate_90 = 6
+const orientation_rotate_180 = 3
+const orientation_rotate_270 = 8
 
 # API functions
 
@@ -70,12 +75,9 @@ func _on_images_picked(images):
 		var picked_image = PickedImage.new()
 		
 		_set_chosen_file_fields(picked_image, images[i])
+		picked_image.image_orientation = images[i].get("image_orientation")
+		print("Image orientation: " + String(picked_image.image_orientation))
 		
-		var image_bytes = images[i].get("image_bytes")
-		var image_width = images[i].get("image_width")
-		var image_height = images[i].get("image_height")
-		picked_image.image = Image.new().create_from_data(image_width, image_height, false, Image.FORMAT_RGBA8, image_bytes)
-
 		picked_images.append(picked_image)
 	
 	_images_picked_callback_object.call(_images_picked_callback_name, picked_images)
