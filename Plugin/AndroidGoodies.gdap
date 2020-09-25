@@ -6,4 +6,4 @@ binary="AndroidGoodies/androidgoodies-release.aar"
 
 [dependencies]
 
-remote=["androidx.exifinterface:exifinterface:1.3.0"]
+remote=["androidx.exifinterface:exifinterface:1.3.0", "com.google.guava:guava:28.2-android"]

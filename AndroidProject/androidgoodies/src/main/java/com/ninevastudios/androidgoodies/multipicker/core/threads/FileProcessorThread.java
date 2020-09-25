@@ -16,8 +16,12 @@ import android.os.ParcelFileDescriptor;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
+import com.ninevastudios.androidgoodies.AndroidGoodies;
 import com.ninevastudios.androidgoodies.multipicker.api.CacheLocation;
 import com.ninevastudios.androidgoodies.multipicker.api.callbacks.FilePickerCallback;
 import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenFile;
@@ -27,6 +31,7 @@ import com.ninevastudios.androidgoodies.multipicker.utils.BitmapUtils;
 import com.ninevastudios.androidgoodies.multipicker.utils.FileUtils;
 import com.ninevastudios.androidgoodies.multipicker.utils.LogUtils;
 import com.ninevastudios.androidgoodies.multipicker.utils.MimeUtils;
+import com.ninevastudios.androidgoodies.utils.Constants;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -147,9 +152,12 @@ public class FileProcessorThread extends Thread {
             return;
         }
         try {
-            File inputFile = new File(file.getOriginalPath());
+            Log.d(Constants.LOG_TAG, file.getQueryUri());
+            Uri inputUri = Uri.parse(file.getQueryUri());
+            InputStream inputStream = AndroidGoodies.getGameActivity().getContentResolver().openInputStream(inputUri);
+            byte[] bytes = ByteStreams.toByteArray(inputStream);
             File copyTo = new File(outputPath);
-            FileUtils.copyFile(inputFile, copyTo);
+            Files.write(bytes, copyTo);
             file.setOriginalPath(copyTo.getAbsolutePath());
         } catch (IOException e) {
             e.printStackTrace();
