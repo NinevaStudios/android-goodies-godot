@@ -280,13 +280,13 @@ public class AGPickers {
 					return;
 				}
 
-				ArrayList<Dictionary> result = new ArrayList<>();
-				for (ChosenFile file: files) {
-					Dictionary entry = parseChosenFile(file);
-					result.add(entry);
+				Object[] result = new Object[files.size()];
+				for (int i = 0; i < files.size(); i++) {
+					Dictionary entry = parseChosenFile(files.get(i));
+					result[i] = entry;
 				}
 
-				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_FILES_PICKED, result.toArray());
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_FILES_PICKED, (Object) result);
 			}
 
 			@Override
@@ -319,16 +319,14 @@ public class AGPickers {
 					return;
 				}
 
-				ArrayList<Dictionary> result = new ArrayList<>();
-				for (ChosenAudio audio: audios) {
-					Dictionary entry = parseChosenFile(audio);
-
-					entry.put("audio_duration", audio.getDuration());
-
-					result.add(entry);
+				Object[] result = new Object[audios.size()];
+				for (int i = 0; i < audios.size(); i++) {
+					Dictionary entry = parseChosenFile(audios.get(i));
+					entry.put("audio_duration", audios.get(i).getDuration());
+					result[i] = entry;
 				}
 
-				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_AUDIO_PICKED, result.toArray());
+				AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_AUDIO_PICKED, (Object) result);
 			}
 
 			@Override

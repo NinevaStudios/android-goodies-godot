@@ -281,13 +281,45 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PickAudioButton" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 430.0
+margin_bottom = 470.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Pick Audio"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PickFilesButton" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 530.0
+margin_bottom = 570.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Pick PDF Files"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PickedImage" type="TextureRect" parent="NavigationPanel/PickersPanel"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -125.0
-margin_top = 430.0
+margin_top = 630.0
 margin_right = 125.0
-margin_bottom = 680.0
+margin_bottom = 880.0
 rect_pivot_offset = Vector2( 125, 125 )
 texture = ExtResource( 5 )
 expand = true
@@ -295,6 +327,8 @@ stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AudioPlayer" type="AudioStreamPlayer2D" parent="NavigationPanel/PickersPanel"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowToastButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowToastButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" to="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" method="_onShowConfirmationDialogButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowItemsDialogButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowItemsDialogClicked"]
@@ -304,3 +338,5 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel" method="_onTakePhotoButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickVideoButton" to="NavigationPanel/PickersPanel" method="_onPickVideoButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/TakeVideoButton" to="NavigationPanel/PickersPanel" method="_onTakeVideoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/PickAudioButton" to="NavigationPanel/PickersPanel" method="_on_PickAudioButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/PickFilesButton" to="NavigationPanel/PickersPanel" method="_on_PickFilesButtonClicked"]

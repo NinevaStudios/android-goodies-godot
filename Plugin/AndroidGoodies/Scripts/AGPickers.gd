@@ -13,6 +13,10 @@ var _images_picked_callback_name = ""
 var _images_picked_callback_object = null
 var _videos_picked_callback_name = ""
 var _videos_picked_callback_object = null
+var _audio_picked_callback_name = ""
+var _audio_picked_callback_object = null
+var _files_picked_callback_name = ""
+var _files_picked_callback_object = null
 
 var _pick_error_callback_name = ""
 var _pick_error_callback_object = null
@@ -129,6 +133,44 @@ func record_video(generate_preview_images : bool,
 	else:
 		print("No plugin singleton")
 		
+func pick_audio(allow_multiple : bool,
+		audio_picked_callback_name : String, audio_picked_callback_object : Object,
+		pick_error_callback_name : String, pick_error_callback_object : Object):
+			
+	_audio_picked_callback_name = audio_picked_callback_name
+	_audio_picked_callback_object = audio_picked_callback_object
+	_pick_error_callback_name = pick_error_callback_name
+	_pick_error_callback_object = pick_error_callback_object
+	
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_connect_audio_picked_callback(singleton)
+		_connect_pick_error_callback(singleton)
+		
+		singleton.pickAudio(allow_multiple)
+	else:
+		print("No plugin singleton")
+		
+func pick_files(allow_multiple : bool, mime_type : String,
+		files_picked_callback_name : String, files_picked_callback_object : Object,
+		pick_error_callback_name : String, pick_error_callback_object : Object):
+			
+	_files_picked_callback_name = files_picked_callback_name
+	_files_picked_callback_object = files_picked_callback_object
+	_pick_error_callback_name = pick_error_callback_name
+	_pick_error_callback_object = pick_error_callback_object
+	
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_connect_files_picked_callback(singleton)
+		_connect_pick_error_callback(singleton)
+		
+		singleton.pickFiles(mime_type, allow_multiple)
+	else:
+		print("No plugin singleton")
+		
 # Helper functions. Do not call them directly.
 
 func _connect_images_picked_callback(singleton):
@@ -163,6 +205,33 @@ func _on_videos_picked(videos):
 	_videos_picked_callback_object.call(_videos_picked_callback_name, picked_videos)
 	_disconnect_callbacks()
 	
+func _connect_audio_picked_callback(singleton):
+	singleton.connect(_picked_audio_signal_name, self, "_on_audio_picked")
+	
+func _on_audio_picked(audio):
+	var picked_audios = Array()
+	for i in audio.size():
+		var picked_audio = PickedAudio.new()
+		_set_chosen_file_fields(picked_audio, audio[i])
+		picked_audio.audio_duration = audio[i].get("audio_duration")
+		picked_audios.append(picked_audio)
+	
+	_audio_picked_callback_object.call(_audio_picked_callback_name, picked_audios)
+	_disconnect_callbacks()
+	
+func _connect_files_picked_callback(singleton):
+	singleton.connect(_picked_files_signal_name, self, "_on_files_picked")
+	
+func _on_files_picked(files):
+	var picked_files = Array()
+	for i in files.size():
+		var picked_file = PickedFile.new()
+		_set_chosen_file_fields(picked_file, files[i])
+		picked_files.append(picked_file)
+	
+	_files_picked_callback_object.call(_files_picked_callback_name, picked_files)
+	_disconnect_callbacks()
+	
 func _connect_pick_error_callback(singleton):
 	singleton.connect(_pick_error_signal_name, self, "_on_pick_error")
 	
@@ -175,7 +244,10 @@ func _disconnect_callbacks():
 	
 	utils.disconnect_callback_if_connected(singleton, _picked_images_signal_name, self, "_on_images_picked")
 	utils.disconnect_callback_if_connected(singleton, _picked_videos_signal_name, self, "_on_videos_picked")
+	utils.disconnect_callback_if_connected(singleton, _audio_picked_callback_name, self, "_on_audio_picked")
 	utils.disconnect_callback_if_connected(singleton, _pick_error_signal_name, self, "_on_pick_error")
+	utils.disconnect_callback_if_connected(singleton, _picked_files_signal_name, self, "_on_files_picked")
+	utils.disconnect_callback_if_connected(singleton, _picked_audio_signal_name, self, "_on_audio_picked")
 
 func _set_chosen_file_fields(file, file_dictionary) -> PickedFile:
 	file.original_path = file_dictionary.get("original_path")

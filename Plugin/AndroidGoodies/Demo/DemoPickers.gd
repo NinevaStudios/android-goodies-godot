@@ -15,6 +15,12 @@ func _onPickVideoButtonClicked():
 
 func _onTakeVideoButtonClicked():
 	pickers.record_video(true, "_onVideosPicked", self, "_onPickError", self)
+	
+func _on_PickAudioButtonClicked():
+	pickers.pick_audio(false, "_onAudioPicked", self, "_onPickError", self)
+
+func _on_PickFilesButtonClicked():
+	pickers.pick_files(false, "application/pdf","_onFilesPicked", self, "_onPickError", self)
 
 func _onImagesPicked(images : Array):
 	_set_texture(images[0].original_path)
@@ -24,9 +30,14 @@ func _onVideosPicked(videos : Array):
 	_set_texture(videos[0].video_preview_image_path)
 	_rotate_rect(videos[0].video_orientation)
 	print(videos[0].original_path)
-	var error = OS.native_video_play(videos[0].original_path, 100, "default", "default")
-	print(error)
-	
+	OS.native_video_play(videos[0].original_path, 100, "default", "default")
+
+func _onAudioPicked(audios : Array):
+	print("Picked audio: " + String(audios[0].original_path))
+		
+func _onFilesPicked(files : Array):
+	print("Picked " + String(files.size()) + " files.")
+		
 func _onPickError(error : String):
 	print(error)
 		
