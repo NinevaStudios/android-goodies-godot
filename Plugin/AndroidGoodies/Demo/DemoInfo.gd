@@ -6,6 +6,12 @@ onready var text = get_node("InfoText") as RichTextLabel
 
 func _ready():
 	var info = String()
+	
+	info = _append_features(info)
+	
+	text.text = info
+	
+func _append_features(info : String) -> String:
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.APP_WIDGETS)
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.AUDIO_LOW_LATENCY)
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.AUDIO_OUTPUT)
@@ -87,7 +93,7 @@ func _ready():
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.GAMEPAD)
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.MIDI)
 	
-	text.text = info
+	return info
 
 func _text_for_feature(feature : String) -> String:
 	return feature + ": " + String(device_info.has_system_feature(feature)) + "\n"

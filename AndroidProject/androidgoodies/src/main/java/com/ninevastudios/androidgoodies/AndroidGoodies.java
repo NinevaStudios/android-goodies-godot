@@ -7,6 +7,7 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.collection.ArraySet;
 import androidx.core.content.ContextCompat;
 
@@ -20,8 +21,6 @@ import org.godotengine.godot.plugin.SignalInfo;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
-
-import static com.google.android.vending.expansion.downloader.Constants.TAG;
 
 public class AndroidGoodies extends GodotPlugin {
 	//region GODOT_IMPLEMENTATION
@@ -188,7 +187,7 @@ public class AndroidGoodies extends GodotPlugin {
 
 	public void pickImages(int pickerType, int maxSize, boolean generateThumbnails, boolean allowMultiple) {
 		if (!m_IsAvailableForPick) {
-			Log.w(TAG, "Activity is busy. Will not start picking.");
+			Log.w(Constants.LOG_TAG, "Activity is busy. Will not start picking.");
 			return;
 		}
 
@@ -198,7 +197,7 @@ public class AndroidGoodies extends GodotPlugin {
 
 	public void pickVideos(int pickerType, boolean generatePreviewImages, boolean allowMultiple) {
 		if (!m_IsAvailableForPick) {
-			Log.w(TAG, "Activity is busy. Will not start picking.");
+			Log.w(Constants.LOG_TAG, "Activity is busy. Will not start picking.");
 			return;
 		}
 
@@ -208,7 +207,7 @@ public class AndroidGoodies extends GodotPlugin {
 
 	public void pickFiles(String mimeType, boolean allowMultiple) {
 		if (!m_IsAvailableForPick) {
-			Log.w(TAG, "Activity is busy. Will not start picking.");
+			Log.w(Constants.LOG_TAG, "Activity is busy. Will not start picking.");
 			return;
 		}
 
@@ -218,7 +217,7 @@ public class AndroidGoodies extends GodotPlugin {
 
 	public void pickAudio(boolean allowMultiple) {
 		if (!m_IsAvailableForPick) {
-			Log.w(TAG, "Activity is busy. Will not start picking.");
+			Log.w(Constants.LOG_TAG, "Activity is busy. Will not start picking.");
 			return;
 		}
 
@@ -231,12 +230,80 @@ public class AndroidGoodies extends GodotPlugin {
 	//region DEVICE_INFO
 
 	public boolean hasSystemFeature(String feature) {
-		if (getActivity() == null) {
-			Log.w(TAG, "Activity is null. Returning false.");
-			return false;
-		}
+		return AGDeviceInfo.hasSystemFeature(feature);
+	}
 
-		return getActivity().getPackageManager().hasSystemFeature(feature);
+	@RequiresApi(api = Build.VERSION_CODES.M)
+	public String getBuildVersionBaseOs() {
+		return Build.VERSION.BASE_OS;
+	}
+	
+	public String getBuildVersionCodeName() {
+		return Build.VERSION.CODENAME;
+	}
+	
+	public String getBuildVersionRelease() {
+		return Build.VERSION.RELEASE;
+	}
+	
+	public int getBuildVersionSdkInt() {
+		return Build.VERSION.SDK_INT;
+	}
+	
+	public String getBuildBoard() {
+		return Build.BOARD;
+	}
+	
+	public String getBuildBootloader() {
+		return Build.BOOTLOADER;
+	}
+	
+	public String getBuildBrand() {
+		return Build.BRAND;
+	}
+	
+	public String getBuildDevice() {
+		return Build.DEVICE;
+	}
+	
+	public String getBuildDisplay() {
+		return Build.DISPLAY;
+	}
+	
+	public String getBuildHardware() {
+		return Build.HARDWARE;
+	}
+	
+	public String getBuildManufacturer() {
+		return Build.MANUFACTURER;
+	}
+	
+	public String getBuildModel() {
+		return Build.MODEL;
+	}
+	
+	public String getBuildProduct() {
+		return Build.PRODUCT;
+	}
+	
+	public String getBuildRadioVersion() {
+		return Build.getRadioVersion();
+	}
+	
+	public String getBuildSerial() {
+		return Build.SERIAL;
+	}
+	
+	public String getBuildTags() {
+		return Build.TAGS;
+	}
+	
+	public String getBuildType() {
+		return Build.TYPE;
+	}
+	
+	public String getApplicationPackageName() {
+		return AGDeviceInfo.getApplicationPackageName();
 	}
 
 	//endregion
