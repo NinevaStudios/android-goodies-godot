@@ -20,7 +20,7 @@ func _on_PickAudioButtonClicked():
 	pickers.pick_audio(false, "_onAudioPicked", self, "_onPickError", self)
 
 func _on_PickFilesButtonClicked():
-	pickers.pick_files(false, "application/pdf","_onFilesPicked", self, "_onPickError", self)
+	pickers.pick_files(false, "application/pdf", "_onFilesPicked", self, "_onPickError", self)
 
 func _onImagesPicked(images : Array):
 	_set_texture(images[0].original_path)

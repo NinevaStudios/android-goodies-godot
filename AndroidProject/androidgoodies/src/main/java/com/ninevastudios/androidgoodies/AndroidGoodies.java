@@ -63,6 +63,8 @@ public class AndroidGoodies extends GodotPlugin {
 				"pickVideos",
 				"pickFiles",
 				"pickAudio",
+				//Device Info
+				"hasSystemFeature",
 				// Other
 				"requestPermission");
 	}
@@ -222,6 +224,19 @@ public class AndroidGoodies extends GodotPlugin {
 
 		m_IsAvailableForPick = false;
 		AGPickers.pickAudio(allowMultiple);
+	}
+
+	//endregion
+
+	//region DEVICE_INFO
+
+	public boolean hasSystemFeature(String feature) {
+		if (getActivity() == null) {
+			Log.w(TAG, "Activity is null. Returning false.");
+			return false;
+		}
+
+		return getActivity().getPackageManager().hasSystemFeature(feature);
 	}
 
 	//endregion
