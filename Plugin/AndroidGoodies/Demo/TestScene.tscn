@@ -1,10 +1,11 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNativeUi.gd" type="Script" id=1]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNavigation.gd" type="Script" id=2]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/Graphics/ArrowBold.png" type="Texture" id=3]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoPickers.gd" type="Script" id=4]
 [ext_resource path="res://icon.png" type="Texture" id=5]
+[ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoInfo.gd" type="Script" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -92,7 +93,6 @@ __meta__ = {
 }
 
 [node name="NativeUiPanel" type="Panel" parent="NavigationPanel"]
-visible = false
 light_mask = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -206,7 +206,6 @@ __meta__ = {
 }
 
 [node name="PickersPanel" type="Panel" parent="NavigationPanel"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 4 )
@@ -349,10 +348,13 @@ __meta__ = {
 }
 
 [node name="DeviceInfoPanel" type="Panel" parent="NavigationPanel"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 5 )
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BackButton" type="Button" parent="NavigationPanel/DeviceInfoPanel"]
 margin_left = 30.0
@@ -373,6 +375,17 @@ margin_top = -48.0
 margin_right = 44.8502
 margin_bottom = 48.0
 texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="InfoText" type="RichTextLabel" parent="NavigationPanel/DeviceInfoPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 120.0
+margin_top = 30.0
+margin_right = -120.0
+margin_bottom = -30.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
