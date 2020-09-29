@@ -1,17 +1,49 @@
 extends Node
 
 var device_info = AGDeviceInfo.new()
+var build = AGDeviceInfo.Build.new()
+var build_version = AGDeviceInfo.Build.Version.new()
 
 onready var text = get_node("InfoText") as RichTextLabel
 
 func _ready():
 	var info = String()
 	
+	info = _append_build_info(info)
 	info = _append_features(info)
 	
 	text.text = info
 	
+func _append_build_info(info : String) -> String:
+	var package_name = device_info.get_package_name()
+	info += "Package name: " + package_name + "\n"
+	info += "Is package installed: " + String(device_info.is_package_installed(package_name)) + "\n"
+	
+	info += "Build Version: \n"
+	info += "SDK int: " + String(build_version.sdk_int()) + "\n"
+	info += "Base OS: " + build_version.base_os() + "\n"
+	info += "Codename: " + build_version.codename() + "\n"
+	info += "Release: " + build_version.release() + "\n"
+	
+	info += "Build: \n"
+	info += "Board: " + build.board() + "\n"
+	info += "Bootloader: " + build.bootloader() + "\n"
+	info += "Brand: " + build.brand() + "\n"
+	info += "Device: " + build.device() + "\n"
+	info += "Display: " + build.display() + "\n"
+	info += "Hardware: " + build.hardware() + "\n"
+	info += "Manufacturer: " + build.manufacturer() + "\n"
+	info += "Model: " + build.model() + "\n"
+	info += "Product: " + build.product() + "\n"
+	info += "Radio version: " + build.radio_version() + "\n"
+	info += "Serial: " + build.serial() + "\n"
+	info += "Tags: " + build.tags() + "\n"
+	info += "Type: " + build.type() + "\n"
+	
+	return info
+	
 func _append_features(info : String) -> String:
+	info += "Features: \n"
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.APP_WIDGETS)
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.AUDIO_LOW_LATENCY)
 	info += _text_for_feature(AGDeviceInfo.SystemFeature.AUDIO_OUTPUT)

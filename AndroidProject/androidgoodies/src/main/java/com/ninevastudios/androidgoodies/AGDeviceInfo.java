@@ -1,15 +1,16 @@
 package com.ninevastudios.androidgoodies;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.util.Log;
 
-import static com.google.android.vending.expansion.downloader.Constants.TAG;
+import com.ninevastudios.androidgoodies.utils.Constants;
 
 public class AGDeviceInfo {
 	public static boolean hasSystemFeature(String feature) {
 		Activity activity = AndroidGoodies.getGameActivity();
 		if (activity == null) {
-			Log.w(TAG, "Activity is null. Returning false.");
+			Log.w(Constants.LOG_TAG, "Activity is null. Returning false.");
 			return false;
 		}
 
@@ -19,10 +20,25 @@ public class AGDeviceInfo {
 	public static String getApplicationPackageName() {
 		Activity activity = AndroidGoodies.getGameActivity();
 		if (activity == null) {
-			Log.w(TAG, "Activity is null. Returning empty string.");
+			Log.w(Constants.LOG_TAG, "Activity is null. Returning empty string.");
 			return "";
 		}
 
 		return activity.getPackageName();
+	}
+
+	public static boolean isPackageInstalled(String packageName) {
+		Activity activity = AndroidGoodies.getGameActivity();
+		if (activity == null) {
+			Log.w(Constants.LOG_TAG, "Activity is null. Returning false.");
+			return false;
+		}
+
+		try {
+			activity.getPackageManager().getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 }

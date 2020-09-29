@@ -1,5 +1,29 @@
 class_name AGDeviceInfo
 
+func has_system_feature(feature : String) -> bool:
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		return singleton.hasSystemFeature(feature)
+	else:
+		print("No plugin singleton")
+		return false
+		
+func get_package_name() -> String:
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		return singleton.getApplicationPackageName()
+	else:
+		print("No plugin singleton")
+		return ""
+
+func is_package_installed(package_name : String) -> bool:
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		return singleton.isPackageInstalled(package_name)
+	else:
+		print("No plugin singleton")
+		return false
+
 class SystemFeature:
 	const AUDIO_LOW_LATENCY = "android.hardware.audio.low_latency" 
 	const AUDIO_OUTPUT = "android.hardware.audio.output" 
@@ -80,11 +104,172 @@ class SystemFeature:
 	const HDMI_CEC = "android.hardware.hdmi.cec" 
 	const GAMEPAD = "android.hardware.gamepad" 
 	const MIDI = "android.software.midi" 
+	
+class VersionCodes:
+	const BASE = 1
+	const BASE_1_1 = 2
+	const CUPCAKE = 1
+	const DONUT = 1
+	const ECLAIR = 1
+	const ECLAIR_0_1 = 1
+	const ECLAIR_MR1 = 1
+	const FROYO = 1
+	const GINGERBREAD = 1
+	const GINGERBREAD_MR1 = 1
+	const HONEYCOMB = 1
+	const HONEYCOMB_MR1 = 1
+	const HONEYCOMB_MR2 = 1
+	const ICE_CREAM_SANDWICH = 1
+	const ICE_CREAM_SANDWICH_MR1 = 1
+	const JELLY_BEAN = 1
+	const JELLY_BEAN_MR1 = 1
+	const JELLY_BEAN_MR2 = 1
+	const KITKAT = 1
+	const KITKAT_WATCH = 1
+	const LOLLIPOP = 1
+	const LOLLIPOP_MR1 = 1
+	const M = 1
+	const N = 1
+	const N_MR1 = 1
+	const O = 1
+	const O_MR1 = 1
+	const P = 1
+	const Q = 1
+	
+class Build:
+	func board() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildBoard()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func bootloader() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildBootloader()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func brand() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildBrand()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func device() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildDevice()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func display() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildDisplay()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func hardware() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildHardware()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func manufacturer() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildManufacturer()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func model() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildModel()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func product() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildProduct()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func radio_version() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildRadioVersion()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func serial() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildSerial()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func tags() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildTags()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	func type() -> String:
+		if Engine.has_singleton(AGUtils.plugin_name):
+			var singleton = Engine.get_singleton(AGUtils.plugin_name)
+			return singleton.getBuildType()
+		else:
+			print("No plugin singleton")
+			return ""
+			
+	class Version:
+		func sdk_int() -> int:
+			if Engine.has_singleton(AGUtils.plugin_name):
+				var singleton = Engine.get_singleton(AGUtils.plugin_name)
+				return singleton.getBuildVersionSdkInt()
+			else:
+				print("No plugin singleton")
+				return 0
+				
+		func base_os() -> String:
+			if Engine.has_singleton(AGUtils.plugin_name) and sdk_int() >= VersionCodes.M:
+				var singleton = Engine.get_singleton(AGUtils.plugin_name)
+				return singleton.getBuildVersionBaseOs()
+			else:
+				return ""
+				
+		func codename() -> String:
+			if Engine.has_singleton(AGUtils.plugin_name):
+				var singleton = Engine.get_singleton(AGUtils.plugin_name)
+				return singleton.getBuildVersionCodeName()
+			else:
+				print("No plugin singleton")
+				return ""
+				
+		func release() -> String:
+			if Engine.has_singleton(AGUtils.plugin_name):
+				var singleton = Engine.get_singleton(AGUtils.plugin_name)
+				return singleton.getBuildVersionRelease()
+			else:
+				print("No plugin singleton")
+				return ""
 
-func has_system_feature(feature : String) -> bool:
-	if Engine.has_singleton(AGUtils.plugin_name):
-		var singleton = Engine.get_singleton(AGUtils.plugin_name)
-		return singleton.hasSystemFeature(feature)
-	else:
-		print("No plugin singleton")
-		return false

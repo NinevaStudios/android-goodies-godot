@@ -64,6 +64,25 @@ public class AndroidGoodies extends GodotPlugin {
 				"pickAudio",
 				//Device Info
 				"hasSystemFeature",
+				"getBuildVersionBaseOs",
+				"getBuildVersionCodeName",
+				"getBuildVersionRelease",
+				"getBuildVersionSdkInt",
+				"getBuildBoard",
+				"getBuildBootloader",
+				"getBuildBrand",
+				"getBuildDevice",
+				"getBuildDisplay",
+				"getBuildHardware",
+				"getBuildManufacturer",
+				"getBuildModel",
+				"getBuildProduct",
+				"getBuildRadioVersion",
+				"getBuildSerial",
+				"getBuildTags",
+				"getBuildType",
+				"getApplicationPackageName",
+				"isPackageInstalled",
 				// Other
 				"requestPermission");
 	}
@@ -304,6 +323,10 @@ public class AndroidGoodies extends GodotPlugin {
 	
 	public String getApplicationPackageName() {
 		return AGDeviceInfo.getApplicationPackageName();
+	}
+
+	public boolean isPackageInstalled(String packageName) {
+		return AGDeviceInfo.isPackageInstalled(packageName);
 	}
 
 	//endregion
