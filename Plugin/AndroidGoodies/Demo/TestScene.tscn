@@ -266,14 +266,46 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="PickedImage" type="TextureRect" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -125.0
+margin_top = 230.0
+margin_right = 125.0
+margin_bottom = 480.0
+rect_pivot_offset = Vector2( 125, 125 )
+texture = ExtResource( 5 )
+expand = true
+stretch_mode = 6
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SaveImageButton" type="Button" parent="NavigationPanel/PickersPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -301.0
+margin_top = 530.0
+margin_right = -1.0
+margin_bottom = 570.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Save To Gallery"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="PickVideoButton" type="Button" parent="NavigationPanel/PickersPanel"]
 anchor_left = 0.5
 anchor_top = 0.00166667
 anchor_right = 0.5
 anchor_bottom = 0.00166667
 margin_left = -300.0
-margin_top = 230.0
-margin_bottom = 270.0
+margin_top = 629.0
+margin_bottom = 669.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -281,15 +313,15 @@ custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Pick Videos"
 __meta__ = {
-"_edit_use_anchors_": true
+"_edit_use_anchors_": false
 }
 
 [node name="TakeVideoButton" type="Button" parent="NavigationPanel/PickersPanel"]
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -300.0
-margin_top = 330.0
-margin_bottom = 370.0
+margin_top = 730.0
+margin_bottom = 770.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -304,8 +336,8 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -300.0
-margin_top = 430.0
-margin_bottom = 470.0
+margin_top = 830.0
+margin_bottom = 870.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
@@ -320,29 +352,14 @@ __meta__ = {
 anchor_left = 0.5
 anchor_right = 0.5
 margin_left = -300.0
-margin_top = 530.0
-margin_bottom = 570.0
+margin_top = 930.0
+margin_bottom = 970.0
 rect_scale = Vector2( 2, 2 )
 custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Pick PDF Files"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="PickedImage" type="TextureRect" parent="NavigationPanel/PickersPanel"]
-anchor_left = 0.5
-anchor_right = 0.5
-margin_left = -125.0
-margin_top = 630.0
-margin_right = 125.0
-margin_bottom = 880.0
-rect_pivot_offset = Vector2( 125, 125 )
-texture = ExtResource( 5 )
-expand = true
-stretch_mode = 6
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -401,6 +418,7 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/PickersPanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel" method="_onPickImagesButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel" method="_onTakePhotoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/PickersPanel/SaveImageButton" to="NavigationPanel/PickersPanel" method="_onSaveImageButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickVideoButton" to="NavigationPanel/PickersPanel" method="_onPickVideoButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/TakeVideoButton" to="NavigationPanel/PickersPanel" method="_onTakeVideoButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickAudioButton" to="NavigationPanel/PickersPanel" method="_on_PickAudioButtonClicked"]

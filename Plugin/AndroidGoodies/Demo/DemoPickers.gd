@@ -1,8 +1,12 @@
 extends Node
 
 onready var result_image = get_node("PickedImage") as TextureRect
+var default_image : Image
 
 var pickers = AGPickers.new()
+
+func _ready():
+	default_image = result_image.texture.get_data()
 
 func _onPickImagesButtonClicked():
 	pickers.pick_image_from_gallery(-1, false, true, "_onImagesPicked", self, "_onPickError", self)
@@ -22,6 +26,11 @@ func _on_PickAudioButtonClicked():
 func _on_PickFilesButtonClicked():
 	pickers.pick_files(false, "application/pdf", "_onFilesPicked", self, "_onPickError", self)
 
+func _onSaveImageButtonClicked():
+	var image = default_image if result_image.texture == null else result_image.texture.get_data()
+	
+	pickers.save_image_to_gallery(image, "Borsch-godot", "_onImageSaved", self, "_onPickError", self)
+
 func _onImagesPicked(images : Array):
 	_set_texture(images[0].original_path)
 	_rotate_rect(images[0].image_orientation)
@@ -37,6 +46,9 @@ func _onAudioPicked(audios : Array):
 		
 func _onFilesPicked(files : Array):
 	print("Picked " + String(files.size()) + " files.")
+	
+func _onImageSaved():
+	print("Image saved successfully")
 		
 func _onPickError(error : String):
 	print(error)

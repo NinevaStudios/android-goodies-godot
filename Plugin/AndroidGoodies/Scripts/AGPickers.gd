@@ -4,6 +4,7 @@ const _picked_images_signal_name = "onImagesPicked"
 const _picked_videos_signal_name = "onVideosPicked"
 const _picked_files_signal_name = "onFilesPicked"
 const _picked_audio_signal_name = "onAudioPicked"
+const _image_saved_signal_name = "onImageSaved"
 const _pick_error_signal_name = "onPickError"
 
 const pick_from_gallery = 1
@@ -17,6 +18,8 @@ var _audio_picked_callback_name = ""
 var _audio_picked_callback_object = null
 var _files_picked_callback_name = ""
 var _files_picked_callback_object = null
+var _image_saved_callback_name = ""
+var _image_saved_callback_object = null
 
 var _pick_error_callback_name = ""
 var _pick_error_callback_object = null
@@ -24,6 +27,9 @@ var _pick_error_callback_object = null
 var _max_size : int
 var _generate_thumbnails : bool
 var _generate_preview_images : bool
+
+var _filename : String
+var _image_to_save : Image
 
 var utils = AGUtils.new()
 var permissions = AGPermissions.new()
@@ -171,6 +177,27 @@ func pick_files(allow_multiple : bool, mime_type : String,
 	else:
 		print("No plugin singleton")
 		
+func save_image_to_gallery(image : Image, filename : String, 
+		image_saved_callback_name : String, image_saved_callback_object : Object,
+		pick_error_callback_name : String, pick_error_callback_object : Object):
+	_image_saved_callback_name = image_saved_callback_name
+	_image_saved_callback_object = image_saved_callback_object
+	_pick_error_callback_name = pick_error_callback_name
+	_pick_error_callback_object = pick_error_callback_object
+	
+	_image_to_save = image
+	_filename = filename
+	
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_connect_image_saved_callback(singleton)
+		_connect_pick_error_callback(singleton)
+		
+		permissions.request_permission(AGPermissions.write_storage_permission, "_on_write_storage_granted", self)
+	else:
+		print("No plugin singleton")
+		
 # Helper functions. Do not call them directly.
 
 func _connect_images_picked_callback(singleton):
@@ -235,6 +262,13 @@ func _on_files_picked(files):
 func _connect_pick_error_callback(singleton):
 	singleton.connect(_pick_error_signal_name, self, "_on_pick_error")
 	
+func _connect_image_saved_callback(singleton):
+	singleton.connect(_image_saved_signal_name, self, "_on_image_saved")
+	
+func _on_image_saved():
+	_image_saved_callback_object.call(_image_saved_callback_name)
+	_disconnect_callbacks()
+	
 func _on_pick_error(error):
 	_pick_error_callback_object.call(_pick_error_callback_name, error)
 	_disconnect_callbacks()
@@ -248,6 +282,7 @@ func _disconnect_callbacks():
 	utils.disconnect_callback_if_connected(singleton, _pick_error_signal_name, self, "_on_pick_error")
 	utils.disconnect_callback_if_connected(singleton, _picked_files_signal_name, self, "_on_files_picked")
 	utils.disconnect_callback_if_connected(singleton, _picked_audio_signal_name, self, "_on_audio_picked")
+	utils.disconnect_callback_if_connected(singleton, _image_saved_signal_name, self, "_on_image_saved")
 
 func _set_chosen_file_fields(file, file_dictionary) -> PickedFile:
 	file.original_path = file_dictionary.get("original_path")
@@ -270,5 +305,16 @@ func _on_camera_permission_video_granted(permission : String, granted : bool):
 	if (permission == AGPermissions.camera_permission && granted):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
 		singleton.pickVideos(pick_from_camera, _generate_preview_images, false)
+	else:
+		_on_pick_error("Permission was not granted")
+		
+func _on_write_storage_granted(permission : String, granted : bool):
+	if (permission == AGPermissions.write_storage_permission && granted):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_image_to_save.decompress()
+		_image_to_save.convert(Image.FORMAT_RGBA8)
+		singleton.saveImageToGallery(_filename, _image_to_save.get_data(), 
+				_image_to_save.get_width(), _image_to_save.get_height())
 	else:
 		_on_pick_error("Permission was not granted")

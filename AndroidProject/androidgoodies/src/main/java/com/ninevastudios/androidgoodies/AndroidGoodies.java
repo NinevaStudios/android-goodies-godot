@@ -37,6 +37,7 @@ public class AndroidGoodies extends GodotPlugin {
 	static final String SIGNAL_ON_FILES_PICKED = "onFilesPicked";
 	static final String SIGNAL_ON_CONTACT_PICKED = "onContactPicked";
 	static final String SIGNAL_ON_AUDIO_PICKED = "onAudioPicked";
+	static final String SIGNAL_ON_IMAGE_SAVED = "onImageSaved";
 	static final String SIGNAL_ON_PICK_ERROR = "onPickError";
 
 	static final String SIGNAL_ON_PERMISSION_GRANTED = "onPermissionGranted";
@@ -62,6 +63,7 @@ public class AndroidGoodies extends GodotPlugin {
 				"pickVideos",
 				"pickFiles",
 				"pickAudio",
+				"saveImageToGallery",
 				//Device Info
 				"hasSystemFeature",
 				"getBuildVersionBaseOs",
@@ -103,6 +105,7 @@ public class AndroidGoodies extends GodotPlugin {
 		signals.add(new SignalInfo(SIGNAL_ON_FILES_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_CONTACT_PICKED, Dictionary.class));
 		signals.add(new SignalInfo(SIGNAL_ON_AUDIO_PICKED, Object[].class));
+		signals.add(new SignalInfo(SIGNAL_ON_IMAGE_SAVED));
 		signals.add(new SignalInfo(SIGNAL_ON_PICK_ERROR, String.class));
 		// Other
 		signals.add(new SignalInfo(SIGNAL_ON_PERMISSION_GRANTED, String.class, Boolean.class));
@@ -242,6 +245,10 @@ public class AndroidGoodies extends GodotPlugin {
 
 		m_IsAvailableForPick = false;
 		AGPickers.pickAudio(allowMultiple);
+	}
+
+	public void saveImageToGallery(String fileName, byte[] buffer, int width, int height) {
+		AGPickers.saveImageToGallery(fileName, buffer, width, height);
 	}
 
 	//endregion

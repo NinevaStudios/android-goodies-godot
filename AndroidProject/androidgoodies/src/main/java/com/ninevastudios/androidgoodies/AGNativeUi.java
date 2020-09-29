@@ -6,7 +6,7 @@ import android.content.DialogInterface;
 import android.util.Log;
 import android.widget.Toast;
 
-import static com.google.android.vending.expansion.downloader.Constants.TAG;
+import com.ninevastudios.androidgoodies.utils.Constants;
 
 public class AGNativeUi {
 
@@ -14,7 +14,7 @@ public class AGNativeUi {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(TAG, "Activity was not found. Aborting.");
+			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
@@ -32,7 +32,7 @@ public class AGNativeUi {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(TAG, "Activity was not found. Aborting.");
+			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
@@ -50,12 +50,12 @@ public class AGNativeUi {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(TAG, "Activity was not found. Aborting.");
+			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
 		if (items == null || items.length < 1) {
-			Log.e(TAG, "Items array is empty");
+			Log.e(Constants.LOG_TAG, "Items array is empty");
 			return;
 		}
 
@@ -75,12 +75,12 @@ public class AGNativeUi {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(TAG, "Activity was not found. Aborting.");
+			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
 		if (items == null || items.length < 1) {
-			Log.e(TAG, "Items array is empty");
+			Log.e(Constants.LOG_TAG, "Items array is empty");
 			return;
 		}
 
@@ -101,12 +101,12 @@ public class AGNativeUi {
 		final Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
-			Log.e(TAG, "Activity was not found. Aborting.");
+			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
 			return;
 		}
 
 		if (items == null || items.length < 1) {
-			Log.e(TAG, "Items array is empty");
+			Log.e(Constants.LOG_TAG, "Items array is empty");
 			return;
 		}
 

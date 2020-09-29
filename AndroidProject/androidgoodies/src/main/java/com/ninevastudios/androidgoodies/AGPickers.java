@@ -3,8 +3,10 @@ package com.ninevastudios.androidgoodies;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.util.Log;
 
 import com.ninevastudios.androidgoodies.multipicker.api.AudioPicker;
@@ -29,13 +31,13 @@ import com.ninevastudios.androidgoodies.multipicker.api.entity.ChosenVideo;
 import com.ninevastudios.androidgoodies.multipicker.core.ImagePickerImpl;
 import com.ninevastudios.androidgoodies.multipicker.core.VideoPickerImpl;
 import com.ninevastudios.androidgoodies.utils.Constants;
-import com.ninevastudios.androidgoodies.utils.ImageUtils;
 import com.ninevastudios.androidgoodies.utils.SharedPrefsHelper;
 
 import org.godotengine.godot.Dictionary;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 import java.util.List;
 
 import static com.google.android.vending.expansion.downloader.Constants.TAG;
@@ -121,6 +123,44 @@ public class AGPickers {
 			}
 			audioPicker.setAudioPickerCallback(getAudioPickerCallback());
 			audioPicker.pickAudio();
+		} catch (Exception e) {
+			reportPickerError(e.getMessage());
+		}
+	}
+
+	public static void saveImageToGallery(String fileName, byte[] buffer, int width, int height) {
+		final Activity activity = AndroidGoodies.getGameActivity();
+
+		if (activity == null) {
+			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
+			return;
+		}
+
+		Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+		ByteBuffer byteBuffer = ByteBuffer.wrap(buffer);
+		bitmap.copyPixelsFromBuffer(byteBuffer);
+		File root = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+		File file = new File(root, fileName + ".png");
+		Log.d(Constants.LOG_TAG, file.getAbsolutePath());
+		try {
+			FileOutputStream out = new FileOutputStream(file);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+			out.flush();
+			out.close();
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+				MediaScannerConnection.scanFile(activity, new String[]{file.toString()}, null,
+						new MediaScannerConnection.OnScanCompletedListener() {
+							public void onScanCompleted(String path, Uri uri) {
+							}
+						});
+			} else {
+				Uri uri = Uri.fromFile(file);
+				Intent intent = new Intent(Intent.ACTION_MEDIA_MOUNTED, uri);
+				activity.sendBroadcast(intent);
+			}
+
+			AndroidGoodies.getInstance().emitSignalCallback(AndroidGoodies.SIGNAL_ON_IMAGE_SAVED);
 		} catch (Exception e) {
 			reportPickerError(e.getMessage());
 		}
