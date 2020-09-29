@@ -31,6 +31,12 @@ func _onShowMultiChoiceDialogClicked():
 			[true, false, false], "_onMultiItemSelected", self, dialog_data, 
 			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
 			
+func _onShowProgressDialogClicked():
+	native_ui.show_progress_dialog("Such progress", "Fascinating...", 0, 100, false, 
+			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self, 
+			"_on_progress_dialog_dismissed", self)
+	
+
 func _create_dialog_data() -> AGNativeUi.ButtonDialogData:
 	var dialog_data = AGNativeUi.ButtonDialogData.new()
 	
@@ -66,8 +72,6 @@ func _onItemSelected(index):
 func _onMultiItemSelected(index, selected):
 	var message = "Item " + String(index) + " is " + ("selected." if selected else "deselected.")
 	native_ui.show_toast(message, AGNativeUi.ToastLength.SHORT)
-
-
-
-
-
+	
+func _on_progress_dialog_dismissed():
+	print("Dialog dismissed.")

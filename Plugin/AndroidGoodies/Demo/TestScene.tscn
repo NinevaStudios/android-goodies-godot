@@ -205,7 +205,25 @@ __meta__ = {
 "_edit_use_anchors_": true
 }
 
+[node name="ShowProgressDialogButton" type="Button" parent="NavigationPanel/NativeUiPanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 530.0
+margin_bottom = 570.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Progress Dialog"
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
 [node name="PickersPanel" type="Panel" parent="NavigationPanel"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 4 )
@@ -365,6 +383,7 @@ __meta__ = {
 }
 
 [node name="DeviceInfoPanel" type="Panel" parent="NavigationPanel"]
+visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 5 )
@@ -415,6 +434,7 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowItemsDialogButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowItemsDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowSingleChoiceDialog" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowSingleChoiceDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowMultiChoiceDialog2" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowMultiChoiceDialogClicked"]
+[connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowProgressDialogButton" to="NavigationPanel/NativeUiPanel/ShowProgressDialogButton" method="_onShowProgressDialogClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickImagesButto" to="NavigationPanel/PickersPanel" method="_onPickImagesButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/TakePhotoButton" to="NavigationPanel/PickersPanel" method="_onTakePhotoButtonClicked"]

@@ -29,6 +29,7 @@ public class AndroidGoodies extends GodotPlugin {
 	static final String SIGNAL_ON_NEGATIVE_BUTTON_CLICKED = "onNegativeButtonClicked";
 	static final String SIGNAL_ON_NEUTRAL_BUTTON_CLICKED = "onNeutralButtonClicked";
 	static final String SIGNAL_ON_DIALOG_CANCELLED = "onDialogCancelled";
+	static final String SIGNAL_ON_PROGRESS_DIALOG_DISMISSED = "onProgressDialogDismissed";
 	static final String SIGNAL_ON_DIALOG_ITEM_CLICKED = "onDialogItemClicked";
 	static final String SIGNAL_ON_DIALOG_ITEM_SELECTED = "onDialogItemSelected";
 
@@ -58,6 +59,9 @@ public class AndroidGoodies extends GodotPlugin {
 				"showItemsDialog",
 				"showSingleChoiceDialog",
 				"showMultipleChoiceDialog",
+				"showProgressDialog",
+				"setProgressForProgressDialog",
+				"dismissProgressDialog",
 				// Pickers
 				"pickImages",
 				"pickVideos",
@@ -99,6 +103,7 @@ public class AndroidGoodies extends GodotPlugin {
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_CANCELLED));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_ITEM_CLICKED, Integer.class));
 		signals.add(new SignalInfo(SIGNAL_ON_DIALOG_ITEM_SELECTED, Integer.class, Boolean.class));
+		signals.add(new SignalInfo(SIGNAL_ON_PROGRESS_DIALOG_DISMISSED));
 		// Pickers
 		signals.add(new SignalInfo(SIGNAL_ON_IMAGES_PICKED, Object[].class));
 		signals.add(new SignalInfo(SIGNAL_ON_VIDEOS_PICKED, Object[].class));
@@ -171,6 +176,14 @@ public class AndroidGoodies extends GodotPlugin {
 		}
 	}
 
+	public void onMainPause() {
+		AGProgressDialog.pause();
+	}
+
+	public void onMainResume() {
+		AGProgressDialog.resume();
+	}
+
 	//endregion
 
 	//region NATIVE_UI
@@ -201,6 +214,18 @@ public class AndroidGoodies extends GodotPlugin {
 	                                     int theme, boolean isCancellable) {
 		AGNativeUi.showMultipleChoiceDialog(title, items, selected, positiveButtonText,
 				negativeButtonText, neutralButtonText, theme, isCancellable);
+	}
+
+	public void showProgressDialog(String title, String message, int progress, int maxValue, int theme, boolean isCancellable, boolean isIndeterminate) {
+		AGProgressDialog.show(title, message, progress, maxValue, theme, isCancellable, isIndeterminate);
+	}
+
+	public void setProgressForProgressDialog(int progress) {
+		AGProgressDialog.setProgress(progress);
+	}
+
+	public void dismissProgressDialog() {
+		AGProgressDialog.dismiss();
 	}
 
 	//endregion

@@ -6,6 +6,7 @@ const _neutral_button_signal_name = "onNeutralButtonClicked"
 const _dialog_cancelled_signal_name = "onDialogCancelled";
 const _item_selected_signal_name = "onDialogItemClicked";
 const _multi_item_selected_signal_name = "onDialogItemSelected";
+const _dialog_dismiss_signal_name = "onProgressDialogDismissed";
 
 enum ToastLength { SHORT = 0, LONG = 1 }
 enum DialogTheme { LIGHT = 0, DARK = 1, DEFAULT = 2 }
@@ -34,6 +35,9 @@ var _item_chosen_callback_object = null
 
 var _item_selected_callback_name = ""
 var _item_selected_callback_object = null
+
+var _dismiss_callback_name = ""
+var _dismiss_callback_object = null
 
 var utils = AGUtils.new()
 
@@ -155,6 +159,43 @@ func show_multi_choice_dialog(title : String, items : PoolStringArray, selected_
 				theme as int, is_cancelable)
 	else:
 		print("No plugin singleton")
+		
+func show_progress_dialog(title : String, message : String, progress : int, max_value : int, 
+		indeterminate : bool, theme = DialogTheme.DEFAULT, is_cancelable : bool = false, 
+		dismiss_callback_name : String = "", dismiss_callback_object : Object = null,
+		cancel_callback_name : String = "", cancel_callback_object : Object = null):
+	_is_cancelable = is_cancelable
+	_cancel_callback_name = cancel_callback_name
+	_cancel_callback_object = cancel_callback_object
+	
+	_dismiss_callback_name = dismiss_callback_name
+	_dismiss_callback_object = dismiss_callback_object
+		
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		_connect_dismiss_callback(singleton)
+		_connect_cancel_callback(singleton)
+		
+		singleton.showProgressDialog(title, message, progress, max_value, theme as int, is_cancelable, indeterminate)
+	else:
+		print("No plugin singleton")
+		
+func set_progress_dialog_progress(progress : int):
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		singleton.setProgressForProgressDialog(progress)
+	else:
+		print("No plugin singleton")
+		
+func dismiss_progress_dialog():
+	if Engine.has_singleton(AGUtils.plugin_name):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		
+		singleton.dismissProgressDialog()
+	else:
+		print("No plugin singleton")
 
 # Helper functions. Do not call them directly.
 
@@ -214,6 +255,15 @@ func _connect_multi_item_selected_callback(singleton):
 func _on_multi_item_selected(index, selected):
 	_item_selected_callback_object.call(_item_selected_callback_name, index, selected)
 	
+func _connect_dismiss_callback(singleton):
+	if _is_cancelable:
+		singleton.connect(_dialog_dismiss_signal_name, self, "_on_dialog_dismiss_callback")
+
+func _on_dialog_dismiss_callback():
+	_dismiss_callback_object.call(_dismiss_callback_name)
+	
+	_disconnect_dialog_callbacks()
+	
 func _disconnect_dialog_callbacks():
 	var singleton = Engine.get_singleton(AGUtils.plugin_name)
 	
@@ -225,5 +275,6 @@ func _disconnect_dialog_callbacks():
 	utils.disconnect_callback_if_connected(singleton, _item_selected_signal_name, self, "_on_item_selected")
 	utils.disconnect_callback_if_connected(singleton, _item_selected_signal_name, self, "_on_single_item_selected")
 	utils.disconnect_callback_if_connected(singleton, _multi_item_selected_signal_name, self, "_on_multi_item_selected")
+	utils.disconnect_callback_if_connected(singleton, _dialog_dismiss_signal_name, self, "_on_dialog_dismiss_callback")
 	
 	_cached_button_dialog_data = null	
