@@ -5,6 +5,7 @@ class_name DemoNavigation
 onready var native_ui_panel = get_node("NativeUiPanel")
 onready var pickers_panel = get_node("PickersPanel")
 onready var device_info_panel = get_node("DeviceInfoPanel")
+onready var sharing_panel = get_node("SharePanel")
 onready var base_panel = get_node("BasePanel")
 
 func _ready():
@@ -16,11 +17,11 @@ func hide_panels():
 	base_panel.hide()
 	pickers_panel.hide()
 	device_info_panel.hide()
+	sharing_panel.hide()
 
 func _onOpenNativeUiButtonClicked():
 	hide_panels()
 	native_ui_panel.show()
-
 
 func _onBackButtonClicked():
 	hide_panels()
@@ -33,3 +34,9 @@ func _onOpenPickersButtonClicked():
 func _onOpenDeviceInfoButtonClicked():
 	hide_panels()
 	device_info_panel.show()
+	
+func _onOpenSharingButtonClicked():
+	hide_panels()
+	sharing_panel.show()
+
+

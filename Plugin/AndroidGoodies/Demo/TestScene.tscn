@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNativeUi.gd" type="Script" id=1]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoNavigation.gd" type="Script" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoPickers.gd" type="Script" id=4]
 [ext_resource path="res://icon.png" type="Texture" id=5]
 [ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoInfo.gd" type="Script" id=6]
+[ext_resource path="res://android/plugins/AndroidGoodies/Demo/DemoSharing.gd" type="Script" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
 
@@ -18,6 +19,8 @@ bg_color = Color( 0.494118, 0.494118, 0.494118, 1 )
 [sub_resource type="StyleBoxFlat" id=4]
 
 [sub_resource type="StyleBoxFlat" id=5]
+
+[sub_resource type="StyleBoxFlat" id=6]
 
 [node name="Control" type="Control"]
 light_mask = 0
@@ -88,6 +91,22 @@ custom_colors/font_color = Color( 1, 1, 1, 1 )
 custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
 custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
 text = "Device Info"
+__meta__ = {
+"_edit_use_anchors_": true
+}
+
+[node name="OpenSharingButton" type="Button" parent="NavigationPanel/BasePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 330.0
+margin_bottom = 370.0
+rect_scale = Vector2( 2, 2 )
+custom_colors/font_color_disabled = Color( 1, 1, 1, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+custom_colors/font_color_pressed = Color( 1, 1, 1, 1 )
+text = "Sharing"
 __meta__ = {
 "_edit_use_anchors_": true
 }
@@ -425,9 +444,51 @@ margin_bottom = -30.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SharePanel" type="Panel" parent="NavigationPanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_styles/panel = SubResource( 6 )
+script = ExtResource( 7 )
+
+[node name="BackButton" type="Button" parent="NavigationPanel/SharePanel"]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 110.0
+margin_bottom = 110.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="NavigationPanel/SharePanel/BackButton"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -51.1498
+margin_top = -48.0
+margin_right = 44.8502
+margin_bottom = 48.0
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShareTextButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 30.0
+margin_bottom = 70.0
+rect_scale = Vector2( 2, 2 )
+text = "Share Text"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenPickersButton" to="NavigationPanel" method="_onOpenPickersButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenDeviceInfosButton2" to="NavigationPanel" method="_onOpenDeviceInfoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/BasePanel/OpenSharingButton" to="NavigationPanel" method="_onOpenSharingButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowToastButton" to="NavigationPanel/NativeUiPanel/ShowToastButton" method="_onShowToastButtonClick"]
 [connection signal="button_up" from="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" to="NavigationPanel/NativeUiPanel/ShowConfirmationDialogButton" method="_onShowConfirmationDialogButtonClick"]
@@ -444,3 +505,4 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickAudioButton" to="NavigationPanel/PickersPanel" method="_on_PickAudioButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickFilesButton" to="NavigationPanel/PickersPanel" method="_on_PickFilesButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/DeviceInfoPanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
