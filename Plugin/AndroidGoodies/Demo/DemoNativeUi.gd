@@ -32,10 +32,31 @@ func _onShowMultiChoiceDialogClicked():
 			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
 			
 func _onShowProgressDialogClicked():
-	native_ui.show_progress_dialog("Such progress", "Fascinating...", 0, 100, false, 
+	var max_progress = 100
+	var timer_interval = 0.5
+	native_ui.show_progress_dialog("Such progress", "Fascinating...", 0, max_progress, false, 
 			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self, 
 			"_on_progress_dialog_dismissed", self)
+			
+	var timer = Timer.new()
+	timer.wait_time = timer_interval
+	self.add_child(timer)
+	timer.start()
 	
+	for i in range(11):
+		yield(timer, "timeout")
+		var progress = max_progress * i * timer_interval / 5
+		print(progress)
+		native_ui.set_progress_dialog_progress(progress)
+		
+	timer.stop()
+	native_ui.dismiss_progress_dialog()
+	
+	var dialog_data = _create_dialog_data()
+	native_ui.show_button_dialog("Progress", "Process was completed", 
+			dialog_data, AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self)
+			
+	timer.queue_free()
 
 func _create_dialog_data() -> AGNativeUi.ButtonDialogData:
 	var dialog_data = AGNativeUi.ButtonDialogData.new()
