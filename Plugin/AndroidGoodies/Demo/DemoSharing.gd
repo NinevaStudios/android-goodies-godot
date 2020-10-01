@@ -1,16 +1,13 @@
 extends Node
 
+onready var image = (load("res://icon.png") as Texture).get_data()
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
+var sharer = AGShare.new()
 
+const chooser_title = "Choose your destiny..."
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func _onShareTextButtonClicked():
+	sharer.share_text("Android Goodies", "Text message", true, chooser_title)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _onShareTextWithImageButtonClicked():
+	sharer.share_text_with_image("Android Goodies", "Text message", image, true, chooser_title)

@@ -450,6 +450,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 custom_styles/panel = SubResource( 6 )
 script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="BackButton" type="Button" parent="NavigationPanel/SharePanel"]
 margin_left = 30.0
@@ -485,6 +488,18 @@ text = "Share Text"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ShareTextWithImageButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 130.0
+margin_bottom = 170.0
+rect_scale = Vector2( 2, 2 )
+text = "Share Text and Image"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenPickersButton" to="NavigationPanel" method="_onOpenPickersButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenDeviceInfosButton2" to="NavigationPanel" method="_onOpenDeviceInfoButtonClicked"]
@@ -506,3 +521,5 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/PickersPanel/PickFilesButton" to="NavigationPanel/PickersPanel" method="_on_PickFilesButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/DeviceInfoPanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/SharePanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/ShareTextButton" to="NavigationPanel/SharePanel" method="_onShareTextButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/ShareTextWithImageButton" to="NavigationPanel/SharePanel" method="_onShareTextWithImageButtonClicked"]
