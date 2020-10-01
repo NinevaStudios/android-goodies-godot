@@ -3,16 +3,13 @@ package com.ninevastudios.androidgoodies;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
-import android.telephony.SmsManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.collection.ArraySet;
 import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 
 import com.ninevastudios.androidgoodies.utils.Constants;
 
@@ -21,8 +18,6 @@ import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.SignalInfo;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -95,14 +90,15 @@ public class AndroidGoodies extends GodotPlugin {
                 "getApplicationPackageName",
                 "isPackageInstalled",
                 //Sharing
-				"shareText",
-				"shareImage",
-				"shareTextWithImage",
-				"shareVideo",
-				"sendSmsViaMessagingApp",
-				"sendSmsDirectly",
-				"sendEMail",
-				"sendEMailWithMultipleImages",
+                "shareText",
+                "shareImage",
+                "shareTextWithImage",
+                "shareVideo",
+                "sendSmsViaMessagingApp",
+                "sendSmsDirectly",
+                "sendEMail",
+                "sendEMailWithMultipleImages",
+                "saveImageToCache",
                 // Other
                 "requestPermission");
     }
@@ -385,22 +381,22 @@ public class AndroidGoodies extends GodotPlugin {
     }
 
     public void shareImage(String imagePath, boolean withChooser,
-                                  String chooserTitle) {
+                           String chooserTitle) {
         AGShare.shareImage(imagePath, withChooser, chooserTitle);
     }
 
     public void shareTextWithImage(String subject, String textBody,
-                                          String imagePath, boolean withChooser, String chooserTitle) {
+                                   String imagePath, boolean withChooser, String chooserTitle) {
         AGShare.shareTextWithImage(subject, textBody, imagePath, withChooser, chooserTitle);
     }
 
     public void shareVideo(final String videoPath, final boolean withChooser,
-                                  final String chooserTitle) {
+                           final String chooserTitle) {
         AGShare.shareVideo(videoPath, withChooser, chooserTitle);
     }
 
     public void sendSmsViaMessagingApp(String phoneNumber, String message,
-                                              boolean withChooser, String chooserTitle) {
+                                       boolean withChooser, String chooserTitle) {
         AGShare.sendSmsViaMessagingApp(phoneNumber, message, withChooser, chooserTitle);
     }
 
@@ -409,15 +405,19 @@ public class AndroidGoodies extends GodotPlugin {
     }
 
     public void sendEMail(String subject, String textBody, String imagePath,
-                                 String[] recipients, String[] cc, String[] bcc,
-                                 boolean withChooser, String chooserTitle) {
+                          String[] recipients, String[] cc, String[] bcc,
+                          boolean withChooser, String chooserTitle) {
         AGShare.sendEMail(subject, textBody, imagePath, recipients, cc, bcc, withChooser, chooserTitle);
     }
 
     public void sendEMailWithMultipleImages(String subject, String[] extraImagePaths,
-                                                   String[] recipients, String[] cc, String[] bcc,
-                                                   boolean withChooser, String chooserTitle) {
+                                            String[] recipients, String[] cc, String[] bcc,
+                                            boolean withChooser, String chooserTitle) {
         AGShare.sendEMail(subject, extraImagePaths, recipients, cc, bcc, withChooser, chooserTitle);
+    }
+
+    public String saveImageToCache(byte[] data, int width, int height) {
+        return AGShare.saveImageToCache(data, width, height);
     }
 
     //endregion

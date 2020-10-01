@@ -2,6 +2,7 @@ package com.ninevastudios.androidgoodies;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.telephony.SmsManager;
@@ -12,7 +13,10 @@ import androidx.core.content.FileProvider;
 import com.ninevastudios.androidgoodies.utils.Constants;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class AGShare {
     private static final int maxSmsLength = 140;
@@ -120,6 +124,34 @@ public class AGShare {
             launchShareIntent(withChooser, chooserTitle, intent);
         } catch (Exception e) {
             Log.d(Constants.LOG_TAG, e.getMessage());
+        }
+    }
+
+    public static String saveImageToCache(byte[] data, int width, int height) {
+        Activity activity = AndroidGoodies.getGameActivity();
+
+        if (activity == null) {
+            Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
+            return "";
+        }
+
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        ByteBuffer byteBuffer = ByteBuffer.wrap(data);
+        bitmap.copyPixelsFromBuffer(byteBuffer);
+        File root = activity.getCacheDir();
+        File file = new File(root, UUID.randomUUID().toString() + ".png");
+
+        Log.d(Constants.LOG_TAG, file.getAbsolutePath());
+
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+            return file.getAbsolutePath();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
     }
 
