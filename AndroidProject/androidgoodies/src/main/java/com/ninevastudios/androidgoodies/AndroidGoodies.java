@@ -384,37 +384,37 @@ public class AndroidGoodies extends GodotPlugin {
         AGShare.shareText(subject, textBody, withChooser, chooserTitle);
     }
 
-    public static void shareImage(String imagePath, boolean withChooser,
+    public void shareImage(String imagePath, boolean withChooser,
                                   String chooserTitle) {
         AGShare.shareImage(imagePath, withChooser, chooserTitle);
     }
 
-    public static void shareTextWithImage(String subject, String textBody,
+    public void shareTextWithImage(String subject, String textBody,
                                           String imagePath, boolean withChooser, String chooserTitle) {
         AGShare.shareTextWithImage(subject, textBody, imagePath, withChooser, chooserTitle);
     }
 
-    public static void shareVideo(final String videoPath, final boolean withChooser,
+    public void shareVideo(final String videoPath, final boolean withChooser,
                                   final String chooserTitle) {
         AGShare.shareVideo(videoPath, withChooser, chooserTitle);
     }
 
-    public static void sendSmsViaMessagingApp(String phoneNumber, String message,
+    public void sendSmsViaMessagingApp(String phoneNumber, String message,
                                               boolean withChooser, String chooserTitle) {
         AGShare.sendSmsViaMessagingApp(phoneNumber, message, withChooser, chooserTitle);
     }
 
-    public static void sendSmsDirectly(String phoneNumber, String message) {
+    public void sendSmsDirectly(String phoneNumber, String message) {
         AGShare.sendSmsDirectly(phoneNumber, message);
     }
 
-    public static void sendEMail(String subject, String textBody, String imagePath,
+    public void sendEMail(String subject, String textBody, String imagePath,
                                  String[] recipients, String[] cc, String[] bcc,
                                  boolean withChooser, String chooserTitle) {
         AGShare.sendEMail(subject, textBody, imagePath, recipients, cc, bcc, withChooser, chooserTitle);
     }
 
-    public static void sendEMailWithMultipleImages(String subject, String[] extraImagePaths,
+    public void sendEMailWithMultipleImages(String subject, String[] extraImagePaths,
                                                    String[] recipients, String[] cc, String[] bcc,
                                                    boolean withChooser, String chooserTitle) {
         AGShare.sendEMail(subject, extraImagePaths, recipients, cc, bcc, withChooser, chooserTitle);
