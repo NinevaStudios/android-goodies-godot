@@ -1,5 +1,10 @@
 class_name AGShare
 
+var permissions = AGPermissions.new()
+
+var _phone_number : String = ""
+var _sms_body : String = ""
+
 func share_text(subject : String, text_body : String, 
 		with_chooser : bool = false, chooser_title : String = ""):
 	if Engine.has_singleton(AGUtils.plugin_name):
@@ -41,9 +46,10 @@ func send_sms_via_messaging_app(phone_number : String, message : String,
 		print("No plugin singleton")
 
 func send_sms_directly(phone_number : String, message : String):
+	_phone_number = phone_number
+	_sms_body = message
 	if Engine.has_singleton(AGUtils.plugin_name):
-		var singleton = Engine.get_singleton(AGUtils.plugin_name)
-		singleton.sendSmsDirectly(phone_number, message)
+		permissions.request_permission(AGPermissions.send_sms_permission, "_on_sms_permission_granted", self)
 	else:
 		print("No plugin singleton")
 
@@ -66,7 +72,7 @@ func send_email_with_images(subject : String, extra_images : Array, recipients :
 			var image_path = _save_image_to_cache(image)
 			image_paths.append(image_path)
 		
-		singleton.sendEMail(subject, image_paths, recipients, cc, bcc, with_chooser, chooser_title)
+		singleton.sendEMailWithMultipleImages(subject, image_paths, recipients, cc, bcc, with_chooser, chooser_title)
 	else:
 		print("No plugin singleton")
 		
@@ -85,3 +91,8 @@ func _save_image_to_cache(image : Image) -> String:
 	else:
 		print("No plugin singleton")
 		return ""
+		
+func _on_sms_permission_granted(permission : String, granted : bool):
+	if (permission == AGPermissions.send_sms_permission && granted):
+		var singleton = Engine.get_singleton(AGUtils.plugin_name)
+		singleton.sendSmsDirectly(_phone_number, _sms_body)

@@ -21,3 +21,17 @@ func _onVideosPicked(videos : Array):
 		
 func _onPickError(error : String):
 	print(error)
+
+func _onSendSMSIntentButtonClicked():
+	sharer.send_sms_via_messaging_app("+1234567890", "SMS via chooser", true, chooser_title)
+
+func _onSendSMSDirectlyButtonClicked():
+	sharer.send_sms_directly("380631895341", "Direct SMS")
+
+func _onSendEmailButtonClicked():
+	sharer.send_email("Email with text and image", "A very meaningful text.", image, 
+			["carl@borsch.com"], ["cc@gmail.com"], ["bcc@gmail.com"])
+
+func _onSendEmailMultiImageButtonClicked():
+	sharer.send_email_with_images("Email with multiple images", [image, image, image],
+			["carl@borsch.com"], ["cc@gmail.com"], ["bcc@gmail.com"])

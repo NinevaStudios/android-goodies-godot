@@ -86,7 +86,6 @@ public class AGShare {
     public static void sendEMail(String subject, String textBody, String imagePath,
                                  String[] recipients, String[] cc, String[] bcc,
                                  boolean withChooser, String chooserTitle) {
-
         Intent intent = createEMailIntent(subject, textBody, recipients, cc, bcc);
 
         if (!imagePath.isEmpty()) {

@@ -512,6 +512,54 @@ text = "Pick and Share a Video"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="SendSMSIntentButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 330.0
+margin_bottom = 370.0
+rect_scale = Vector2( 2, 2 )
+text = "Send SMS via App"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SendSMSDirectlyButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 430.0
+margin_bottom = 470.0
+rect_scale = Vector2( 2, 2 )
+text = "Send SMS Directly"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SendEmailButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 530.0
+margin_bottom = 570.0
+rect_scale = Vector2( 2, 2 )
+text = "Send Email"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SendEmailMultiImageButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 630.0
+margin_bottom = 670.0
+rect_scale = Vector2( 2, 2 )
+text = "Send Email with Images"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenPickersButton" to="NavigationPanel" method="_onOpenPickersButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenDeviceInfosButton2" to="NavigationPanel" method="_onOpenDeviceInfoButtonClicked"]
@@ -536,3 +584,7 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/SharePanel/ShareTextButton" to="NavigationPanel/SharePanel" method="_onShareTextButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/SharePanel/ShareTextWithImageButton" to="NavigationPanel/SharePanel" method="_onShareTextWithImageButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/SharePanel/PickAndShareVideoButton" to="NavigationPanel/SharePanel" method="_onPickAndShareVideoButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/SendSMSIntentButton" to="NavigationPanel/SharePanel" method="_onSendSMSIntentButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/SendSMSDirectlyButton" to="NavigationPanel/SharePanel" method="_onSendSMSDirectlyButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/SendEmailButton" to="NavigationPanel/SharePanel" method="_onSendEmailButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/SendEmailMultiImageButton" to="NavigationPanel/SharePanel" method="_onSendEmailMultiImageButtonClicked"]

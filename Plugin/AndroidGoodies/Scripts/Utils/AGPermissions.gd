@@ -2,6 +2,7 @@ class_name AGPermissions
 
 const camera_permission = "android.permission.CAMERA"
 const write_storage_permission = "android.permission.WRITE_EXTERNAL_STORAGE"
+const send_sms_permission = "android.permission.SEND_SMS"
 
 const _permission_granted_signal_name = "onPermissionGranted"
 

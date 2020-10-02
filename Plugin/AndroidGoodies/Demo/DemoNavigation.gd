@@ -38,5 +38,3 @@ func _onOpenDeviceInfoButtonClicked():
 func _onOpenSharingButtonClicked():
 	hide_panels()
 	sharing_panel.show()
-
-
