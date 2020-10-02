@@ -500,6 +500,18 @@ text = "Share Text and Image"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="PickAndShareVideoButton" type="Button" parent="NavigationPanel/SharePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 230.0
+margin_bottom = 270.0
+rect_scale = Vector2( 2, 2 )
+text = "Pick and Share a Video"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenPickersButton" to="NavigationPanel" method="_onOpenPickersButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenDeviceInfosButton2" to="NavigationPanel" method="_onOpenDeviceInfoButtonClicked"]
@@ -523,3 +535,4 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/SharePanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/SharePanel/ShareTextButton" to="NavigationPanel/SharePanel" method="_onShareTextButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/SharePanel/ShareTextWithImageButton" to="NavigationPanel/SharePanel" method="_onShareTextWithImageButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/SharePanel/PickAndShareVideoButton" to="NavigationPanel/SharePanel" method="_onPickAndShareVideoButtonClicked"]
