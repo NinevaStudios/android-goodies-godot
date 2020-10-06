@@ -6,6 +6,7 @@ onready var native_ui_panel = get_node("NativeUiPanel")
 onready var pickers_panel = get_node("PickersPanel")
 onready var device_info_panel = get_node("DeviceInfoPanel")
 onready var sharing_panel = get_node("SharePanel")
+onready var hardware_panel = get_node("HardwarePanel")
 onready var base_panel = get_node("BasePanel")
 
 func _ready():
@@ -18,6 +19,7 @@ func hide_panels():
 	pickers_panel.hide()
 	device_info_panel.hide()
 	sharing_panel.hide()
+	hardware_panel.hide()
 
 func _onOpenNativeUiButtonClicked():
 	hide_panels()
@@ -38,3 +40,7 @@ func _onOpenDeviceInfoButtonClicked():
 func _onOpenSharingButtonClicked():
 	hide_panels()
 	sharing_panel.show()
+
+func _onOpenHardwareButtonClicked():
+	hide_panels()
+	hardware_panel.show()
