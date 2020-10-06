@@ -256,8 +256,7 @@ func _on_multi_item_selected(index, selected):
 	_item_selected_callback_object.call(_item_selected_callback_name, index, selected)
 	
 func _connect_dismiss_callback(singleton):
-	if _is_cancelable:
-		singleton.connect(_dialog_dismiss_signal_name, self, "_on_dialog_dismiss_callback")
+	singleton.connect(_dialog_dismiss_signal_name, self, "_on_dialog_dismiss_callback")
 
 func _on_dialog_dismiss_callback():
 	_dismiss_callback_object.call(_dismiss_callback_name)
@@ -270,7 +269,6 @@ func _disconnect_dialog_callbacks():
 	utils.disconnect_callback_if_connected(singleton, _positive_button_signal_name, self, "_on_positive_button_selected")
 	utils.disconnect_callback_if_connected(singleton, _negative_button_signal_name, self, "_on_negative_button_selected")
 	utils.disconnect_callback_if_connected(singleton, _neutral_button_signal_name, self, "_on_neutral_button_selected")
-	utils.disconnect_callback_if_connected(singleton, _dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
 	utils.disconnect_callback_if_connected(singleton, _dialog_cancelled_signal_name, self, "_on_dialog_cancel_callback")
 	utils.disconnect_callback_if_connected(singleton, _item_selected_signal_name, self, "_on_item_selected")
 	utils.disconnect_callback_if_connected(singleton, _item_selected_signal_name, self, "_on_single_item_selected")
