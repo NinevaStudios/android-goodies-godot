@@ -86,10 +86,17 @@ public class AGShare {
     public static void sendEMail(String subject, String textBody, String imagePath,
                                  String[] recipients, String[] cc, String[] bcc,
                                  boolean withChooser, String chooserTitle) {
+        Activity activity = AndroidGoodies.getGameActivity();
+
+        if (activity == null) {
+            Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
+            return;
+        }
+
         Intent intent = createEMailIntent(subject, textBody, recipients, cc, bcc);
 
         if (!imagePath.isEmpty()) {
-            Uri path = Uri.fromFile(new File(imagePath));
+            Uri path = FileProvider.getUriForFile(activity, getAuthority(), new File(imagePath));
             intent.putExtra(Intent.EXTRA_STREAM, path);
         }
 
