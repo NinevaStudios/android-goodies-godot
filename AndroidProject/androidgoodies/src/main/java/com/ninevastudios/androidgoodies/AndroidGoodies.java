@@ -466,7 +466,7 @@ public class AndroidGoodies extends GodotPlugin {
 		return AGHardware.hasAmplitudeControl();
 	}
 
-	public void vibrate(long[] durations, int[] amplitudes, int repeat, int usage, int flags, int contentType) {
+	public void vibrate(int[] durations, int[] amplitudes, int repeat, int usage, int flags, int contentType) {
 		AGHardware.vibrate(durations, amplitudes, repeat, usage, flags, contentType);
 	}
 
@@ -474,7 +474,7 @@ public class AndroidGoodies extends GodotPlugin {
 		AGHardware.stopVibration();
 	}
 
-	public long computeRemainingChargeTime() {
+	public int computeRemainingChargeTime() {
 		return AGHardware.computeRemainingChargeTime();
 	}
 
@@ -498,7 +498,7 @@ public class AndroidGoodies extends GodotPlugin {
 		return AGHardware.getBatteryCurrent();
 	}
 
-	public long getBatteryEnergyCounter() {
+	public int getBatteryEnergyCounter() {
 		return AGHardware.getBatteryEnergyCounter();
 	}
 

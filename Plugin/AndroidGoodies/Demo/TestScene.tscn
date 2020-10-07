@@ -611,6 +611,18 @@ texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ToggleFlashlightButton" type="Button" parent="NavigationPanel/HardwarePanel"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -300.0
+margin_top = 30.0
+margin_bottom = 70.0
+rect_scale = Vector2( 2, 2 )
+text = "Toggle Flashlight"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenPickersButton" to="NavigationPanel" method="_onOpenPickersButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenDeviceInfosButton2" to="NavigationPanel" method="_onOpenDeviceInfoButtonClicked"]
@@ -641,3 +653,4 @@ __meta__ = {
 [connection signal="button_up" from="NavigationPanel/SharePanel/SendEmailButton" to="NavigationPanel/SharePanel" method="_onSendEmailButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/SharePanel/SendEmailMultiImageButton" to="NavigationPanel/SharePanel" method="_onSendEmailMultiImageButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/HardwarePanel/BackButton" to="NavigationPanel" method="_onBackButtonClicked"]
+[connection signal="button_up" from="NavigationPanel/HardwarePanel/ToggleFlashlightButton" to="NavigationPanel/HardwarePanel" method="_onToggleFlashlightButtonClicked"]

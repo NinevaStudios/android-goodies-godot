@@ -1,16 +1,8 @@
 extends Node
 
+onready var hardware = AGHardware.new()
+var flashlight_state : bool = false
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _onToggleFlashlightButtonClicked():
+	flashlight_state = not flashlight_state
+	hardware.enable_flashlight(flashlight_state)

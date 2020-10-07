@@ -19,6 +19,8 @@ import android.util.Log;
 
 import com.ninevastudios.androidgoodies.utils.Constants;
 
+import java.util.Arrays;
+
 @Keep
 public class AGHardware {
 	private static Camera _camera;
@@ -82,7 +84,7 @@ public class AGHardware {
 	}
 
 	@Keep
-	public static void vibrate(long[] durations, int[] amplitudes, int repeat, int usage, int flags, int contentType) {
+	public static void vibrate(int[] durations, int[] amplitudes, int repeat, int usage, int flags, int contentType) {
 		Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
@@ -96,8 +98,13 @@ public class AGHardware {
 			return;
 		}
 
+		long[] longDurations = new long[durations.length];
+		for (int i = 0; i < durations.length; i++) {
+			longDurations[i] = durations[i];
+		}
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-			VibrationEffect effect = VibrationEffect.createWaveform(durations, amplitudes, repeat);
+			VibrationEffect effect = VibrationEffect.createWaveform(longDurations, amplitudes, repeat);
 			AudioAttributes attributes = new AudioAttributes.Builder()
 					.setUsage(usage)
 					.setFlags(flags)
@@ -105,7 +112,7 @@ public class AGHardware {
 					.build();
 			vibrator.vibrate(effect, attributes);
 		} else {
-			vibrator.vibrate(durations, repeat);
+			vibrator.vibrate(longDurations, repeat);
 		}
 
 	}
@@ -130,7 +137,7 @@ public class AGHardware {
 	}
 
 	@Keep
-	public static long computeRemainingChargeTime() {
+	public static int computeRemainingChargeTime() {
 		Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
@@ -141,7 +148,7 @@ public class AGHardware {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 			BatteryManager manager = (BatteryManager) activity.getSystemService(Context.BATTERY_SERVICE);
 
-			long result = manager != null ? manager.computeChargeTimeRemaining() : UNKNOWN;
+			int result = manager != null ? (int) manager.computeChargeTimeRemaining() : UNKNOWN;
 			Log.d(Constants.LOG_TAG, String.valueOf(result));
 			return result;
 		}
@@ -235,7 +242,7 @@ public class AGHardware {
 	}
 
 	@Keep
-	public static long getBatteryEnergyCounter() {
+	public static int getBatteryEnergyCounter() {
 		Activity activity = AndroidGoodies.getGameActivity();
 
 		if (activity == null) {
@@ -248,7 +255,7 @@ public class AGHardware {
 			long result = manager != null ? manager.getLongProperty(BatteryManager.BATTERY_PROPERTY_ENERGY_COUNTER) : UNKNOWN;
 			result = result == Long.MIN_VALUE ? UNKNOWN : result;
 			Log.d(Constants.LOG_TAG, String.valueOf(result));
-			return result;
+			return (int) result;
 		}
 
 		return UNKNOWN;
