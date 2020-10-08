@@ -136,15 +136,6 @@ func get_average_battery_current() -> int:
 		print("No plugin singleton")
 		return -1
 		
-func get_immediate_battery_current() -> int:
-	if Engine.has_singleton(AGUtils.plugin_name):
-		var singleton = Engine.get_singleton(AGUtils.plugin_name)
-		
-		return singleton.getImmediateBatteryCurrent()
-	else:
-		print("No plugin singleton")
-		return -1
-		
 func get_battery_current() -> int:
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)

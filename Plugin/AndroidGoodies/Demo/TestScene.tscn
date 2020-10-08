@@ -647,6 +647,17 @@ text = "Stop Vibration"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="BatteryInfoText" type="RichTextLabel" parent="NavigationPanel/HardwarePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 120.0
+margin_top = 330.0
+margin_right = -120.0
+margin_bottom = -30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenNativeUiButton" to="NavigationPanel" method="_onOpenNativeUiButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenPickersButton" to="NavigationPanel" method="_onOpenPickersButtonClicked"]
 [connection signal="button_up" from="NavigationPanel/BasePanel/OpenDeviceInfosButton2" to="NavigationPanel" method="_onOpenDeviceInfoButtonClicked"]

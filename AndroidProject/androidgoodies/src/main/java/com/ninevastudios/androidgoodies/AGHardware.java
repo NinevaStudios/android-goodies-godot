@@ -208,23 +208,6 @@ public class AGHardware {
 	}
 
 	@Keep
-	public static int getImmediateBatteryCurrent() {
-		Activity activity = AndroidGoodies.getGameActivity();
-
-		if (activity == null) {
-			Log.e(Constants.LOG_TAG, "Activity was not found. Aborting.");
-			return UNKNOWN;
-		}
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			BatteryManager manager = (BatteryManager) activity.getSystemService(Context.BATTERY_SERVICE);
-			return manager != null ? manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) : UNKNOWN;
-		}
-
-		return UNKNOWN;
-	}
-
-	@Keep
 	public static int getBatteryCurrent() {
 		Activity activity = AndroidGoodies.getGameActivity();
 

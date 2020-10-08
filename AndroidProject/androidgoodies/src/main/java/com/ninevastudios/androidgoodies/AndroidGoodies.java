@@ -490,10 +490,6 @@ public class AndroidGoodies extends GodotPlugin {
 		return AGHardware.getAverageBatteryCurrent();
 	}
 
-	public int getImmediateBatteryCurrent() {
-		return AGHardware.getImmediateBatteryCurrent();
-	}
-
 	public int getBatteryCurrent() {
 		return AGHardware.getBatteryCurrent();
 	}
