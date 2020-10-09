@@ -36,7 +36,6 @@ func _append_build_info(info : String) -> String:
 	info += "Model: " + build.model() + "\n"
 	info += "Product: " + build.product() + "\n"
 	info += "Radio version: " + build.radio_version() + "\n"
-	info += "Serial: " + build.serial() + "\n"
 	info += "Tags: " + build.tags() + "\n"
 	info += "Type: " + build.type() + "\n"
 	
