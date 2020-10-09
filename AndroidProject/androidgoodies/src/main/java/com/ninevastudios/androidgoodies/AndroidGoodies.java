@@ -84,7 +84,6 @@ public class AndroidGoodies extends GodotPlugin {
 				"getBuildModel",
 				"getBuildProduct",
 				"getBuildRadioVersion",
-				"getBuildSerial",
 				"getBuildTags",
 				"getBuildType",
 				"getApplicationPackageName",
@@ -372,10 +371,6 @@ public class AndroidGoodies extends GodotPlugin {
 
 	public String getBuildRadioVersion() {
 		return Build.getRadioVersion();
-	}
-
-	public String getBuildSerial() {
-		return Build.SERIAL;
 	}
 
 	public String getBuildTags() {

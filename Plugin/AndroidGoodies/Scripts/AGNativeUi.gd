@@ -8,20 +8,35 @@ const _item_selected_signal_name = "onDialogItemClicked";
 const _multi_item_selected_signal_name = "onDialogItemSelected";
 const _dialog_dismiss_signal_name = "onProgressDialogDismissed";
 
+# Values used to specify the duration for Toast appearance.
 enum ToastLength { SHORT = 0, LONG = 1 }
+
+#Values for the themes of the native dialogs.
 enum DialogTheme { LIGHT = 0, DARK = 1, DEFAULT = 2 }
 
+# Structure to send the data about buttons for the native dialogs.
+# All the buttons are optional, but when providing info for a button, 
+# you should set the text, callback name, and callback object for the respective button.
 class ButtonDialogData:
+	# Text to show on the positive button.
 	var positive_button_text : String = ""
+	# Name of the callback function to be invoked if the positive button is tapped.
 	var positive_button_callback_name : String = ""
+	# Object reference to invoke the positive_button_callback_name function on.
 	var positive_button_callback_object : Object = null
 	
+	# Text to show on the negative button.
 	var negative_button_text : String = ""
+	# Name of the callback function to be invoked if the negative button is tapped.
 	var negative_button_callback_name : String = ""
+	# Object reference to invoke the negative_button_callback_name function on.
 	var negative_button_callback_object : Object = null
 	
+	# Text to show on the neutral button.
 	var neutral_button_text : String = ""
+	# Name of the callback function to be invoked if the neutral button is tapped.
 	var neutral_button_callback_name : String = ""
+	# Object reference to invoke the neutral_button_callback_name function on.
 	var neutral_button_callback_object : Object = null
 	
 var _cached_button_dialog_data
@@ -43,6 +58,7 @@ var utils = AGUtils.new()
 
 # API functions
 
+# Show a toast message.
 func show_toast(text : String, length = ToastLength.SHORT):
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -50,6 +66,15 @@ func show_toast(text : String, length = ToastLength.SHORT):
 	else:
 		print("No plugin singleton")
 
+# Show the default Android message dialog with one, two or three buttons.
+# 
+# @param title: message title text to be displayed in dialog.
+# @param body: message text to be displayed in dialog.
+# @param button_dialog_data: ButtonDialogData object containing information about the buttons to be displayed on the dialog.
+# @param theme: theme of the dialog. One of the DialogTheme constants.
+# @param is_cancelable: whether the dialog can be dismissed by tapping outsude its bounds.
+# @param cancel_callback_name: name of the callback function to be invoked if the dialog is cancelled.
+# @param cancel_callback_object: object on which the cancel_callback_name is invoked if the dialog is cancelled.
 func show_button_dialog(title : String, body : String, button_dialog_data : ButtonDialogData, theme = DialogTheme.DEFAULT, 
 		is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object : Object = null):
 	if not button_dialog_data is ButtonDialogData:
@@ -75,6 +100,17 @@ func show_button_dialog(title : String, body : String, button_dialog_data : Butt
 	else:
 		print("No plugin singleton")
 		
+# Show the default Android message dialog with choosable items list.
+# The dialog is dismissed when an item is selected.
+# 
+# @param title: message title text to be displayed in dialog.
+# @param items: array of choosable text items that are displayed in dialog
+# @param item_chosen_callback_name: name of the callback function to be invoked when an item is chosen (returning the index of an item).
+# @param item_chosen_callback_name: object on which the item_chosen_callback_object is invoked when an item is chosen.
+# @param theme: theme of the dialog. One of the DialogTheme constants.
+# @param is_cancelable: whether the dialog can be dismissed by tapping outsude its bounds.
+# @param cancel_callback_name: name of the callback function to be invoked if the dialog is cancelled.
+# @param cancel_callback_object: object on which the cancel_callback_name is invoked if the dialog is cancelled.
 func show_items_dialog(title : String, items : PoolStringArray, item_chosen_callback_name : String, item_chosen_callback_object : Object,
 		theme = DialogTheme.DEFAULT, is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object : Object = null):
 	if items == null || items.size() == 0:
@@ -97,7 +133,19 @@ func show_items_dialog(title : String, items : PoolStringArray, item_chosen_call
 		singleton.showItemsDialog(title, items, theme as int, is_cancelable)
 	else:
 		print("No plugin singleton")
-
+		
+# Show the default Android message dialog with single choice items list.
+# 
+# @param title: message title text to be displayed in dialog.
+# @param items: array of choosable text items that are displayed in dialog
+# @param selected_index: index of list item that is selected when the dialog is shown.
+# @param item_chosen_callback_name: name of the callback function to be invoked when an item is chosen (returning the index of an item).
+# @param item_chosen_callback_name: object on which the item_chosen_callback_object is invoked when an item is chosen.
+# @param button_dialog_data: ButtonDialogData object containing information about the buttons to be displayed on the dialog.
+# @param theme: theme of the dialog. One of the DialogTheme constants.
+# @param is_cancelable: whether the dialog can be dismissed by tapping outsude its bounds.
+# @param cancel_callback_name: name of the callback function to be invoked if the dialog is cancelled.
+# @param cancel_callback_object: object on which the cancel_callback_name is invoked if the dialog is cancelled.
 func show_single_choice_dialog(title : String, items : PoolStringArray, selected_index : int, item_chosen_callback_name : String, item_chosen_callback_object : Object, 
 		button_dialog_data : ButtonDialogData, theme = DialogTheme.DEFAULT, is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object : Object = null):
 	if items == null || items.size() == 0:
@@ -127,6 +175,18 @@ func show_single_choice_dialog(title : String, items : PoolStringArray, selected
 	else:
 		print("No plugin singleton")
 		
+# Show the default Android message dialog with multiple choice items list.
+# 
+# @param title: message title text to be displayed in dialog.
+# @param items: array of choosable text items that are displayed in dialog
+# @param selected_indices: indices of list item that are selected when the dialog is shown.
+# @param item_selected_callback_name: name of the callback function to be invoked when an item is chosen (returning the index of an item).
+# @param item_selected_callback_object: object on which the item_chosen_callback_object is invoked when an item is chosen.
+# @param button_dialog_data: ButtonDialogData object containing information about the buttons to be displayed on the dialog.
+# @param theme: theme of the dialog. One of the DialogTheme constants.
+# @param is_cancelable: whether the dialog can be dismissed by tapping outsude its bounds.
+# @param cancel_callback_name: name of the callback function to be invoked if the dialog is cancelled.
+# @param cancel_callback_object: object on which the cancel_callback_name is invoked if the dialog is cancelled.
 func show_multi_choice_dialog(title : String, items : PoolStringArray, selected_indices : Array, item_selected_callback_name : String, item_selected_callback_object, 
 		button_dialog_data : ButtonDialogData, theme = DialogTheme.DEFAULT, is_cancelable : bool = false, cancel_callback_name : String = "", cancel_callback_object = null):
 	if items == null || items.size() == 0:
@@ -160,6 +220,18 @@ func show_multi_choice_dialog(title : String, items : PoolStringArray, selected_
 	else:
 		print("No plugin singleton")
 		
+# Show the default Android progress dialog.
+# 
+# @param title: message title text to be displayed in dialog.
+# @param items: array of choosable text items that are displayed in dialog
+# @param progress: maximum allowed progress value.
+# @param indeterminate: flag that determines whether progress dialog shows infinite animation.
+# @param theme: theme of the dialog. One of the DialogTheme constants.
+# @param is_cancelable: whether the dialog can be dismissed by tapping outsude its bounds.
+# @param dismiss_callback_name: name of the callback function to be invoked if the dialog is dismissed.
+# @param dismiss_callback_object: object on which the cancel_callback_name is invoked if the dialog is dismissed
+# @param cancel_callback_name: name of the callback function to be invoked if the dialog is cancelled.
+# @param cancel_callback_object: object on which the cancel_callback_name is invoked if the dialog is cancelled.
 func show_progress_dialog(title : String, message : String, progress : int, max_value : int, 
 		indeterminate : bool, theme = DialogTheme.DEFAULT, is_cancelable : bool = false, 
 		dismiss_callback_name : String = "", dismiss_callback_object : Object = null,
@@ -181,6 +253,7 @@ func show_progress_dialog(title : String, message : String, progress : int, max_
 	else:
 		print("No plugin singleton")
 		
+# Set the progress of the currently displayed progress dialog between 0 and its max_value.
 func set_progress_dialog_progress(progress : int):
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -189,6 +262,7 @@ func set_progress_dialog_progress(progress : int):
 	else:
 		print("No plugin singleton")
 		
+# Dismiss the currently displayed progress dialog.
 func dismiss_progress_dialog():
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)

@@ -12,6 +12,12 @@ var _permission_granted_callback_object : Object = null
 
 var utils = AGUtils.new()
 
+# Request system permission during application runtime.
+#
+# @param permission: the system string representing the specific permission.
+# @param callback_name: name of the callback function to be invoked when the user responds to the permission request.
+# 		Function signature: (String, bool)
+# @param permission: object on which the callback_name function is invoked when the user responds to the permission request.
 func request_permission(permission : String, callback_name : String, callback_object : Object):
 	_permission_granted_callback_name = callback_name
 	_permission_granted_callback_object = callback_object

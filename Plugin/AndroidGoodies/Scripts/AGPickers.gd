@@ -34,6 +34,7 @@ var _image_to_save : Image
 var utils = AGUtils.new()
 var permissions = AGPermissions.new()
 
+# An object representing a picked file.
 class PickedFile:
 	var original_path = ""
 	var created_at = 0
@@ -41,20 +42,23 @@ class PickedFile:
 	var extension = ""
 	var mime_type = ""
 	var size = 0
-	
+
+# An object representing a picked image. Has all the fields of the PickedFile, as well.
 class PickedImage extends PickedFile:
 	var image_orientation : int
 	
+# An object representing a picked video. Has all the fields of the PickedFile, as well.
 class PickedVideo extends PickedFile:
 	var video_duration = 0
 	var video_height = 0
 	var video_width = 0
 	var video_orientation = 0
 	var video_preview_image_path = ""
-	
+
+# An object representing a picked audio. Has all the fields of the PickedFile, as well.
 class PickedAudio extends PickedFile:
 	var audio_duration = 0
-	
+
 const orientation_normal = 1
 const orientation_rotate_90 = 6
 const orientation_rotate_180 = 3
@@ -62,6 +66,15 @@ const orientation_rotate_270 = 8
 
 # API functions
 
+# Pick image from gallery.
+#
+# @param max_size: size of the resulting image (pick smaller value to save memory)
+# @param generate_thumbnails: flag that indicates whether to generate thumbnails
+# @param allow_multiple: flag that indicates whether to pick multiple files
+# @param images_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedImage)
+# @param images_picked_callback_object: object on which the images_picked_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the pick results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func pick_image_from_gallery(max_size : int, generate_thumbnails : bool, allow_multiple : bool, images_picked_callback_name : String, 
 		images_picked_callback_object : Object, pick_error_callback_name : String, pick_error_callback_object : Object):
 	_images_picked_callback_name = images_picked_callback_name
@@ -82,6 +95,14 @@ func pick_image_from_gallery(max_size : int, generate_thumbnails : bool, allow_m
 	else:
 		print("No plugin singleton")
 
+# Pick photo from camera.
+#
+# @param max_size: size of the resulting image (pick smaller value to save memory)
+# @param generate_thumbnails: flag that indicates whether to generate thumbnails
+# @param images_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedImage)
+# @param images_picked_callback_object: object on which the images_picked_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the pick results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func take_photo(max_size : int, generate_thumbnails : bool, images_picked_callback_name : String, images_picked_callback_object : Object,
 		pick_error_callback_name : String, pick_error_callback_object : Object):
 	_images_picked_callback_name = images_picked_callback_name
@@ -99,6 +120,14 @@ func take_photo(max_size : int, generate_thumbnails : bool, images_picked_callba
 	else:
 		print("No plugin singleton")
 
+# Pick videos from gallery.
+#
+# @param generate_preview_images: whether generate preview images for the picked videos
+# @param allow_multiple: flag that indicates whether to pick multiple files
+# @param videos_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedVideo)
+# @param videos_picked_callback_object: object on which the images_picked_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the pick results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func pick_videos(generate_preview_images : bool, allow_multiple : bool, 
 		videos_picked_callback_name : String, videos_picked_callback_object : Object,
 		pick_error_callback_name : String, pick_error_callback_object : Object):
@@ -118,6 +147,13 @@ func pick_videos(generate_preview_images : bool, allow_multiple : bool,
 	else:
 		print("No plugin singleton")
 
+# Record video on camera. Requires the Camera permission.
+#
+# @param generate_preview_images: whether generate preview images for the picked videos
+# @param videos_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedVideo)
+# @param videos_picked_callback_object: object on which the images_picked_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the pick results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func record_video(generate_preview_images : bool,
 		videos_picked_callback_name : String, videos_picked_callback_object : Object,
 		pick_error_callback_name : String, pick_error_callback_object : Object):
@@ -138,7 +174,14 @@ func record_video(generate_preview_images : bool,
 		permissions.request_permission(AGPermissions.camera_permission, "_on_camera_permission_video_granted", self)
 	else:
 		print("No plugin singleton")
-		
+
+# Pick audio files.
+#
+# @param allow_multiple: flag that indicates whether to pick multiple files
+# @param audio_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedAudio)
+# @param audio_picked_callback_object: object on which the images_picked_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the pick results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func pick_audio(allow_multiple : bool,
 		audio_picked_callback_name : String, audio_picked_callback_object : Object,
 		pick_error_callback_name : String, pick_error_callback_object : Object):
@@ -157,7 +200,15 @@ func pick_audio(allow_multiple : bool,
 		singleton.pickAudio(allow_multiple)
 	else:
 		print("No plugin singleton")
-		
+
+# Pick files.
+#
+# @param allow_multiple: flag that indicates whether to pick multiple files
+# @param mime_type: preferred MIME type of the file. List of MIME types can be found here: https://www.freeformatter.com/mime-types-list.html
+# @param files_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedFile)
+# @param files_picked_callback_object: object on which the images_picked_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the pick results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func pick_files(allow_multiple : bool, mime_type : String,
 		files_picked_callback_name : String, files_picked_callback_object : Object,
 		pick_error_callback_name : String, pick_error_callback_object : Object):
@@ -176,7 +227,15 @@ func pick_files(allow_multiple : bool, mime_type : String,
 		singleton.pickFiles(mime_type, allow_multiple)
 	else:
 		print("No plugin singleton")
-		
+
+# Save image to gallery.
+#
+# @param image: image to be saved
+# @param filename: resulting file name
+# @param image_saved_callback_name: name of the callback function to be invoked after successful pick 
+# @param image_saved_callback_object: object on which the image_saved_callback_name is invoked
+# @param pick_error_callback_name: name of the callback function to be invoked if the saving results in an error (String)
+# @param pick_error_callback_object: object on which the pick_error_callback_name is invoked
 func save_image_to_gallery(image : Image, filename : String, 
 		image_saved_callback_name : String, image_saved_callback_object : Object,
 		pick_error_callback_name : String, pick_error_callback_object : Object):

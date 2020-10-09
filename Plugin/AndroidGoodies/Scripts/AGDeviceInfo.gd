@@ -1,5 +1,7 @@
+# Class for getting the device-specific information.
 class_name AGDeviceInfo
 
+# Check if the device supports one of the SystemFeature items.
 func has_system_feature(feature : String) -> bool:
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -7,7 +9,8 @@ func has_system_feature(feature : String) -> bool:
 	else:
 		print("No plugin singleton")
 		return false
-		
+
+# Get application package name.
 func get_package_name() -> String:
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -16,6 +19,7 @@ func get_package_name() -> String:
 		print("No plugin singleton")
 		return ""
 
+# Check if the provided package is installed on the device.
 func is_package_installed(package_name : String) -> bool:
 	if Engine.has_singleton(AGUtils.plugin_name):
 		var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -24,6 +28,7 @@ func is_package_installed(package_name : String) -> bool:
 		print("No plugin singleton")
 		return false
 
+# Container of the different system features that can be checked via "has_system_feature".
 class SystemFeature:
 	const AUDIO_LOW_LATENCY = "android.hardware.audio.low_latency" 
 	const AUDIO_OUTPUT = "android.hardware.audio.output" 
@@ -104,39 +109,42 @@ class SystemFeature:
 	const HDMI_CEC = "android.hardware.hdmi.cec" 
 	const GAMEPAD = "android.hardware.gamepad" 
 	const MIDI = "android.software.midi" 
-	
+
+# Holder for the android version codes (possible values for "Build.Version.sdk_int()"
 class VersionCodes:
 	const BASE = 1
 	const BASE_1_1 = 2
-	const CUPCAKE = 1
-	const DONUT = 1
-	const ECLAIR = 1
-	const ECLAIR_0_1 = 1
-	const ECLAIR_MR1 = 1
-	const FROYO = 1
-	const GINGERBREAD = 1
-	const GINGERBREAD_MR1 = 1
-	const HONEYCOMB = 1
-	const HONEYCOMB_MR1 = 1
-	const HONEYCOMB_MR2 = 1
-	const ICE_CREAM_SANDWICH = 1
-	const ICE_CREAM_SANDWICH_MR1 = 1
-	const JELLY_BEAN = 1
-	const JELLY_BEAN_MR1 = 1
-	const JELLY_BEAN_MR2 = 1
-	const KITKAT = 1
-	const KITKAT_WATCH = 1
-	const LOLLIPOP = 1
-	const LOLLIPOP_MR1 = 1
-	const M = 1
-	const N = 1
-	const N_MR1 = 1
-	const O = 1
-	const O_MR1 = 1
-	const P = 1
-	const Q = 1
-	
+	const CUPCAKE = 3
+	const DONUT = 4
+	const ECLAIR = 5
+	const ECLAIR_0_1 = 6
+	const ECLAIR_MR1 = 7
+	const FROYO = 8
+	const GINGERBREAD = 9
+	const GINGERBREAD_MR1 = 10
+	const HONEYCOMB = 11
+	const HONEYCOMB_MR1 = 12
+	const HONEYCOMB_MR2 = 13
+	const ICE_CREAM_SANDWICH = 14
+	const ICE_CREAM_SANDWICH_MR1 = 15
+	const JELLY_BEAN = 16
+	const JELLY_BEAN_MR1 = 17
+	const JELLY_BEAN_MR2 = 18
+	const KITKAT = 19
+	const KITKAT_WATCH = 20
+	const LOLLIPOP = 21
+	const LOLLIPOP_MR1 = 22
+	const M = 23
+	const N = 24
+	const N_MR1 = 25
+	const O = 26
+	const O_MR1 = 27
+	const P = 28
+	const Q = 29
+
+# Information about the current build, extracted from system properties.
 class Build:
+	# The name of the underlying board, like "goldfish".
 	func board() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -144,7 +152,8 @@ class Build:
 		else:
 			print("No plugin singleton")
 			return ""
-			
+	
+	# The system bootloader version number.
 	func bootloader() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -152,7 +161,8 @@ class Build:
 		else:
 			print("No plugin singleton")
 			return ""
-			
+	
+	# The consumer-visible brand with which the product/hardware will be associated, if any.
 	func brand() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -160,7 +170,8 @@ class Build:
 		else:
 			print("No plugin singleton")
 			return ""
-			
+	
+	# The name of the industrial design. 
 	func device() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -168,7 +179,8 @@ class Build:
 		else:
 			print("No plugin singleton")
 			return ""
-			
+	
+	# A build ID string meant for displaying to the user.
 	func display() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -177,6 +189,7 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# The name of the hardware (from the kernel command line or /proc).
 	func hardware() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -185,6 +198,7 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# The manufacturer of the product/hardware.
 	func manufacturer() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -193,6 +207,7 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# The end-user-visible name for the end product. 
 	func model() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -201,6 +216,7 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# The name of the overall product. 
 	func product() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -209,6 +225,8 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# Returns the version string for the radio firmware.  
+	# May return null (if, for instance, the radio is not currently on).
 	func radio_version() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -217,14 +235,7 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
-	func serial() -> String:
-		if Engine.has_singleton(AGUtils.plugin_name):
-			var singleton = Engine.get_singleton(AGUtils.plugin_name)
-			return singleton.getBuildSerial()
-		else:
-			print("No plugin singleton")
-			return ""
-			
+	# Comma-separated tags describing the build, like "unsigned,debug".
 	func tags() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -233,6 +244,7 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# The type of build, like "user" or "eng".
 	func type() -> String:
 		if Engine.has_singleton(AGUtils.plugin_name):
 			var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -241,7 +253,10 @@ class Build:
 			print("No plugin singleton")
 			return ""
 			
+	# Various version strings.
 	class Version:
+		# The SDK version of the software currently running on this hardware device.
+		# Possible values are defined in VersionCodes.
 		func sdk_int() -> int:
 			if Engine.has_singleton(AGUtils.plugin_name):
 				var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -250,6 +265,7 @@ class Build:
 				print("No plugin singleton")
 				return 0
 				
+		# The base OS build the product is based on.
 		func base_os() -> String:
 			if Engine.has_singleton(AGUtils.plugin_name) and sdk_int() >= VersionCodes.M:
 				var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -257,6 +273,7 @@ class Build:
 			else:
 				return ""
 				
+		# A build ID string meant for displaying to the user.
 		func codename() -> String:
 			if Engine.has_singleton(AGUtils.plugin_name):
 				var singleton = Engine.get_singleton(AGUtils.plugin_name)
@@ -265,6 +282,7 @@ class Build:
 				print("No plugin singleton")
 				return ""
 				
+		# The user-visible version string.  E.g., "1.0" or "3.4b5" or "bananas".
 		func release() -> String:
 			if Engine.has_singleton(AGUtils.plugin_name):
 				var singleton = Engine.get_singleton(AGUtils.plugin_name)
