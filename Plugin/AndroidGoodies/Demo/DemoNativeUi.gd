@@ -35,7 +35,7 @@ func _onShowProgressDialogClicked():
 	var max_progress = 100
 	var timer_interval = 0.5
 	native_ui.show_progress_dialog("Such progress", "Fascinating...", 0, max_progress, false, 
-			AGNativeUi.DialogTheme.DEFAULT, true, "_onDialogCancelled", self, 
+			AGNativeUi.DialogTheme.DEFAULT, false, "_onDialogCancelled", self, 
 			"_on_progress_dialog_dismissed", self)
 			
 	var timer = Timer.new()
