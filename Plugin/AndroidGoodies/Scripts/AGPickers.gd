@@ -68,7 +68,7 @@ const orientation_rotate_270 = 8
 
 # Pick image from gallery.
 #
-# @param max_size: size of the resulting image (pick smaller value to save memory)
+# @param max_size: size of the resulting image (pick smaller value to save memory). Pass value <=0 to keep original size.
 # @param generate_thumbnails: flag that indicates whether to generate thumbnails
 # @param allow_multiple: flag that indicates whether to pick multiple files
 # @param images_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedImage)
@@ -97,7 +97,7 @@ func pick_image_from_gallery(max_size : int, generate_thumbnails : bool, allow_m
 
 # Pick photo from camera.
 #
-# @param max_size: size of the resulting image (pick smaller value to save memory)
+# @param max_size: size of the resulting image (pick smaller value to save memory). Pass value <=0 to keep original size.
 # @param generate_thumbnails: flag that indicates whether to generate thumbnails
 # @param images_picked_callback_name: name of the callback function to be invoked after successful pick (Array of PickedImage)
 # @param images_picked_callback_object: object on which the images_picked_callback_name is invoked
