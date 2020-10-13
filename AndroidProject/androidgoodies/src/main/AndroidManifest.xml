@@ -1,7 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ninevastudios.androidgoodies">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
     <application>
         <meta-data
             android:name="org.godotengine.plugin.v1.AndroidGoodies"

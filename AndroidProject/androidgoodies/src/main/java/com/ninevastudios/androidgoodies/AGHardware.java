@@ -1,5 +1,6 @@
 package com.ninevastudios.androidgoodies;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -21,6 +22,7 @@ import com.ninevastudios.androidgoodies.utils.Constants;
 
 import java.util.Arrays;
 
+@SuppressLint("MissingPermission")
 @Keep
 public class AGHardware {
 	private static Camera _camera;
