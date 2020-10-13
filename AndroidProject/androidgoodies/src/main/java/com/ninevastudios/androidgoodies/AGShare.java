@@ -96,7 +96,8 @@ public class AGShare {
         Intent intent = createEMailIntent(subject, textBody, recipients, cc, bcc);
 
         if (!imagePath.isEmpty()) {
-            Uri path = FileProvider.getUriForFile(activity, getAuthority(), new File(imagePath));
+            Uri path = Uri.fromFile(new File(imagePath));
+            Log.d(Constants.LOG_TAG, path.getPath());
             intent.putExtra(Intent.EXTRA_STREAM, path);
         }
 
@@ -144,8 +145,7 @@ public class AGShare {
         Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         ByteBuffer byteBuffer = ByteBuffer.wrap(data);
         bitmap.copyPixelsFromBuffer(byteBuffer);
-        File root = activity.getCacheDir();
-        File file = new File(root, UUID.randomUUID().toString() + ".png");
+        File file = new File(activity.getExternalCacheDir(), UUID.randomUUID().toString() + ".png");
 
         Log.d(Constants.LOG_TAG, file.getAbsolutePath());
 
