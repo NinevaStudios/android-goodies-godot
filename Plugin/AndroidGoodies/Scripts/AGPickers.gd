@@ -337,7 +337,6 @@ func _disconnect_callbacks():
 	
 	utils.disconnect_callback_if_connected(singleton, _picked_images_signal_name, self, "_on_images_picked")
 	utils.disconnect_callback_if_connected(singleton, _picked_videos_signal_name, self, "_on_videos_picked")
-	utils.disconnect_callback_if_connected(singleton, _audio_picked_callback_name, self, "_on_audio_picked")
 	utils.disconnect_callback_if_connected(singleton, _pick_error_signal_name, self, "_on_pick_error")
 	utils.disconnect_callback_if_connected(singleton, _picked_files_signal_name, self, "_on_files_picked")
 	utils.disconnect_callback_if_connected(singleton, _picked_audio_signal_name, self, "_on_audio_picked")
